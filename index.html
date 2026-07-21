@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LexiLearn - Diccionario Interactivo de Inglés</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Styles for 3D Flashcard Flip */
+        .perspective {
+            perspective: 1000px;
+        }
+        .preserve-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e5e7eb;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen font-sans transition-colors duration-300">
+
+    <!-- App Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        
+        <!-- Header Section -->
+        <header class="flex flex-col md:flex-row items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-6 mb-8 gap-4">
+            <div class="text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start gap-3 mb-1">
+                    <span class="p-2 bg-primary-600 text-white rounded-xl shadow-lg shadow-primary-500/30">
+                        <!-- Book Icon SVG -->
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                    </span>
+                    <h1 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-primary-600 to-indigo-500 bg-clip-text text-transparent dark:from-primary-400 dark:to-indigo-300">
+                        Dictionary's ANA- LEVEL 7
+                    </h1>
+                </div>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Diccionario y Centro de Estudio Interactivo de Ana (Units 1A - 5B)</p>
+            </div>
+
+            <!-- Toolbar / Settings -->
+            <div class="flex flex-wrap items-center gap-3">
+                <!-- Navigation Mode Selector -->
+                <div class="bg-slate-100 dark:bg-slate-900 p-1 rounded-xl flex border border-slate-200 dark:border-slate-800">
+                    <button id="btn-dict-view" onclick="switchView('dictionary')" class="px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 bg-white dark:bg-slate-800 text-primary-600 dark:text-primary-400 shadow-sm">
+                        Diccionario
+                    </button>
+                    <button id="btn-card-view" onclick="switchView('flashcards')" class="px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100">
+                        Tarjetas (3D)
+                    </button>
+                    <button id="btn-quiz-view" onclick="switchView('quiz')" class="px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100">
+                        Prueba (Quiz)
+                    </button>
+                </div>
+
+                <!-- Accent Accent Accent -->
+                <div class="flex items-center gap-2 border-l border-slate-200 dark:border-slate-800 pl-3">
+                    <!-- Accent Selector (US vs UK) -->
+                    <select id="voice-accent" class="text-xs bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-2 focus:ring-2 focus:ring-primary-500 outline-none">
+                        <option value="en-GB">Voz UK (Británica)</option>
+                        <option value="en-US">Voz US (Americana)</option>
+                    </select>
+
+                    <!-- Theme Toggle -->
+                    <button onclick="toggleDarkMode()" class="p-2 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl transition">
+                        <!-- Sun Icon -->
+                        <svg id="sun-icon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.364l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+                        </svg>
+                        <!-- Moon Icon -->
+                        <svg id="moon-icon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Stats Panel -->
+        <section class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Palabras Totales</p>
+                    <h3 id="stat-total" class="text-2xl font-bold mt-1 text-slate-800 dark:text-slate-100">-</h3>
+                </div>
+                <span class="p-2 bg-blue-50 dark:bg-blue-950/30 text-blue-500 rounded-xl">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>
+                </span>
+            </div>
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Unidades</p>
+                    <h3 class="text-2xl font-bold mt-1 text-slate-800 dark:text-slate-100">10</h3>
+                </div>
+                <span class="p-2 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-500 rounded-xl">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                </span>
+            </div>
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Favoritos</p>
+                    <h3 id="stat-favs" class="text-2xl font-bold mt-1 text-slate-800 dark:text-slate-100">0</h3>
+                </div>
+                <span class="p-2 bg-amber-50 dark:bg-amber-950/30 text-amber-500 rounded-xl">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                </span>
+            </div>
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Rendimiento Test</p>
+                    <h3 id="stat-score" class="text-2xl font-bold mt-1 text-slate-800 dark:text-slate-100">0%</h3>
+                </div>
+                <span class="p-2 bg-purple-50 dark:bg-purple-950/30 text-purple-500 rounded-xl">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                </span>
+            </div>
+        </section>
+
+        <!-- VIEW 1: Dictionary / Table & Card View -->
+        <main id="view-dictionary" class="block space-y-6">
+            
+            <!-- Filters Panel -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm space-y-4">
+                <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
+                    <!-- Search input -->
+                    <div class="relative w-full lg:w-1/2">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 pointer-events-none">
+                            <!-- Glass Icon -->
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                        </span>
+                        <input type="text" id="search-box" oninput="handleFilterChange()" placeholder="Buscar palabra en inglés, traducción en español, tipo..." class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 pl-10 pr-4 py-3 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition placeholder-slate-400 text-sm">
+                        <button id="search-clear" onclick="clearSearch()" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hidden">
+                            <!-- Close Icon -->
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                    </div>
+
+                    <!-- Other Selectors -->
+                    <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-end">
+                        <!-- Part of Speech select -->
+                        <select id="type-filter" onchange="handleFilterChange()" class="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition w-full sm:w-auto">
+                            <option value="all">Todas las categorías</option>
+                            <option value="noun">Noun (Sustantivo)</option>
+                            <option value="verb">Verb (Verbo)</option>
+                            <option value="adjective">Adjective (Adjetivo)</option>
+                            <option value="adverb">Adverb (Adverbio)</option>
+                            <option value="compound adjective">Compound Adjective (Adj. Compuesto)</option>
+                            <option value="phrasal verb">Phrasal Verb (Verbo Prep.)</option>
+                            <option value="verb phrase">Verb Phrase (Frase Verbal)</option>
+                        </select>
+
+                        <!-- Favorites filter -->
+                        <button id="btn-toggle-fav-filter" onclick="toggleFavoriteFilter()" class="flex items-center gap-2 px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-900 transition text-sm w-full sm:w-auto justify-center">
+                            <svg id="fav-filter-star" class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+                            <span>Solo Favoritos</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Unit selection tabs -->
+                <div>
+                    <p class="text-xs text-slate-400 uppercase font-semibold mb-2">Filtrar por Unidad:</p>
+                    <div id="unit-tabs-container" class="flex flex-wrap gap-2 overflow-x-auto pb-1 max-w-full">
+                        <button onclick="selectUnit('all')" id="unit-tab-all" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-primary-600 text-white shadow-sm transition">TODAS</button>
+                        <!-- Dynamic buttons will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area: The Tables and Grouping -->
+            <div id="dictionary-content" class="space-y-8">
+                <!-- Data will load dynamically here -->
+            </div>
+        </main>
+
+        <!-- VIEW 2: Flashcards 3D Mode -->
+        <main id="view-flashcards" class="hidden max-w-2xl mx-auto py-4">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm mb-6 flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-bold">Tarjetas de Memorización</h2>
+                    <p class="text-xs text-slate-400">Haz clic en la tarjeta para revelar la traducción y un ejemplo de uso.</p>
+                </div>
+                <div class="text-right">
+                    <span id="flashcard-counter" class="text-sm font-semibold bg-primary-50 dark:bg-primary-950/40 text-primary-600 dark:text-primary-400 px-3 py-1.5 rounded-lg">0 / 0</span>
+                </div>
+            </div>
+
+            <!-- Card Flip Area -->
+            <div class="perspective w-full h-80 sm:h-96 relative cursor-pointer" onclick="flipFlashcard()">
+                <!-- Front & Back wrapper -->
+                <div id="flashcard-inner" class="preserve-3d duration-500 w-full h-full relative transition-transform">
+                    
+                    <!-- FRONT SIDE -->
+                    <div class="backface-hidden absolute inset-0 bg-gradient-to-tr from-primary-600 to-indigo-500 dark:from-slate-800 dark:to-slate-900 text-white flex flex-col justify-between p-8 rounded-3xl shadow-xl border border-primary-500/10">
+                        <div class="flex justify-between items-start">
+                            <span id="fc-unit" class="text-xs font-bold bg-white/20 px-3 py-1 rounded-full uppercase">Unit 1A</span>
+                            <!-- Audio trigger inside flashcard front (needs event stop propagation) -->
+                            <button onclick="speakWord(event, document.getElementById('fc-word').innerText)" class="p-2.5 bg-white/10 hover:bg-white/20 active:scale-95 rounded-full transition" title="Escuchar pronunciación">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                            </button>
+                        </div>
+                        <div class="text-center my-auto">
+                            <h2 id="fc-word" class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2">Word</h2>
+                            <span id="fc-type" class="text-xs italic bg-white/15 px-2.5 py-1 rounded-md text-primary-100">noun</span>
+                        </div>
+                        <p class="text-center text-xs text-white/60 font-medium tracking-wide">HAZ CLIC PARA VOLTEAR</p>
+                    </div>
+
+                    <!-- BACK SIDE -->
+                    <div class="backface-hidden rotate-y-180 absolute inset-0 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 flex flex-col justify-between p-8 rounded-3xl shadow-xl">
+                        <div class="flex justify-between items-start border-b border-slate-100 dark:border-slate-800 pb-3">
+                            <span class="text-xs font-semibold text-primary-500 uppercase">Traducción</span>
+                            <span class="text-xs text-slate-400">Ejemplo en contexto</span>
+                        </div>
+                        <div class="my-auto space-y-4">
+                            <div class="text-center">
+                                <h3 id="fc-translation" class="text-2xl font-bold text-slate-900 dark:text-white">Traducción</h3>
+                            </div>
+                            <div class="p-4 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-xl">
+                                <p id="fc-example" class="text-sm italic text-center text-slate-600 dark:text-slate-300">"This is an example of the word in a sentence."</p>
+                            </div>
+                        </div>
+                        <p class="text-center text-xs text-slate-400 font-medium tracking-wide">HAZ CLIC PARA VOLTEAR</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex items-center justify-between mt-8">
+                <button onclick="prevFlashcard()" class="flex items-center gap-2 px-5 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition font-medium text-sm">
+                    <!-- Left Arrow SVG -->
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                    Anterior
+                </button>
+                <button onclick="randomizeFlashcards()" class="p-3 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition" title="Mezclar Tarjetas">
+                    <!-- Shuffle SVG -->
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 4.79M9 11l3 3m0 0l3-3m-3 3V8" /></svg>
+                </button>
+                <button onclick="nextFlashcard()" class="flex items-center gap-2 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl transition font-medium text-sm">
+                    Siguiente
+                    <!-- Right Arrow SVG -->
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                </button>
+            </div>
+        </main>
+
+        <!-- VIEW 3: Interactive Quiz Mode -->
+        <main id="view-quiz" class="hidden max-w-2xl mx-auto py-4">
+            
+            <!-- Quiz Start / Configuration Screen -->
+            <div id="quiz-setup" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+                <div class="text-center space-y-2">
+                    <span class="p-3 bg-purple-50 dark:bg-purple-950/30 text-purple-500 rounded-2xl inline-block">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364.364l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                    </span>
+                    <h2 class="text-2xl font-black">Prueba de Vocabulario</h2>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm max-w-md mx-auto">Selecciona las unidades que deseas estudiar y pon a prueba tus conocimientos con un juego interactivo de 10 preguntas.</p>
+                </div>
+
+                <div class="space-y-3">
+                    <p class="text-xs font-bold text-slate-400 uppercase">Unidades a Incluir:</p>
+                    <div id="quiz-units-selection" class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                        <!-- Checked checkboxes will be loaded dynamically -->
+                    </div>
+                    <div class="flex gap-2 justify-end pt-1">
+                        <button onclick="toggleAllQuizUnits(true)" class="text-xs text-primary-600 dark:text-primary-400 font-semibold hover:underline">Seleccionar todo</button>
+                        <span class="text-slate-300">|</span>
+                        <button onclick="toggleAllQuizUnits(false)" class="text-xs text-slate-400 font-semibold hover:underline">Deseleccionar todo</button>
+                    </div>
+                </div>
+
+                <button onclick="startQuiz()" class="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl shadow-lg shadow-primary-500/20 transition-all duration-200 flex items-center justify-center gap-2">
+                    Iniciar Prueba de 10 Preguntas
+                </button>
+            </div>
+
+            <!-- Quiz Play Screen -->
+            <div id="quiz-play" class="hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
+                <!-- Progress Header -->
+                <div class="flex items-center justify-between text-xs text-slate-400 font-bold border-b border-slate-100 dark:border-slate-800 pb-3">
+                    <span id="quiz-current-question-num">PREGUNTA 1 DE 10</span>
+                    <span id="quiz-score-badge" class="px-2 py-1 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-500 rounded-md">Correctas: 0/0</span>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                    <div id="quiz-progress-bar" class="bg-primary-600 h-full rounded-full transition-all duration-300" style="width: 10%;"></div>
+                </div>
+
+                <!-- Question Prompt -->
+                <div class="space-y-3 py-2">
+                    <span id="quiz-q-type" class="text-xs font-bold text-slate-400 uppercase bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-md">TRADUCCIÓN</span>
+                    <h3 id="quiz-question-text" class="text-xl font-bold leading-snug">¿Cómo se traduce "absent-minded"?</h3>
+                </div>
+
+                <!-- Multiple Choice Options -->
+                <div id="quiz-options-container" class="space-y-3">
+                    <!-- Dynamic option buttons -->
+                </div>
+
+                <!-- Explanation Area (Revealed after choice) -->
+                <div id="quiz-explanation-box" class="hidden p-4 rounded-xl space-y-1 transition duration-300">
+                    <p id="quiz-feedback-title" class="font-bold text-sm">¡Correcto!</p>
+                    <p id="quiz-feedback-detail" class="text-xs text-slate-500 dark:text-slate-400"></p>
+                </div>
+
+                <!-- Action Button -->
+                <div class="flex justify-end pt-2">
+                    <button id="quiz-next-btn" onclick="nextQuizQuestion()" disabled class="px-6 py-3 bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 rounded-xl font-bold text-sm transition cursor-not-allowed">
+                        Comprobar selección
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Result Screen -->
+            <div id="quiz-results" class="hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 shadow-sm text-center space-y-6">
+                <div class="space-y-2">
+                    <span id="quiz-result-emoji" class="text-5xl block">🎉</span>
+                    <h2 id="quiz-result-title" class="text-2xl font-black">¡Excelente trabajo!</h2>
+                    <p class="text-sm text-slate-400">Has finalizado la prueba de vocabulario.</p>
+                </div>
+
+                <!-- Big Score Counter -->
+                <div class="inline-block bg-primary-50 dark:bg-primary-950/40 px-8 py-5 rounded-3xl border border-primary-100 dark:border-primary-900/30">
+                    <p class="text-xs text-primary-400 font-bold uppercase tracking-wider mb-1">Puntuación Final</p>
+                    <h3 id="quiz-result-score-txt" class="text-4xl font-extrabold text-primary-600 dark:text-primary-400">8 / 10</h3>
+                </div>
+
+                <!-- Quick review failed words -->
+                <div id="quiz-failed-section" class="hidden text-left space-y-3 border-t border-slate-100 dark:border-slate-800 pt-6">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase">Palabras para revisar:</h4>
+                    <div id="quiz-failed-words" class="flex flex-wrap gap-2">
+                        <!-- Badges with words -->
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex flex-col sm:flex-row gap-3 pt-4 justify-center">
+                    <button onclick="switchView('dictionary')" class="px-6 py-3.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-xl text-sm transition">
+                        Volver al Diccionario
+                    </button>
+                    <button onclick="setupQuizView()" class="px-6 py-3.5 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl text-sm shadow-md shadow-primary-500/20 transition">
+                        Nueva Prueba
+                    </button>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- MAIN DICTIONARY DATABASE & JS LOGIC -->
+    <script>
+        // Vocabulary Database (Units 1A - 5B)
+        // Strictly structured with all word types, Spanish translations, and examples.
+        const vocabularyData = [
+            // UNIT 1A
+            { unit: "1A", word: "absent-minded", type: "compound adjective", translation: "despistado/a", example: "He's so absent-minded that he always forgets where he parked his car." },
+            { unit: "1A", word: "ambitious", type: "adjective", translation: "ambicioso/a", example: "She is an ambitious lawyer who wants to become a partner soon." },
+            { unit: "1A", word: "arrogant", type: "adjective", translation: "arrogante", example: "He is so arrogant that he thinks he knows everything." },
+            { unit: "1A", word: "assertive", type: "adjective", translation: "asertivo/a", example: "You need to be more assertive if you want people to listen to your opinions." },
+            { unit: "1A", word: "bad-tempered", type: "compound adjective", translation: "de mal genio", example: "Our boss is very bad-tempered, especially on Monday mornings." },
+            { unit: "1A", word: "calm", type: "adjective", translation: "tranquilo/a", example: "She stayed calm despite the emergency situation." },
+            { unit: "1A", word: "cheerful", type: "adjective", translation: "alegre / risueño/a", example: "He always has a cheerful smile on his face." },
+            { unit: "1A", word: "conscientious", type: "adjective", translation: "concienzudo/a / meticuloso/a", example: "She is a conscientious worker who always completes tasks on time." },
+            { unit: "1A", word: "easy-going", type: "compound adjective", translation: "de trato fácil / relajado/a", example: "My roommate is very easy-going and never gets upset about small things." },
+            { unit: "1A", word: "eccentric", type: "adjective", translation: "excéntrico/a", example: "The eccentric artist lived in a house shaped like a giant teapot." },
+            { unit: "1A", word: "funny", type: "adjective", translation: "gracioso/a", example: "He told a funny joke that made everyone laugh." },
+            { unit: "1A", word: "immature", type: "adjective", translation: "inmaduro/a", example: "Stop being so immature and start acting like an adult." },
+            { unit: "1A", word: "impatient", type: "adjective", translation: "impaciente", example: "She grew impatient waiting for the delayed bus." },
+            { unit: "1A", word: "impulsive", type: "adjective", translation: "impulsivo/a", example: "Buying that expensive jacket was an impulsive decision." },
+            { unit: "1A", word: "insecure", type: "adjective", translation: "inseguro/a", example: "He felt insecure about speaking English in front of a large crowd." },
+            { unit: "1A", word: "insincere", type: "adjective", translation: "falso/a / hipócrita", example: "Her insincere compliments made everyone feel uncomfortable." },
+            { unit: "1A", word: "laid-back", type: "compound adjective", translation: "relajado/a / tranquilo/a", example: "They have a very laid-back lifestyle near the beach." },
+            { unit: "1A", word: "loyal", type: "adjective", translation: "leal", example: "A loyal friend will always support you through difficult times." },
+            { unit: "1A", word: "narrow-minded", type: "compound adjective", translation: "de mente cerrada", example: "He is too narrow-minded to accept new ways of working." },
+            { unit: "1A", word: "open-minded", type: "compound adjective", translation: "de mente abierta", example: "Travelers are often open-minded about trying different foods." },
+            { unit: "1A", word: "optimistic", type: "adjective", translation: "optimista", example: "Despite the difficulties, she remains optimistic about the future." },
+            { unit: "1A", word: "pessimistic", type: "adjective", translation: "pesimista", example: "Don't be so pessimistic; things will get better." },
+            { unit: "1A", word: "possessive", type: "adjective", translation: "posesivo/a", example: "He is very possessive of his toys and doesn't like sharing them." },
+            { unit: "1A", word: "practical", type: "adjective", translation: "práctico/a", example: "Let's find a practical solution to this problem rather than discussing theory." },
+            { unit: "1A", word: "rebellious", type: "adjective", translation: "rebelde", example: "Teenagers can be quite rebellious against their parents." },
+            { unit: "1A", word: "reserved", type: "adjective", translation: "reservado/a", example: "She is a quiet, reserved person who keeps her feelings to herself." },
+            { unit: "1A", word: "self-centered", type: "compound adjective", translation: "egocéntrico/a", example: "He is too self-centered to notice when others are suffering." },
+            { unit: "1A", word: "self-confident", type: "compound adjective", translation: "seguro/a de sí mismo/a", example: "She gave a self-confident presentation to the investors." },
+            { unit: "1A", word: "sensible", type: "adjective", translation: "sensato/a", example: "It would be sensible to check the weather forecast before going on a hike." },
+            { unit: "1A", word: "sensitive", type: "adjective", translation: "sensible", example: "He is very sensitive to criticism and gets upset easily." },
+            { unit: "1A", word: "strong-willed", type: "compound adjective", translation: "obstinado/a / de carácter fuerte", example: "She is a strong-willed woman who always achieves her goals." },
+            { unit: "1A", word: "stubborn", type: "adjective", translation: "testarudo/a / terco/a", example: "My brother is so stubborn that he refuses to admit when he is wrong." },
+            { unit: "1A", word: "tight-fisted", type: "compound adjective", translation: "tacaño/a", example: "My tight-fisted uncle never leaves a tip at restaurants." },
+            { unit: "1A", word: "two-faced", type: "compound adjective", translation: "hipócrita / de doble cara", example: "Beware of two-faced colleagues who talk behind your back." },
+            { unit: "1A", word: "well-balanced", type: "compound adjective", translation: "equilibrado/a", example: "She grew up in a stable, well-balanced family environment." },
+            { unit: "1A", word: "well-behaved", type: "compound adjective", translation: "bien educado/a", example: "The children were very well-behaved during the church service." },
+
+            // UNIT 1B
+            { unit: "1B", word: "casual", type: "adjective", translation: "informal", example: "He wore casual clothes like jeans and a T-shirt to the barbecue." },
+            { unit: "1B", word: "checked", type: "adjective", translation: "a cuadros", example: "He loves wearing checked shirts in the autumn." },
+            { unit: "1B", word: "classic", type: "adjective", translation: "clásico/a", example: "A black dress is a classic style that never goes out of fashion." },
+            { unit: "1B", word: "cotton", type: "noun", translation: "algodón", example: "This T-shirt is made of 100% natural cotton." },
+            { unit: "1B", word: "denim", type: "noun", translation: "mezclilla / jean", example: "She bought a stylish denim jacket." },
+            { unit: "1B", word: "dress up", type: "phrasal verb", translation: "vestirse elegante / disfrazarse", example: "You don't need to dress up for the party; casual wear is fine." },
+            { unit: "1B", word: "fit", type: "verb", translation: "quedar bien (talla)", example: "These jeans fit perfectly; they are neither too tight nor too loose." },
+            { unit: "1B", word: "flowery", type: "adjective", translation: "floreado/a", example: "She chose a flowery dress for the spring wedding." },
+            { unit: "1B", word: "fur", type: "noun", translation: "piel", example: "She wore a soft faux fur coat in the winter." },
+            { unit: "1B", word: "get changed", type: "verb phrase", translation: "cambiarse de ropa", example: "I need to get changed before we go out to dinner." },
+            { unit: "1B", word: "get dressed", type: "verb phrase", translation: "vestirse", example: "I usually get dressed right after having breakfast." },
+            { unit: "1B", word: "get undressed", type: "verb phrase", translation: "desvestirse", example: "He got undressed and hopped into the shower." },
+            { unit: "1B", word: "go with", type: "phrasal verb", translation: "combinar con", example: "That tie doesn't go with your shirt." },
+            { unit: "1B", word: "hang up", type: "phrasal verb", translation: "colgar", example: "Please hang up your coat in the wardrobe." },
+            { unit: "1B", word: "hooded", type: "adjective", translation: "con capucha", example: "He wore a hooded sweatshirt to protect himself from the rain." },
+            { unit: "1B", word: "lace", type: "noun", translation: "encaje", example: "The wedding gown was decorated with beautiful lace." },
+            { unit: "1B", word: "leather", type: "noun", translation: "cuero", example: "He bought an expensive black leather jacket." },
+            { unit: "1B", word: "linen", type: "noun", translation: "lino", example: "Linen trousers are great for keeping cool in summer." },
+            { unit: "1B", word: "long-sleeved", type: "adjective", translation: "de manga larga", example: "You should wear a long-sleeved shirt to protect against sunburn." },
+            { unit: "1B", word: "loose", type: "adjective", translation: "holgado/a / flojo/a", example: "I prefer loose clothing when it's hot." },
+            { unit: "1B", word: "match", type: "verb", translation: "hacer juego / combinar", example: "The curtains match the carpet perfectly." },
+            { unit: "1B", word: "old-fashioned", type: "adjective", translation: "anticuado/a", example: "My grandfather has some old-fashioned ideas about society." },
+            { unit: "1B", word: "patterned", type: "adjective", translation: "estampado/a", example: "She bought some patterned wallpaper for her bedroom." },
+            { unit: "1B", word: "plain", type: "adjective", translation: "liso/a / sencillo/a", example: "I prefer a plain white shirt over a patterned one." },
+            { unit: "1B", word: "polo neck", type: "noun", translation: "cuello de tortuga / cuello alto", example: "He wore a black polo neck sweater under his coat." },
+            { unit: "1B", word: "scruffy", type: "adjective", translation: "desaliñado/a", example: "He looked scruffy because he hadn't shaved or combed his hair." },
+            { unit: "1B", word: "short-sleeved", type: "adjective", translation: "de manga corta", example: "A short-sleeved shirt is perfect for hot days." },
+            { unit: "1B", word: "silk", type: "noun", translation: "seda", example: "The luxury tie was made of pure Chinese silk." },
+            { unit: "1B", word: "smart", type: "adjective", translation: "elegante / prolijo/a", example: "You look very smart in that new suit." },
+            { unit: "1B", word: "spotted", type: "adjective", translation: "a lunares / moteado/a", example: "She wore a red dress with white spotted patterns." },
+            { unit: "1B", word: "striped", type: "adjective", translation: "a rayas", example: "He chose a blue and white striped tie." },
+            { unit: "1B", word: "suede", type: "noun", translation: "gamuza / ante", example: "Avoid wearing suede shoes when it is raining." },
+            { unit: "1B", word: "suit", type: "verb", translation: "quedar bien (estilo/color)", example: "That hairstyle really suits you." },
+            { unit: "1B", word: "tight", type: "adjective", translation: "ajustado/a", example: "These shoes are a bit too tight and they hurt my feet." },
+            { unit: "1B", word: "trendy", type: "adjective", translation: "de moda / moderno/a", example: "She always dines at trendy restaurants in the city center." },
+            { unit: "1B", word: "V-neck", type: "adjective", translation: "cuello en V", example: "He wore a classic grey V-neck sweater." },
+            { unit: "1B", word: "velvet", type: "noun", translation: "terciopelo", example: "The theater seats were covered in red velvet." },
+            { unit: "1B", word: "wool", type: "noun", translation: "lana", example: "This thick winter coat is made of pure wool." },
+
+            // UNIT 2A
+            { unit: "2A", word: "allergic reaction", type: "noun", translation: "reacción alérgica", example: "He had an allergic reaction to the nuts in the dessert." },
+            { unit: "2A", word: "backache", type: "noun", translation: "dolor de espalda", example: "Lifting heavy boxes gave him terrible backache." },
+            { unit: "2A", word: "blister", type: "noun", translation: "ampolla", example: "I got a blister on my heel from walking in new shoes." },
+            { unit: "2A", word: "burn", type: "verb", translation: "quemar(se)", example: "Be careful not to burn your hand on the hot stove." },
+            { unit: "2A", word: "choke", type: "verb", translation: "atragantarse", example: "He started to choke on a piece of steak." },
+            { unit: "2A", word: "cold", type: "noun", translation: "resfriado", example: "She stayed at home because she caught a bad cold." },
+            { unit: "2A", word: "cough", type: "noun", translation: "tos", example: "He has a dry cough that keeps him awake at night." },
+            { unit: "2A", word: "cut oneself", type: "verb phrase", translation: "cortarse", example: "He cut himself while chopping onions in the kitchen." },
+            { unit: "2A", word: "diarrhoea", type: "noun", translation: "diarrea", example: "Drinking tap water during his trip gave him diarrhoea." },
+            { unit: "2A", word: "dizzy", type: "adjective", translation: "mareado/a", example: "I felt dizzy after spinning around too fast." },
+            { unit: "2A", word: "earache", type: "noun", translation: "dolor de oído", example: "Swimming in the cold lake gave him a painful earache." },
+            { unit: "2A", word: "faint", type: "verb", translation: "desmayarse", example: "The room was so hot that she started to feel faint." },
+            { unit: "2A", word: "flu", type: "noun", translation: "gripe / influenza", example: "He missed a week of work because he was down with the flu." },
+            { unit: "2A", word: "food poisoning", type: "noun", translation: "intoxicación alimentaria", example: "They got food poisoning after eating raw shellfish." },
+            { unit: "2A", word: "headache", type: "noun", translation: "dolor de cabeza", example: "Take an aspirin if you have a bad headache." },
+            { unit: "2A", word: "high blood pressure", type: "noun", translation: "presión arterial alta", example: "Eating too much salt can lead to high blood pressure." },
+            { unit: "2A", word: "lie down", type: "phrasal verb", translation: "acostarse / tumbarse", example: "You should lie down on the sofa if you're not feeling well." },
+            { unit: "2A", word: "pass out", type: "phrasal verb", translation: "desmayarse / perder el conocimiento", example: "The runner passed out due to dehydration." },
+            { unit: "2A", word: "rash", type: "noun", translation: "erupción cutánea / sarpullido", example: "She got a red rash on her arm after touching the plant." },
+            { unit: "2A", word: "recover", type: "verb", translation: "recuperarse", example: "It took him several weeks to recover from the surgery." },
+            { unit: "2A", word: "sneeze", type: "verb", translation: "estornudar", example: "Dust always makes me sneeze." },
+            { unit: "2A", word: "sore throat", type: "noun", translation: "dolor de garganta", example: "I have a sore throat and it hurts when I swallow." },
+            { unit: "2A", word: "sprain", type: "verb", translation: "torcerse / hacerse un esguince", example: "She managed to sprain her ankle while playing tennis." },
+            { unit: "2A", word: "stomach ache", type: "noun", translation: "dolor de estómago", example: "Eating too much candy gave the child a stomach ache." },
+            { unit: "2A", word: "sunburn", type: "noun", translation: "quemadura de sol", example: "Always apply sunscreen to avoid getting sunburn." },
+            { unit: "2A", word: "swollen", type: "adjective", translation: "hinchado/a", example: "His ankle was swollen after he tripped on the stairs." },
+            { unit: "2A", word: "temperature", type: "noun", translation: "temperatura / fiebre", example: "The doctor checked his temperature and saw he had a fever." },
+            { unit: "2A", word: "toothache", type: "noun", translation: "dolor de muelas", example: "You need to visit the dentist if you have toothache." },
+            { unit: "2A", word: "unconscious", type: "adjective", translation: "inconsciente", example: "The driver was found unconscious inside the crashed car." },
+            { unit: "2A", word: "vomit", type: "verb", translation: "vomitar", example: "The child began to vomit after eating spoiled food." },
+
+            // UNIT 2B
+            { unit: "2B", word: "aisle seat", type: "noun", translation: "asiento de pasillo", example: "I prefer an aisle seat so I can get up easily without disturbing others." },
+            { unit: "2B", word: "arrivals", type: "noun", translation: "llegadas", example: "We met our relatives in the arrivals hall at the airport." },
+            { unit: "2B", word: "baggage reclaim", type: "noun", translation: "retiro de equipaje", example: "After landing, proceed to baggage reclaim to collect your suitcases." },
+            { unit: "2B", word: "boarding pass", type: "noun", translation: "tarjeta de embarque", example: "You must show your boarding pass before getting on the plane." },
+            { unit: "2B", word: "cabin crew", type: "noun", translation: "tripulación de cabina", example: "The cabin crew demonstrated the emergency safety procedures." },
+            { unit: "2B", word: "check in", type: "phrasal verb", translation: "registrarse / facturar equipaje", example: "We need to check in our luggage two hours before the flight." },
+            { unit: "2B", word: "customs", type: "noun", translation: "aduana", example: "You must go through customs if you have goods to declare." },
+            { unit: "2B", word: "departures", type: "noun", translation: "salidas", example: "Let's head to the departures terminal to find our gate." },
+            { unit: "2B", word: "drop off", type: "phrasal verb", translation: "dejar a alguien / dejar algo", example: "My friend offered to drop me off at the airport." },
+            { unit: "2B", word: "fill in", type: "phrasal verb", translation: "completar / rellenar (un formulario)", example: "Passengers must fill in a landing card before arrival." },
+            { unit: "2B", word: "flight attendant", type: "noun", translation: "auxiliar de vuelo / azafata", example: "The flight attendant served us drinks and snacks during the flight." },
+            { unit: "2B", word: "gate", type: "noun", translation: "puerta de embarque", example: "Flight BA142 is now boarding at gate 17." },
+            { unit: "2B", word: "get on", type: "phrasal verb", translation: "subirse a (avión, tren, bus)", example: "We were the last passengers to get on the plane." },
+            { unit: "2B", word: "hand luggage", type: "noun", translation: "equipaje de mano", example: "Only one piece of hand luggage is allowed in the cabin." },
+            { unit: "2B", word: "jet lag", type: "noun", translation: "desfase horario / jet lag", example: "It took her three days to get over her jet lag after flying to Tokyo." },
+            { unit: "2B", word: "land", type: "verb", translation: "aterrizar", example: "The plane is scheduled to land at 6:00 AM." },
+            { unit: "2B", word: "runway", type: "noun", translation: "pista de aterrizaje / despegue", example: "The airplane waited on the runway for clearance to take off." },
+            { unit: "2B", word: "take off", type: "phrasal verb", translation: "despegar", example: "The plane will take off as soon as the weather improves." },
+            { unit: "2B", word: "terminal", type: "noun", translation: "terminal", example: "International flights depart from Terminal 2." },
+            { unit: "2B", word: "turbulence", type: "noun", translation: "turbulencia", example: "Please fasten your seatbelts as we are experiencing some turbulence." },
+            { unit: "2B", word: "window seat", type: "noun", translation: "asiento de ventana", example: "He loves the window seat because he likes looking at the clouds." },
+
+            // UNIT 3A
+            { unit: "3A", word: "blizzard", type: "noun", translation: "tormenta de nieve", example: "The school was closed due to a heavy blizzard." },
+            { unit: "3A", word: "breeze", type: "noun", translation: "brisa", example: "A cool sea breeze made the hot afternoon much more pleasant." },
+            { unit: "3A", word: "chilly", type: "adjective", translation: "frío/a / fresco/a", example: "It's a bit chilly today, so you might need a jacket." },
+            { unit: "3A", word: "clear up", type: "phrasal verb", translation: "despejarse (el cielo)", example: "The weather forecast says the rain will stop and it will clear up later." },
+            { unit: "3A", word: "cool down", type: "phrasal verb", translation: "refrescar / enfriarse", example: "The temperature will cool down in the evening." },
+            { unit: "3A", word: "damp", type: "adjective", translation: "húmedo/a (ropa, pared)", example: "The clothes are still damp; they need more time to dry." },
+            { unit: "3A", word: "drizzling", type: "adjective", translation: "lloviznando", example: "It’s not raining heavily, just drizzling a bit." },
+            { unit: "3A", word: "drought", type: "noun", translation: "sequía", example: "The crops failed due to the worst drought in thirty years." },
+            { unit: "3A", word: "flood", type: "noun", translation: "inundación", example: "The heavy rain caused a massive flood in the valley." },
+            { unit: "3A", word: "fog", type: "noun", translation: "niebla (densa)", example: "Thick fog made driving extremely dangerous on the highway." },
+            { unit: "3A", word: "freezing", type: "adjective", translation: "helado/a / gélido/a", example: "It’s freezing outside; wear your gloves and scarf." },
+            { unit: "3A", word: "gale", type: "noun", translation: "vendaval / viento muy fuerte", example: "The strong gale blew down several trees in our street." },
+            { unit: "3A", word: "heatwave", type: "noun", translation: "ola de calor", example: "Many elderly people suffered during the summer heatwave." },
+            { unit: "3A", word: "humid", type: "adjective", translation: "húmedo/a (clima / aire)", example: "The air is very humid in tropical rainforests." },
+            { unit: "3A", word: "hurricane", type: "noun", translation: "huracán", example: "The coastal town was evacuated before the hurricane hit." },
+            { unit: "3A", word: "lightning", type: "noun", translation: "relámpago / rayo", example: "A flash of lightning illuminated the dark sky." },
+            { unit: "3A", word: "mild", type: "adjective", translation: "templado/a / suave", example: "We had a mild winter this year, with very little snow." },
+            { unit: "3A", word: "mist", type: "noun", translation: "neblina (ligera)", example: "A thin mist lay over the lake in the early morning." },
+            { unit: "3A", word: "monsoon", type: "noun", translation: "monzón", example: "The monsoon season brings heavy rains to Southeast Asia." },
+            { unit: "3A", word: "pouring", type: "adjective", translation: "lloviendo a cántaros", example: "Don't go out now; it's pouring rain." },
+            { unit: "3A", word: "scorching", type: "adjective", translation: "abrasador/a / sofocante", example: "It was a scorching hot day in the desert." },
+            { unit: "3A", word: "shower", type: "noun", translation: "chubasco / chaparrón", example: "There will be a brief shower in the afternoon, but it won't last long." },
+            { unit: "3A", word: "smog", type: "noun", translation: "esmog / niebla contaminante", example: "The city is often covered in a thick blanket of smog." },
+            { unit: "3A", word: "thunder", type: "noun", translation: "trueno", example: "The sound of loud thunder frightened the dog." },
+            { unit: "3A", word: "warm up", type: "phrasal verb", translation: "calentarse", example: "I hope the weather warms up before our beach trip." },
+
+            // UNIT 3B
+            { unit: "3B", word: "bewildered", type: "adjective", translation: "desconcertado/a / perplejo/a", example: "He was bewildered by the complex instructions." },
+            { unit: "3B", word: "delighted", type: "adjective", translation: "encantado/a / deleitado/a", example: "She was delighted to receive a bouquet of flowers." },
+            { unit: "3B", word: "desperate", type: "adjective", translation: "desesperado/a", example: "They were desperate for food and water after being lost for two days." },
+            { unit: "3B", word: "devastated", type: "adjective", translation: "devastado/a / destrozado/a", example: "She was devastated when she heard the tragic news." },
+            { unit: "3B", word: "disappointed", type: "adjective", translation: "decepcionado/a / desilusionado/a", example: "I was disappointed that the movie wasn't as good as I expected." },
+            { unit: "3B", word: "exasperated", type: "adjective", translation: "exasperado/a", example: "The teacher became exasperated by the students' constant talking." },
+            { unit: "3B", word: "grateful", type: "adjective", translation: "agradecido/a", example: "I am extremely grateful for all your help." },
+            { unit: "3B", word: "gutted", type: "adjective", translation: "destrozado/a (coloquial)", example: "He was gutted when his team lost the championship game." },
+            { unit: "3B", word: "homesick", type: "adjective", translation: "nostálgico/a (extrañar el hogar)", example: "She felt homesick during her first semester at university abroad." },
+            { unit: "3B", word: "lonely", type: "adjective", translation: "solitario/a / solo/a", example: "Living alone in a big city can feel very lonely." },
+            { unit: "3B", word: "offended", type: "adjective", translation: "ofendido/a", example: "He got offended because they didn't invite him to the party." },
+            { unit: "3B", word: "overwhelmed", type: "adjective", translation: "abrumado/a", example: "She felt overwhelmed by the amount of work she had to do." },
+            { unit: "3B", word: "proud", type: "adjective", translation: "orgulloso/a", example: "Her parents were very proud of her academic achievements." },
+            { unit: "3B", word: "relieved", type: "adjective", translation: "aliviado/a", example: "We were relieved to hear that the surgery was successful." },
+            { unit: "3B", word: "shattered", type: "adjective", translation: "agotado/a / exhausto/a (coloquial)", example: "After working a double shift, she was absolutely shattered." },
+            { unit: "3B", word: "shocked", type: "adjective", translation: "conmocionado/a / estupefacto/a", example: "Everyone was shocked by the sudden news of his departure." },
+            { unit: "3B", word: "stunned", type: "adjective", translation: "atónito/a / pasmado/a", example: "She was stunned into silence by his unexpected proposal." },
+            { unit: "3B", word: "terrified", type: "adjective", translation: "aterrorizado/a", example: "The child was terrified of the dark." },
+            { unit: "3B", word: "thrilled", type: "adjective", translation: "emocionado/a / entusiasmado/a", example: "They were thrilled to win a free trip to Hawaii." },
+
+            // UNIT 4A
+            { unit: "4A", word: "acquit", type: "verb", translation: "absolver / declarar inocente", example: "The jury decided to acquit the defendant due to a lack of evidence." },
+            { unit: "4A", word: "arrest", type: "verb", translation: "arrestar", example: "The police came to arrest him for shoplifting." },
+            { unit: "4A", word: "burglar", type: "noun", translation: "ladrón/ona (de viviendas)", example: "The burglar broke in through the kitchen window." },
+            { unit: "4A", word: "charge", type: "verb", translation: "acusar formalmente / imputar", example: "They decided to charge him with armed robbery." },
+            { unit: "4A", word: "commit", type: "verb", translation: "cometer", example: "It is a serious crime to commit fraud." },
+            { unit: "4A", word: "court", type: "noun", translation: "tribunal / corte de justicia", example: "He had to appear in court as a witness." },
+            { unit: "4A", word: "evidence", type: "noun", translation: "evidencia / pruebas", example: "The police gathered physical evidence from the crime scene." },
+            { unit: "4A", word: "fraud", type: "noun", translation: "fraude", example: "He was sentenced to prison for credit card fraud." },
+            { unit: "4A", word: "guilty", type: "adjective", translation: "culpable", example: "The judge found him guilty of tax evasion." },
+            { unit: "4A", word: "hacking", type: "noun", translation: "piratería informática", example: "He was arrested for hacking into government databases." },
+            { unit: "4A", word: "hijacking", type: "noun", translation: "secuestro (de aviones o vehículos)", example: "The hijacking of the plane ended without any casualties." },
+            { unit: "4A", word: "judge", type: "noun", translation: "juez/jueza", example: "The judge passed a harsh sentence on the criminal." },
+            { unit: "4A", word: "jury", type: "noun", translation: "jurado", example: "The jury took three hours to reach their verdict." },
+            { unit: "4A", word: "kidnapping", type: "noun", translation: "secuestro (de personas)", example: "The kidnappers demanded a ransom of one million dollars." },
+            { unit: "4A", word: "mugging", type: "noun", translation: "asalto / atraco callejero", example: "Street mugging has increased in the downtown area." },
+            { unit: "4A", word: "murder", type: "noun", translation: "asesinato", example: "He was charged with the murder of his business partner." },
+            { unit: "4A", word: "proof", type: "noun", translation: "prueba (irrefutable)", example: "Do you have any proof that you own this bicycle?" },
+            { unit: "4A", word: "question", type: "verb", translation: "interrogar", example: "The police wanted to question the suspect about his whereabouts." },
+            { unit: "4A", word: "robbery", type: "noun", translation: "robo (con intimidación o fuerza)", example: "They planned a bank robbery but were caught by the alarms." },
+            { unit: "4A", word: "sentence", type: "noun", translation: "sentencia / condena", example: "The judge gave him a five-year prison sentence." },
+            { unit: "4A", word: "shoplifting", type: "noun", translation: "hurto en tiendas", example: "Shoplifting cost the retail store thousands of dollars last year." },
+            { unit: "4A", word: "smuggling", type: "noun", translation: "contrabando", example: "He was caught smuggling exotic animals across the border." },
+            { unit: "4A", word: "stalking", type: "noun", translation: "acoso obsesivo", example: "She reported him to the police for stalking her." },
+            { unit: "4A", word: "suspect", type: "noun", translation: "sospechoso/a", example: "The main suspect was arrested near the train station." },
+            { unit: "4A", word: "terrorism", type: "noun", translation: "terrorismo", example: "Governments worldwide are working together to combat international terrorism." },
+            { unit: "4A", word: "theft", type: "noun", translation: "robo / hurto", example: "The car theft occurred while they were asleep inside." },
+            { unit: "4A", word: "trial", type: "noun", translation: "juicio", example: "The high-profile murder trial lasted for three months." },
+            { unit: "4A", word: "verdict", type: "noun", translation: "veredicto", example: "The court eagerly awaited the jury's verdict." },
+            { unit: "4A", word: "witness", type: "noun", translation: "testigo", example: "An eyewitness saw the suspect fleeing the scene." },
+
+            // UNIT 4B
+            { unit: "4B", word: "ankle", type: "noun", translation: "tobillo", example: "She twisted her ankle while jogging in the park." },
+            { unit: "4B", word: "blow your nose", type: "verb phrase", translation: "sonarse la nariz", example: "Please use a tissue to blow your nose." },
+            { unit: "4B", word: "brain", type: "noun", translation: "cerebro", example: "The brain is the most complex organ in the human body." },
+            { unit: "4B", word: "calf", type: "noun", translation: "pantorrilla", example: "He suffered a painful cramp in his left calf during the race." },
+            { unit: "4B", word: "chest", type: "noun", translation: "pecho / tórax", example: "He complained of severe pains in his chest." },
+            { unit: "4B", word: "comb your hair", type: "verb phrase", translation: "peinarse", example: "You should comb your hair before the job interview." },
+            { unit: "4B", word: "cross your legs", type: "verb phrase", translation: "cruzar las piernas", example: "It's polite to sit down and cross your legs at the meeting." },
+            { unit: "4B", word: "elbow", type: "noun", translation: "codo", example: "He rested his elbows on the table." },
+            { unit: "4B", word: "fold your arms", type: "verb phrase", translation: "cruzar los brazos", example: "He stood there with his arms folded, looking annoyed." },
+            { unit: "4B", word: "forehead", type: "noun", translation: "frente", example: "She wiped the sweat from her forehead." },
+            { unit: "4B", word: "heart", type: "noun", translation: "corazón", example: "Regular exercise keeps your heart healthy." },
+            { unit: "4B", word: "heel", type: "noun", translation: "talón", example: "The new shoes rubbed against my heel and gave me a blister." },
+            { unit: "4B", word: "hip", type: "noun", translation: "cadera", example: "She fell and broke her hip." },
+            { unit: "4B", word: "kidneys", type: "noun", translation: "riñones", example: "The kidneys help filter waste products from the blood." },
+            { unit: "4B", word: "liver", type: "noun", translation: "hígado", example: "Drinking alcohol heavily can damage your liver." },
+            { unit: "4B", word: "lungs", type: "noun", translation: "pulmones", example: "Smoking causes severe damage to your lungs." },
+            { unit: "4B", word: "nod", type: "verb", translation: "asentir con la cabeza", example: "She nodded her head in agreement with my proposal." },
+            { unit: "4B", word: "palm", type: "noun", translation: "palma de la mano", example: "He read his palm to predict his future." },
+            { unit: "4B", word: "point", type: "verb", translation: "señalar / apuntar", example: "Don't point your finger at people; it's rude." },
+            { unit: "4B", word: "scratch", type: "verb", translation: "rascar(se) / arañar", example: "The cat managed to scratch his hand." },
+            { unit: "4B", word: "shrug", type: "verb", translation: "encogerse de hombros", example: "When I asked him the question, he just shrugged his shoulders." },
+            { unit: "4B", word: "sigh", type: "verb", translation: "suspirar", example: "She let out a deep sigh of relief." },
+            { unit: "4B", word: "snore", type: "verb", translation: "roncar", example: "He snores so loudly that I can't sleep." },
+            { unit: "4B", word: "stare", type: "verb", translation: "mirar fijamente", example: "It's impolite to stare at people." },
+            { unit: "4B", word: "stretch", type: "verb", translation: "estirarse", example: "It's a good idea to stretch your muscles before exercising." },
+            { unit: "4B", word: "thigh", type: "noun", translation: "muslo", example: "He pulled a muscle in his thigh during football practice." },
+            { unit: "4B", word: "wave", type: "verb", translation: "saludar con la mano", example: "She waved goodbye to her friends from the train." },
+            { unit: "4B", word: "whisper", type: "verb", translation: "susurrar", example: "They began to whisper so they wouldn't disturb others in the library." },
+            { unit: "4B", word: "wink", type: "verb", translation: "guiñar un ojo", example: "He gave me a friendly wink to show he was joking." },
+            { unit: "4B", word: "wrist", type: "noun", translation: "muñeca", example: "She wears a gold watch on her left wrist." },
+            { unit: "4B", word: "yawn", type: "verb", translation: "bostezar", example: "The boring speech made everyone yawn." },
+
+            // UNIT 5A
+            { unit: "5A", word: "accurate", type: "adjective", translation: "preciso/a / exacto/a", example: "Journalists must ensure their reports are accurate." },
+            { unit: "5A", word: "anchor", type: "noun", translation: "presentador/a de noticias principal", example: "The famous news anchor retired after thirty years." },
+            { unit: "5A", word: "axe", type: "verb", translation: "recortar / cancelar (jerga de prensa)", example: "The government plans to axe funding for the new arts program." },
+            { unit: "5A", word: "back", type: "verb", translation: "apoyar / respaldar (jerga de prensa)", example: "Many local businesses decided to back the mayor's plan." },
+            { unit: "5A", word: "biased", type: "adjective", translation: "sesgado/a / parcial", example: "The newspaper was accused of being biased towards the ruling party." },
+            { unit: "5A", word: "censored", type: "adjective", translation: "censurado/a", example: "The controversial scene was completely censored in the televised version." },
+            { unit: "5A", word: "clash", type: "verb", translation: "enfrentarse / chocar", example: "Protesters clashed with police officers outside the parliament." },
+            { unit: "5A", word: "commentator", type: "noun", translation: "comentarista", example: "The sports commentator described the match with great enthusiasm." },
+            { unit: "5A", word: "critic", type: "noun", translation: "crítico/a", example: "The movie critic gave the film a terrible review." },
+            { unit: "5A", word: "editor", type: "noun", translation: "editor/a", example: "The editor decided which articles would appear on the front page." },
+            { unit: "5A", word: "freelance journalist", type: "noun", translation: "periodista independiente", example: "She works as a freelance journalist for several international magazines." },
+            { unit: "5A", word: "hit", type: "verb", translation: "afectar gravemente / golpear", example: "The economy was hit hard by the sudden rise in oil prices." },
+            { unit: "5A", word: "newsreader", type: "noun", translation: "locutor/a de telediario", example: "The newsreader announced the results of the presidential election." },
+            { unit: "5A", word: "objective", type: "adjective", translation: "objetivo/a", example: "Reporters should try to remain objective and neutral." },
+            { unit: "5A", word: "presenter", type: "noun", translation: "presentador/a", example: "The television presenter welcomed the special guest to the show." },
+            { unit: "5A", word: "quit", type: "verb", translation: "dimitir / renunciar (jerga de prensa)", example: "The prime minister decided to quit following the scandal." },
+            { unit: "5A", word: "quiz", type: "verb", translation: "interrogar (jerga de prensa)", example: "Police are planning to quiz the neighbors about the incident." },
+            { unit: "5A", word: "reporter", type: "noun", translation: "reportero/a", example: "The investigative reporter uncovered a massive corruption case." },
+            { unit: "5A", word: "row", type: "noun", translation: "disputa / fuerte altercado (jerga de prensa)", example: "There was a major row between the two political leaders." },
+            { unit: "5A", word: "sensational", type: "adjective", translation: "sensacionalista / asombroso/a", example: "The tabloid headline was highly sensational and exaggerated." },
+            { unit: "5A", word: "split", type: "verb", translation: "separarse / romper una relación", example: "The celebrity couple decided to split after five years of marriage." },
+            { unit: "5A", word: "vow", type: "verb", translation: "prometer / jurar (jerga de prensa)", example: "The president vowed to punish those responsible for the crime." },
+            { unit: "5A", word: "wed", type: "verb", translation: "casarse con (jerga de prensa)", example: "The royal prince is set to wed his fiancée next spring." },
+
+            // UNIT 5B
+            { unit: "5B", word: "advertising campaign", type: "noun", translation: "campaña publicitaria", example: "The company launched a massive advertising campaign for its new phone." },
+            { unit: "5B", word: "branch", type: "noun", translation: "sucursal", example: "The bank opened a new branch in our local neighborhood." },
+            { unit: "5B", word: "chain", type: "noun", translation: "cadena (comercial/hoteles)", example: "They own a successful chain of coffee shops across the country." },
+            { unit: "5B", word: "commercial", type: "noun", translation: "comercial (anuncio de TV/radio)", example: "I always mute the television when the commercials come on." },
+            { unit: "5B", word: "do business", type: "verb phrase", translation: "hacer negocios", example: "Our firm is proud to do business with you." },
+            { unit: "5B", word: "headquarters", type: "noun", translation: "oficina central / sede central", example: "The company's global headquarters is located in New York." },
+            { unit: "5B", word: "image", type: "noun", translation: "imagen corporativa", example: "The brand revamped its public image to attract younger customers." },
+            { unit: "5B", word: "launch", type: "verb", translation: "lanzar / presentar un producto", example: "They plan to launch their new eco-friendly product line next month." },
+            { unit: "5B", word: "logo", type: "noun", translation: "logotipo", example: "The famous brand is recognized worldwide by its simple swoosh logo." },
+            { unit: "5B", word: "make a loss", type: "verb phrase", translation: "sufrir pérdidas", example: "The startup made a loss in its first year, but is now profitable." },
+            { unit: "5B", word: "make a profit", type: "verb phrase", translation: "obtener ganancias", example: "It takes time for a new business to start making a profit." },
+            { unit: "5B", word: "market share", type: "noun", translation: "cuota de mercado", example: "The tech giant currently holds a 40% market share." },
+            { unit: "5B", word: "merge", type: "verb", translation: "fusionarse", example: "The two local banks agreed to merge into a single institution." },
+            { unit: "5B", word: "multinational", type: "noun", translation: "multinacional", example: "He works as an accountant for a large multinational corporation." },
+            { unit: "5B", word: "set up", type: "phrasal verb", translation: "fundar / constituir una empresa", example: "She wants to set up her own graphic design business." },
+            { unit: "5B", word: "slogan", type: "noun", translation: "eslogan / lema publicitario", example: "A catchy slogan is vital for successful brand recognition." },
+            { unit: "5B", word: "take over", type: "phrasal verb", translation: "adquirir / absorber / tomar el control", example: "The larger corporation is planning to take over its smaller competitor." }
+        ];
+
+        // Global State
+        let currentView = 'dictionary';
+        let selectedUnit = 'all';
+        let searchQuery = '';
+        let selectedType = 'all';
+        let showFavoritesOnly = false;
+        
+        // Favorite Words list (persisted in LocalStorage)
+        let favorites = JSON.parse(localStorage.getItem('lexilearn_favorites')) || [];
+
+        // Quiz State
+        let quizUnits = ["1A", "1B", "2A", "2B", "3A", "3B", "4A", "4B", "5A", "5B"];
+        let quizQuestions = [];
+        let quizCurrentIndex = 0;
+        let quizScore = 0;
+        let quizSelectedOption = null;
+        let quizFailedWords = [];
+        let highestScorePercent = parseInt(localStorage.getItem('lexilearn_quiz_score')) || 0;
+
+        // Flashcards state
+        let flashcardIndex = 0;
+        let flashcardList = [];
+        let isCardFlipped = false;
+
+        // Sound Engine
+        function speakWord(event, text) {
+            if (event) event.stopPropagation(); // Prevents flipping card when clicking audio
+            if ('speechSynthesis' in window) {
+                // Cancel ongoing speeches
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                const accent = document.getElementById('voice-accent').value;
+                utterance.lang = accent;
+                
+                // Try to find matching voice
+                const voices = window.speechSynthesis.getVoices();
+                const matchedVoice = voices.find(voice => voice.lang.startsWith(accent));
+                if (matchedVoice) {
+                    utterance.voice = matchedVoice;
+                }
+                
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("La síntesis de voz no está soportada en este navegador.");
+            }
+        }
+
+        // Initialize App
+        window.onload = function() {
+            // Apply theme preference from localStorage if exists
+            if (localStorage.getItem('lexilearn_theme') === 'dark' || 
+                (!('lexilearn_theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+
+            // Render stats
+            updateStats();
+
+            // Render navigation buttons for units
+            renderUnitTabs();
+
+            // Render initial dictionary content
+            renderDictionary();
+
+            // Setup voices list (async loading in some browsers)
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.onvoiceschanged = () => {};
+            }
+        };
+
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('lexilearn_theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('lexilearn_theme', 'dark');
+            }
+        }
+
+        // View Switcher
+        function switchView(viewName) {
+            currentView = viewName;
+            
+            // Toggle Views
+            document.getElementById('view-dictionary').style.display = (viewName === 'dictionary') ? 'block' : 'none';
+            document.getElementById('view-flashcards').style.display = (viewName === 'flashcards') ? 'block' : 'none';
+            document.getElementById('view-quiz').style.display = (viewName === 'quiz') ? 'block' : 'none';
+
+            // Style Active Button
+            const btnDict = document.getElementById('btn-dict-view');
+            const btnCard = document.getElementById('btn-card-view');
+            const btnQuiz = document.getElementById('btn-quiz-view');
+
+            const activeClass = "bg-white dark:bg-slate-800 text-primary-600 dark:text-primary-400 shadow-sm";
+            const inactiveClass = "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100";
+
+            btnDict.className = `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${viewName === 'dictionary' ? activeClass : inactiveClass}`;
+            btnCard.className = `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${viewName === 'flashcards' ? activeClass : inactiveClass}`;
+            btnQuiz.className = `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${viewName === 'quiz' ? activeClass : inactiveClass}`;
+
+            if (viewName === 'flashcards') {
+                setupFlashcardView();
+            } else if (viewName === 'quiz') {
+                setupQuizView();
+            }
+        }
+
+        // Update Dashboard Stats
+        function updateStats() {
+            document.getElementById('stat-total').innerText = vocabularyData.length;
+            document.getElementById('stat-favs').innerText = favorites.length;
+            document.getElementById('stat-score').innerText = highestScorePercent + '%';
+        }
+
+        // Generate unit buttons dynamically
+        function renderUnitTabs() {
+            const container = document.getElementById('unit-tabs-container');
+            // Remove previous dynamically loaded unit tabs (keep 'TODAS')
+            const allBtn = document.getElementById('unit-tab-all');
+            container.innerHTML = '';
+            container.appendChild(allBtn);
+
+            // Get unique units from data
+            const units = [...new Set(vocabularyData.map(item => item.unit))].sort();
+
+            units.forEach(unit => {
+                const btn = document.createElement('button');
+                btn.id = `unit-tab-${unit}`;
+                btn.onclick = () => selectUnit(unit);
+                btn.innerText = `UNIT ${unit}`;
+                btn.className = "px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-slate-200 dark:hover:bg-slate-800 transition uppercase";
+                container.appendChild(btn);
+            });
+        }
+
+        // Select Unit Tab
+        function selectUnit(unit) {
+            selectedUnit = unit;
+            
+            // Toggle active styles
+            const tabs = document.querySelectorAll('#unit-tabs-container button');
+            tabs.forEach(tab => {
+                if (tab.id === `unit-tab-${unit}`) {
+                    tab.className = "px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-primary-600 text-white shadow-sm transition uppercase";
+                } else {
+                    tab.className = "px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-slate-200 dark:hover:bg-slate-800 transition uppercase";
+                }
+            });
+
+            renderDictionary();
+        }
+
+        // Toggle Favorites Filter button
+        function toggleFavoriteFilter() {
+            showFavoritesOnly = !showFavoritesOnly;
+            const btn = document.getElementById('btn-toggle-fav-filter');
+            const star = document.getElementById('fav-filter-star');
+            
+            if (showFavoritesOnly) {
+                btn.className = "flex items-center gap-2 px-4 py-3 bg-amber-500 text-white rounded-xl hover:bg-amber-600 transition text-sm w-full sm:w-auto justify-center shadow-md shadow-amber-500/10";
+                star.setAttribute("fill", "currentColor");
+                star.className.baseVal = "w-4 h-4 text-white";
+            } else {
+                btn.className = "flex items-center gap-2 px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-900 transition text-sm w-full sm:w-auto justify-center";
+                star.setAttribute("fill", "none");
+                star.className.baseVal = "w-4 h-4 text-slate-400";
+            }
+
+            renderDictionary();
+        }
+
+        // Handle typing search or select category
+        function handleFilterChange() {
+            searchQuery = document.getElementById('search-box').value.toLowerCase().trim();
+            selectedType = document.getElementById('type-filter').value;
+            
+            // Show clear button if search input is filled
+            const clearBtn = document.getElementById('search-clear');
+            if (searchQuery.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+
+            renderDictionary();
+        }
+
+        function clearSearch() {
+            document.getElementById('search-box').value = '';
+            handleFilterChange();
+        }
+
+        // Toggle Favorite Word
+        function toggleFavoriteWord(wordStr) {
+            const index = favorites.indexOf(wordStr);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(wordStr);
+            }
+            localStorage.setItem('lexilearn_favorites', JSON.stringify(favorites));
+            
+            // Re-render and update UI
+            updateStats();
+            renderDictionary();
+        }
+
+        // Helper to Highlight matched query
+        function highlightMatch(text, query) {
+            if (!query) return text;
+            const index = text.toLowerCase().indexOf(query);
+            if (index === -1) return text;
+            
+            const originalMatch = text.substr(index, query.length);
+            return text.replace(new RegExp(query, 'gi'), `<mark class="bg-yellow-200 dark:bg-yellow-950 text-slate-900 dark:text-slate-100 px-0.5 rounded">${originalMatch}</mark>`);
+        }
+
+        // Main Rendering Logic of the Dictionary View
+        function renderDictionary() {
+            const container = document.getElementById('dictionary-content');
+            container.innerHTML = '';
+
+            // 1. Group data by unit
+            let groupedData = {};
+            const units = [...new Set(vocabularyData.map(item => item.unit))].sort();
+            units.forEach(u => groupedData[u] = []);
+
+            // 2. Filter words & distribute to groups
+            let totalFound = 0;
+
+            vocabularyData.forEach(item => {
+                // Apply Unit Filter
+                if (selectedUnit !== 'all' && item.unit !== selectedUnit) return;
+
+                // Apply Favorite Filter
+                const isFavorite = favorites.includes(item.word);
+                if (showFavoritesOnly && !isFavorite) return;
+
+                // Apply POS Filter
+                if (selectedType !== 'all' && item.type !== selectedType) return;
+
+                // Apply Search Query Filter
+                if (searchQuery) {
+                    const matchesWord = item.word.toLowerCase().includes(searchQuery);
+                    const matchesTranslation = item.translation.toLowerCase().includes(searchQuery);
+                    const matchesExample = item.example.toLowerCase().includes(searchQuery);
+                    const matchesType = item.type.toLowerCase().includes(searchQuery);
+                    if (!matchesWord && !matchesTranslation && !matchesExample && !matchesType) return;
+                }
+
+                groupedData[item.unit].push(item);
+                totalFound++;
+            });
+
+            // If empty database
+            if (totalFound === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-16 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-3">
+                        <span class="p-4 bg-slate-50 dark:bg-slate-950 text-slate-400 rounded-2xl inline-block">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        </span>
+                        <h3 class="text-xl font-bold">No se encontraron palabras</h3>
+                        <p class="text-sm text-slate-400 max-w-sm mx-auto">Prueba a cambiar tus filtros de búsqueda o activa otras unidades.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // 3. Render tables for each active group
+            Object.keys(groupedData).forEach(unit => {
+                const wordsInUnit = groupedData[unit];
+                if (wordsInUnit.length === 0) return; // Skip empty sections
+
+                // Sort words in unit alphabetically
+                wordsInUnit.sort((a, b) => a.word.localeCompare(b.word));
+
+                // Create section wrapper
+                const section = document.createElement('div');
+                section.className = "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm";
+
+                // Section Header
+                section.innerHTML = `
+                    <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-900/60 dark:to-slate-900 px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-bold tracking-wider uppercase bg-primary-600 text-white px-3 py-1 rounded-full shadow-sm">Unit ${unit}</span>
+                            <h2 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Vocabulario Completo</h2>
+                        </div>
+                        <span class="text-xs font-semibold text-slate-400">${wordsInUnit.length} ${wordsInUnit.length === 1 ? 'palabra' : 'palabras'}</span>
+                    </div>
+                `;
+
+                // Table Layout (Desktop & responsive wrapper)
+                const tableContainer = document.createElement('div');
+                tableContainer.className = "overflow-x-auto";
+                
+                let tableHTML = `
+                    <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-800 hidden md:table">
+                        <thead class="bg-slate-50/50 dark:bg-slate-900/20 text-left text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+                            <tr>
+                                <th scope="col" class="px-6 py-3.5 w-[25%]">Palabra (Inglés)</th>
+                                <th scope="col" class="px-6 py-3.5 w-[15%]">Categoría</th>
+                                <th scope="col" class="px-6 py-3.5 w-[25%]">Traducción (Español)</th>
+                                <th scope="col" class="px-6 py-3.5 w-[30%]">Oración de Ejemplo</th>
+                                <th scope="col" class="px-6 py-3.5 w-[5%] text-right">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 text-sm">
+                `;
+
+                // Mobile Card Layout
+                let mobileCardsHTML = `<div class="md:hidden divide-y divide-slate-100 dark:divide-slate-800/60">`;
+
+                wordsInUnit.forEach(item => {
+                    const isFavorite = favorites.includes(item.word);
+                    const starIcon = isFavorite ? '★' : '☆';
+                    const starBtnColor = isFavorite ? 'text-amber-500 hover:text-amber-600' : 'text-slate-300 dark:text-slate-600 hover:text-slate-400';
+
+                    // Word Type Tag Colors
+                    let typeColor = "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400";
+                    if (item.type === 'verb' || item.type === 'phrasal verb' || item.type === 'verb phrase') {
+                        typeColor = "bg-blue-50 text-blue-600 dark:bg-blue-950/30 dark:text-blue-400";
+                    } else if (item.type === 'noun') {
+                        typeColor = "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400";
+                    } else if (item.type === 'compound adjective') {
+                        typeColor = "bg-purple-50 text-purple-600 dark:bg-purple-950/30 dark:text-purple-400";
+                    } else if (item.type === 'adjective') {
+                        typeColor = "bg-purple-50 text-purple-600 dark:bg-purple-950/30 dark:text-purple-400";
+                    }
+
+                    // Highlight words based on search
+                    const highlightedWord = highlightMatch(item.word, searchQuery);
+                    const highlightedTranslation = highlightMatch(item.translation, searchQuery);
+                    const highlightedExample = highlightMatch(item.example, searchQuery);
+                    const highlightedType = highlightMatch(item.type, searchQuery);
+
+                    // Render Table Row (Desktop)
+                    tableHTML += `
+                        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-900/10 transition group">
+                            <td class="px-6 py-4.5 font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                <button onclick="speakWord(null, '${item.word.replace(/'/g, "\\'")}')" class="p-1.5 bg-slate-50 hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 rounded-lg transition" title="Escuchar pronunciación">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                                </button>
+                                <span>${highlightedWord}</span>
+                            </td>
+                            <td class="px-6 py-4.5">
+                                <span class="px-2.5 py-1 text-xs font-medium rounded-md uppercase ${typeColor}">${highlightedType}</span>
+                            </td>
+                            <td class="px-6 py-4.5 font-medium text-slate-600 dark:text-slate-300">
+                                ${highlightedTranslation}
+                            </td>
+                            <td class="px-6 py-4.5 italic text-slate-500 dark:text-slate-400">
+                                "${highlightedExample}"
+                            </td>
+                            <td class="px-6 py-4.5 text-right">
+                                <button onclick="toggleFavoriteWord('${item.word.replace(/'/g, "\\'")}')" class="text-xl p-1 transition ${starBtnColor}" title="${isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}">
+                                    ${starIcon}
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+
+                    // Render Mobile Card
+                    mobileCardsHTML += `
+                        <div class="p-5 space-y-3">
+                            <div class="flex justify-between items-start">
+                                <div class="space-y-1">
+                                    <div class="flex items-center gap-1.5">
+                                        <button onclick="speakWord(null, '${item.word.replace(/'/g, "\\'")}')" class="p-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-700 rounded-lg transition">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                                        </button>
+                                        <h3 class="font-extrabold text-lg text-slate-900 dark:text-white">${highlightedWord}</h3>
+                                    </div>
+                                    <span class="inline-block px-2.5 py-0.5 text-[10px] font-bold rounded-md uppercase ${typeColor}">${highlightedType}</span>
+                                </div>
+                                <button onclick="toggleFavoriteWord('${item.word.replace(/'/g, "\\'")}')" class="text-2xl p-1 transition ${starBtnColor}">
+                                    ${starIcon}
+                                </button>
+                            </div>
+                            <div class="space-y-1">
+                                <p class="text-xs font-semibold text-slate-400 uppercase">Traducción</p>
+                                <p class="text-slate-800 dark:text-slate-200 font-medium">${highlightedTranslation}</p>
+                            </div>
+                            <div class="space-y-1">
+                                <p class="text-xs font-semibold text-slate-400 uppercase">Ejemplo</p>
+                                <p class="text-sm italic text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-950 p-2.5 rounded-lg border border-slate-100 dark:border-slate-800/40">"${highlightedExample}"</p>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                tableHTML += `</tbody></table>`;
+                mobileCardsHTML += `</div>`;
+
+                tableContainer.innerHTML = tableHTML + mobileCardsHTML;
+                section.appendChild(tableContainer);
+                container.appendChild(section);
+            });
+        }
+
+        // ==========================================
+        // VIEW 2: FLASHCARDS STUDY ENGINE
+        // ==========================================
+        function setupFlashcardView() {
+            // Get active words list based on unit tab (or load all)
+            if (selectedUnit === 'all') {
+                flashcardList = [...vocabularyData];
+            } else {
+                flashcardList = vocabularyData.filter(item => item.unit === selectedUnit);
+            }
+
+            // Shuffle initial flashcard order for better study outcomes
+            flashcardList.sort(() => Math.random() - 0.5);
+
+            flashcardIndex = 0;
+            isCardFlipped = false;
+            
+            // Apply un-flipped style
+            document.getElementById('flashcard-inner').classList.remove('rotate-y-180');
+
+            renderFlashcard();
+        }
+
+        function renderFlashcard() {
+            const counter = document.getElementById('flashcard-counter');
+            if (flashcardList.length === 0) {
+                counter.innerText = "0 / 0";
+                document.getElementById('fc-word').innerText = "Sin palabras";
+                document.getElementById('fc-unit').innerText = "Unit -";
+                document.getElementById('fc-type').innerText = "-";
+                document.getElementById('fc-translation').innerText = "Por favor selecciona otra unidad";
+                document.getElementById('fc-example').innerText = "No hay vocabulario que cumpla con los filtros.";
+                return;
+            }
+
+            counter.innerText = `${flashcardIndex + 1} / ${flashcardList.length}`;
+            const item = flashcardList[flashcardIndex];
+
+            // Render Card Data
+            document.getElementById('fc-word').innerText = item.word;
+            document.getElementById('fc-unit').innerText = `Unit ${item.unit}`;
+            document.getElementById('fc-type').innerText = item.type;
+            document.getElementById('fc-translation').innerText = item.translation;
+            document.getElementById('fc-example').innerText = `"${item.example}"`;
+        }
+
+        function flipFlashcard() {
+            isCardFlipped = !isCardFlipped;
+            const inner = document.getElementById('flashcard-inner');
+            if (isCardFlipped) {
+                inner.classList.add('rotate-y-180');
+            } else {
+                inner.classList.remove('rotate-y-180');
+            }
+        }
+
+        function nextFlashcard() {
+            if (flashcardList.length === 0) return;
+            
+            // Volver la tarjeta a su estado original antes de avanzar
+            const inner = document.getElementById('flashcard-inner');
+            inner.classList.remove('rotate-y-180');
+            isCardFlipped = false;
+
+            // Delayed state change so user doesn't see front content change mid-flip
+            setTimeout(() => {
+                flashcardIndex = (flashcardIndex + 1) % flashcardList.length;
+                renderFlashcard();
+            }, 150);
+        }
+
+        function prevFlashcard() {
+            if (flashcardList.length === 0) return;
+
+            // Volver la tarjeta a su estado original antes de retroceder
+            const inner = document.getElementById('flashcard-inner');
+            inner.classList.remove('rotate-y-180');
+            isCardFlipped = false;
+
+            setTimeout(() => {
+                flashcardIndex = (flashcardIndex - 1 + flashcardList.length) % flashcardList.length;
+                renderFlashcard();
+            }, 150);
+        }
+
+        function randomizeFlashcards() {
+            if (flashcardList.length === 0) return;
+            
+            const inner = document.getElementById('flashcard-inner');
+            inner.classList.remove('rotate-y-180');
+            isCardFlipped = false;
+
+            setTimeout(() => {
+                flashcardList.sort(() => Math.random() - 0.5);
+                flashcardIndex = 0;
+                renderFlashcard();
+            }, 150);
+        }
+
+        // ==========================================
+        // VIEW 3: INTERACTIVE QUIZ MODE ENGINE
+        // ==========================================
+        function setupQuizView() {
+            // Display Setup Screen
+            document.getElementById('quiz-setup').classList.remove('hidden');
+            document.getElementById('quiz-play').classList.add('hidden');
+            document.getElementById('quiz-results').classList.add('hidden');
+
+            // Render checkboxes of units to test
+            const selectionContainer = document.getElementById('quiz-units-selection');
+            selectionContainer.innerHTML = '';
+
+            const units = [...new Set(vocabularyData.map(item => item.unit))].sort();
+            units.forEach(unit => {
+                const checkedAttr = quizUnits.includes(unit) ? 'checked' : '';
+                const div = document.createElement('div');
+                div.className = "flex items-center gap-2.5 p-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl";
+                div.innerHTML = `
+                    <input type="checkbox" id="quiz-unit-chk-${unit}" value="${unit}" ${checkedAttr} class="w-4.5 h-4.5 rounded text-primary-600 focus:ring-primary-500 bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-800 transition">
+                    <label for="quiz-unit-chk-${unit}" class="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase select-none cursor-pointer">Unit ${unit}</label>
+                `;
+                selectionContainer.appendChild(div);
+            });
+        }
+
+        function toggleAllQuizUnits(shouldCheck) {
+            const checkboxes = document.querySelectorAll('#quiz-units-selection input[type="checkbox"]');
+            checkboxes.forEach(chk => chk.checked = shouldCheck);
+        }
+
+        function startQuiz() {
+            // Find checked units
+            const checkboxes = document.querySelectorAll('#quiz-units-selection input[type="checkbox"]');
+            const selected = [];
+            checkboxes.forEach(chk => {
+                if (chk.checked) selected.push(chk.value);
+            });
+
+            if (selected.length === 0) {
+                alert("Por favor selecciona al menos una unidad para evaluar.");
+                return;
+            }
+
+            // Save selection
+            quizUnits = selected;
+
+            // Generate Questions
+            const pool = vocabularyData.filter(item => quizUnits.includes(item.unit));
+            if (pool.length < 5) {
+                alert("Hay muy poco vocabulario en las unidades seleccionadas. Por favor agrega más.");
+                return;
+            }
+
+            // Create 10 random questions
+            quizQuestions = [];
+            const shuffledPool = [...pool].sort(() => Math.random() - 0.5);
+            const questionCount = Math.min(10, shuffledPool.length);
+
+            for (let i = 0; i < questionCount; i++) {
+                const targetWord = shuffledPool[i];
+                
+                // Question Type: 0 = "What is translation", 1 = "Fill sentence blank"
+                const qType = Math.random() > 0.5 ? 0 : 1;
+
+                // Pick 3 false answers (distractors)
+                const distractors = [];
+                const otherWords = pool.filter(item => item.word !== targetWord.word);
+                otherWords.sort(() => Math.random() - 0.5);
+
+                for (let d = 0; d < Math.min(3, otherWords.length); d++) {
+                    distractors.push(qType === 0 ? otherWords[d].translation : otherWords[d].word);
+                }
+
+                // Make sure we have 4 options
+                const correctOptionText = qType === 0 ? targetWord.translation : targetWord.word;
+                const options = [correctOptionText, ...distractors].sort(() => Math.random() - 0.5);
+
+                quizQuestions.push({
+                    wordItem: targetWord,
+                    type: qType,
+                    correctOption: correctOptionText,
+                    options: options
+                });
+            }
+
+            // Start Quiz Variables
+            quizCurrentIndex = 0;
+            quizScore = 0;
+            quizFailedWords = [];
+            quizSelectedOption = null;
+
+            // Show Play Mode
+            document.getElementById('quiz-setup').classList.add('hidden');
+            document.getElementById('quiz-play').classList.remove('hidden');
+            document.getElementById('quiz-results').classList.add('hidden');
+
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            const currentQ = quizQuestions[quizCurrentIndex];
+            
+            // Reset feedback box
+            document.getElementById('quiz-explanation-box').className = "hidden";
+            document.getElementById('quiz-next-btn').disabled = true;
+            document.getElementById('quiz-next-btn').className = "px-6 py-3 bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 rounded-xl font-bold text-sm transition cursor-not-allowed";
+            document.getElementById('quiz-next-btn').innerText = "Comprobar selección";
+
+            // Header state
+            document.getElementById('quiz-current-question-num').innerText = `PREGUNTA ${quizCurrentIndex + 1} DE ${quizQuestions.length}`;
+            document.getElementById('quiz-score-badge').innerText = `Correctas: ${quizScore}/${quizCurrentIndex}`;
+
+            // Progress bar
+            const percent = ((quizCurrentIndex + 1) / quizQuestions.length) * 100;
+            document.getElementById('quiz-progress-bar').style.width = `${percent}%`;
+
+            // Reset selection variable
+            quizSelectedOption = null;
+
+            // Render Prompt & Text
+            if (currentQ.type === 0) {
+                document.getElementById('quiz-q-type').innerText = "TRADUCCIÓN";
+                document.getElementById('quiz-question-text').innerHTML = `¿Cuál es la traducción correcta de <span class="text-primary-600 dark:text-primary-400 font-extrabold font-serif">"${currentQ.wordItem.word}"</span>?`;
+            } else {
+                document.getElementById('quiz-q-type').innerText = "COMPLETAR ESPACIO EN BLANCO";
+                // replace target word in example with blanks
+                const regex = new RegExp(`\\b${currentQ.wordItem.word}\\b`, 'gi');
+                const sentenceWithBlanks = currentQ.wordItem.example.replace(regex, "________");
+                document.getElementById('quiz-question-text').innerHTML = `<p class="text-slate-500 dark:text-slate-400 text-sm mb-2">Selecciona la palabra que completa la oración:</p> <p class="italic font-serif text-lg">"${sentenceWithBlanks}"</p>`;
+            }
+
+            // Render Option Buttons
+            const optionsBox = document.getElementById('quiz-options-container');
+            optionsBox.innerHTML = '';
+
+            currentQ.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `quiz-opt-${idx}`;
+                btn.onclick = () => selectQuizOption(idx, opt);
+                btn.className = "w-full text-left p-4 bg-slate-50 hover:bg-slate-100 dark:bg-slate-950 dark:hover:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-semibold transition flex items-center justify-between";
+                btn.innerHTML = `
+                    <span>${opt}</span>
+                    <span id="quiz-opt-marker-${idx}" class="w-5 h-5 rounded-full border border-slate-300 dark:border-slate-700 flex items-center justify-center text-[10px] text-white"></span>
+                `;
+                optionsBox.appendChild(btn);
+            });
+        }
+
+        function selectQuizOption(idx, optionText) {
+            // Only allow selection before checking
+            if (document.getElementById('quiz-next-btn').innerText === "Siguiente Pregunta") return;
+
+            quizSelectedOption = optionText;
+
+            // Reset option outline visual styles
+            const options = quizQuestions[quizCurrentIndex].options;
+            options.forEach((opt, i) => {
+                const btn = document.getElementById(`quiz-opt-${i}`);
+                const marker = document.getElementById(`quiz-opt-marker-${i}`);
+                if (i === idx) {
+                    btn.className = "w-full text-left p-4 bg-primary-50 dark:bg-primary-950/20 border-2 border-primary-500 text-primary-900 dark:text-primary-300 rounded-xl text-sm font-bold transition flex items-center justify-between";
+                    marker.className = "w-5 h-5 rounded-full bg-primary-500 border border-primary-600 flex items-center justify-center text-[10px] text-white font-bold";
+                    marker.innerHTML = "✓";
+                } else {
+                    btn.className = "w-full text-left p-4 bg-slate-50 hover:bg-slate-100 dark:bg-slate-950 dark:hover:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-semibold transition flex items-center justify-between";
+                    marker.className = "w-5 h-5 rounded-full border border-slate-300 dark:border-slate-700 flex items-center justify-center text-[10px] text-white";
+                    marker.innerHTML = "";
+                }
+            });
+
+            // Activate submit button
+            const nextBtn = document.getElementById('quiz-next-btn');
+            nextBtn.disabled = false;
+            nextBtn.className = "px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-bold text-sm transition";
+        }
+
+        function nextQuizQuestion() {
+            const nextBtn = document.getElementById('quiz-next-btn');
+            const currentQ = quizQuestions[quizCurrentIndex];
+
+            // Scenario 1: Compiling/Checking Selection
+            if (nextBtn.innerText === "Comprobar selección") {
+                const isCorrect = (quizSelectedOption === currentQ.correctOption);
+                
+                // Show explanation boxes
+                const feedbackBox = document.getElementById('quiz-explanation-box');
+                const feedbackTitle = document.getElementById('quiz-feedback-title');
+                const feedbackDetail = document.getElementById('quiz-feedback-detail');
+
+                feedbackBox.classList.remove('hidden');
+
+                // Style options with correct / incorrect colors
+                currentQ.options.forEach((opt, i) => {
+                    const btn = document.getElementById(`quiz-opt-${i}`);
+                    const marker = document.getElementById(`quiz-opt-marker-${i}`);
+                    
+                    if (opt === currentQ.correctOption) {
+                        // Color Correct Choice
+                        btn.className = "w-full text-left p-4 bg-emerald-50 dark:bg-emerald-950/20 border-2 border-emerald-500 text-emerald-900 dark:text-emerald-400 rounded-xl text-sm font-bold transition flex items-center justify-between";
+                        marker.className = "w-5 h-5 rounded-full bg-emerald-500 border border-emerald-600 flex items-center justify-center text-[10px] text-white font-bold";
+                        marker.innerHTML = "✓";
+                    } else if (opt === quizSelectedOption && !isCorrect) {
+                        // Color Bad Choice
+                        btn.className = "w-full text-left p-4 bg-rose-50 dark:bg-rose-950/20 border-2 border-rose-500 text-rose-900 dark:text-rose-400 rounded-xl text-sm font-bold transition flex items-center justify-between";
+                        marker.className = "w-5 h-5 rounded-full bg-rose-500 border border-rose-600 flex items-center justify-center text-[10px] text-white font-bold";
+                        marker.innerHTML = "✗";
+                    } else {
+                        // Muted others
+                        btn.className = "w-full text-left p-4 bg-slate-50 dark:bg-slate-950 opacity-40 border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-semibold transition flex items-center justify-between cursor-not-allowed";
+                    }
+                });
+
+                if (isCorrect) {
+                    quizScore++;
+                    feedbackBox.className = "p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30 space-y-1 block";
+                    feedbackTitle.innerText = "¡Respuesta Correcta!";
+                    feedbackDetail.innerText = `Perfecto. "${currentQ.wordItem.word}" es un ${currentQ.wordItem.type} y significa "${currentQ.wordItem.translation}".`;
+                } else {
+                    quizFailedWords.push(currentQ.wordItem);
+                    feedbackBox.className = "p-4 rounded-xl bg-rose-50 dark:bg-rose-950/20 text-rose-800 dark:text-rose-400 border border-rose-200 dark:border-rose-900/30 space-y-1 block";
+                    feedbackTitle.innerText = "Respuesta Incorrecta";
+                    feedbackDetail.innerText = `La respuesta correcta era "${currentQ.correctOption}". "${currentQ.wordItem.word}" (${currentQ.wordItem.type}) significa "${currentQ.wordItem.translation}".`;
+                }
+
+                // Change action button state
+                nextBtn.innerText = "Siguiente Pregunta";
+                return;
+            }
+
+            // Scenario 2: Advancing to next question or showing results
+            quizCurrentIndex++;
+            if (quizCurrentIndex < quizQuestions.length) {
+                renderQuizQuestion();
+            } else {
+                showQuizResults();
+            }
+        }
+
+        function showQuizResults() {
+            document.getElementById('quiz-setup').classList.add('hidden');
+            document.getElementById('quiz-play').classList.add('hidden');
+            document.getElementById('quiz-results').classList.remove('hidden');
+
+            const percent = Math.round((quizScore / quizQuestions.length) * 100);
+            
+            // Save highest score
+            if (percent > highestScorePercent) {
+                highestScorePercent = percent;
+                localStorage.setItem('lexilearn_quiz_score', percent);
+                updateStats();
+            }
+
+            // Render header text
+            const emojiEl = document.getElementById('quiz-result-emoji');
+            const titleEl = document.getElementById('quiz-result-title');
+            
+            if (percent === 100) {
+                emojiEl.innerText = "👑";
+                titleEl.innerText = "¡Excelente! Puntuación Perfecta";
+            } else if (percent >= 70) {
+                emojiEl.innerText = "🎉";
+                titleEl.innerText = "¡Muy bien! Tienes buen nivel";
+            } else if (percent >= 40) {
+                emojiEl.innerText = "👍";
+                titleEl.innerText = "Buen intento. Sigue repasando";
+            } else {
+                emojiEl.innerText = "📚";
+                titleEl.innerText = "Sigue estudiando el vocabulario";
+            }
+
+            document.getElementById('quiz-result-score-txt').innerText = `${quizScore} / ${quizQuestions.length} (${percent}%)`;
+
+            // Render failed words for review
+            const failedSection = document.getElementById('quiz-failed-section');
+            const failedContainer = document.getElementById('quiz-failed-words');
+            failedContainer.innerHTML = '';
+
+            if (quizFailedWords.length > 0) {
+                failedSection.classList.remove('hidden');
+                
+                // Keep only unique words
+                const uniqueFailed = [...new Map(quizFailedWords.map(item => [item.word, item])).values()];
+
+                uniqueFailed.forEach(item => {
+                    const badge = document.createElement('span');
+                    badge.className = "inline-flex items-center gap-1 bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-900/40 px-3 py-1.5 rounded-xl text-xs font-semibold";
+                    badge.innerHTML = `
+                        <span>${item.word} (${item.translation})</span>
+                        <button onclick="speakWord(null, '${item.word.replace(/'/g, "\\'")}')" class="p-0.5 hover:bg-rose-100 dark:hover:bg-rose-900 rounded transition">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                        </button>
+                    `;
+                    failedContainer.appendChild(badge);
+                });
+            } else {
+                failedSection.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
