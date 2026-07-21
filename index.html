@@ -4,7 +4,7 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dictionary's Level 7</title>
+    <title>Level 7 Dictionary</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -38,7 +38,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     <style>
-        /* Custom Styles for 3D Flashcard Flip */
         .perspective {
             perspective: 1000px;
         }
@@ -51,7 +50,6 @@
         .rotate-y-180 {
             transform: rotateY(180deg);
         }
-        /* Custom scrollbar for webkit */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -71,7 +69,6 @@
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen font-sans transition-colors duration-300">
 
-    <!-- App Container -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         
         <!-- Header Section -->
@@ -79,16 +76,15 @@
             <div class="text-center md:text-left">
                 <div class="flex items-center justify-center md:justify-start gap-3 mb-1">
                     <span class="p-2 bg-primary-600 text-white rounded-xl shadow-lg shadow-primary-500/30">
-                        <!-- Book Icon SVG -->
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                         </svg>
                     </span>
                     <h1 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-primary-600 to-indigo-500 bg-clip-text text-transparent dark:from-primary-400 dark:to-indigo-300">
-                        Dictionary's ANA - LEVEL 7
+                       ANA's Dictionary - LEVEL 7
                     </h1>
                 </div>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Diccionario y Centro de Estudio Interactivo de Ana (Units 1A - 5B & Extra Unit)</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Diccionario de Ana (Units 1A - 5B & Extra Unit)</p>
             </div>
 
             <!-- Toolbar / Settings -->
@@ -106,21 +102,16 @@
                     </button>
                 </div>
 
-                <!-- Accent Ambient Setup -->
                 <div class="flex items-center gap-2 border-l border-slate-200 dark:border-slate-800 pl-3">
-                    <!-- Accent Selector (US vs UK) -->
                     <select id="voice-accent" class="text-xs bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-2 focus:ring-2 focus:ring-primary-500 outline-none">
                         <option value="en-GB">Voz UK (Británica)</option>
                         <option value="en-US">Voz US (Americana)</option>
                     </select>
 
-                    <!-- Theme Toggle -->
-                    <button onclick="toggleDarkMode()" class="p-2 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl transition">
-                        <!-- Sun Icon -->
+                    <button onclick="toggleDarkMode()" class="p-2 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl transition" title="Cambiar Tema">
                         <svg id="sun-icon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.364l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
                         </svg>
-                        <!-- Moon Icon -->
                         <svg id="moon-icon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                         </svg>
@@ -129,7 +120,6 @@
             </div>
         </header>
 
-        <!-- Stats Panel -->
         <section class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
             <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm flex items-center justify-between">
                 <div>
@@ -169,28 +159,20 @@
             </div>
         </section>
 
-        <!-- VIEW 1: Dictionary / Table & Card View -->
         <main id="view-dictionary" class="block space-y-6">
-            
-            <!-- Filters Panel -->
             <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm space-y-4">
                 <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
-                    <!-- Search input -->
                     <div class="relative w-full lg:w-1/2">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 pointer-events-none">
-                            <!-- Glass Icon -->
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                         </span>
                         <input type="text" id="search-box" oninput="handleFilterChange()" placeholder="Buscar palabra en inglés, traducción en español, tipo..." class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 pl-10 pr-4 py-3 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition placeholder-slate-400 text-sm">
                         <button id="search-clear" onclick="clearSearch()" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hidden">
-                            <!-- Close Icon -->
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                         </button>
                     </div>
 
-                    <!-- Other Selectors -->
                     <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-end">
-                        <!-- Part of Speech select -->
                         <select id="type-filter" onchange="handleFilterChange()" class="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition w-full sm:w-auto">
                             <option value="all">Todas las categorías</option>
                             <option value="noun">Noun (Sustantivo)</option>
@@ -203,7 +185,6 @@
                             <option value="verb phrase">Verb Phrase (Frase Verbal)</option>
                         </select>
 
-                        <!-- Favorites filter -->
                         <button id="btn-toggle-fav-filter" onclick="toggleFavoriteFilter()" class="flex items-center gap-2 px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-900 transition text-sm w-full sm:w-auto justify-center">
                             <svg id="fav-filter-star" class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
                             <span>Solo Favoritos</span>
@@ -211,45 +192,34 @@
                     </div>
                 </div>
 
-                <!-- Unit selection tabs -->
                 <div>
                     <p class="text-xs text-slate-400 uppercase font-semibold mb-2">Filtrar por Unidad:</p>
                     <div id="unit-tabs-container" class="flex flex-wrap gap-2 overflow-x-auto pb-1 max-w-full">
                         <button onclick="selectUnit('all')" id="unit-tab-all" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-primary-600 text-white shadow-sm transition">TODAS</button>
-                        <!-- Dynamic buttons will be inserted here -->
                     </div>
                 </div>
             </div>
 
-            <!-- Content Area: The Tables and Grouping -->
-            <div id="dictionary-content" class="space-y-8">
-                <!-- Data will load dynamically here -->
-            </div>
+            <div id="dictionary-content" class="space-y-8"></div>
         </main>
 
-        <!-- VIEW 2: Flashcards 3D Mode -->
         <main id="view-flashcards" class="hidden max-w-2xl mx-auto py-4">
             <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm mb-6 flex items-center justify-between">
                 <div>
                     <h2 class="text-lg font-bold">Tarjetas de Memorización</h2>
-                    <p class="text-xs text-slate-400">Haz clic en la tarjeta para revelar la traducción y un ejemplo de uso.</p>
+                    <p class="text-xs text-slate-400">Haz clic o usa [Espacio/Flechas] para voltear y navegar.</p>
                 </div>
                 <div class="text-right">
                     <span id="flashcard-counter" class="text-sm font-semibold bg-primary-50 dark:bg-primary-950/40 text-primary-600 dark:text-primary-400 px-3 py-1.5 rounded-lg">0 / 0</span>
                 </div>
             </div>
 
-            <!-- Card Flip Area -->
-            <div class="perspective w-full h-80 sm:h-96 relative cursor-pointer" onclick="flipFlashcard()">
-                <!-- Front & Back wrapper -->
+            <div id="flashcard-container" class="perspective w-full h-80 sm:h-96 relative cursor-pointer" onclick="flipFlashcard()">
                 <div id="flashcard-inner" class="preserve-3d duration-500 w-full h-full relative transition-transform">
-                    
-                    <!-- FRONT SIDE -->
                     <div class="backface-hidden absolute inset-0 bg-gradient-to-tr from-primary-600 to-indigo-500 dark:from-slate-800 dark:to-slate-900 text-white flex flex-col justify-between p-8 rounded-3xl shadow-xl border border-primary-500/10">
                         <div class="flex justify-between items-start">
                             <span id="fc-unit" class="text-xs font-bold bg-white/20 px-3 py-1 rounded-full uppercase">Unit 1A</span>
-                            <!-- Audio trigger inside flashcard front (needs event stop propagation) -->
-                            <button onclick="speakWord(event, document.getElementById('fc-word').innerText)" class="p-2.5 bg-white/10 hover:bg-white/20 active:scale-95 rounded-full transition" title="Escuchar pronunciación">
+                            <button id="fc-audio-btn" onclick="speakFlashcardWord(event)" class="p-2.5 bg-white/10 hover:bg-white/20 active:scale-95 rounded-full transition" title="Escuchar pronunciación">
                                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
                             </button>
                         </div>
@@ -257,10 +227,9 @@
                             <h2 id="fc-word" class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2">Word</h2>
                             <span id="fc-type" class="text-xs italic bg-white/15 px-2.5 py-1 rounded-md text-primary-100">noun</span>
                         </div>
-                        <p class="text-center text-xs text-white/60 font-medium tracking-wide">HAZ CLIC PARA VOLTEAR</p>
+                        <p class="text-center text-xs text-white/60 font-medium tracking-wide">HAZ CLIC O PRESIONA ESPACIO PARA VOLTEAR</p>
                     </div>
 
-                    <!-- BACK SIDE -->
                     <div class="backface-hidden rotate-y-180 absolute inset-0 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 flex flex-col justify-between p-8 rounded-3xl shadow-xl">
                         <div class="flex justify-between items-start border-b border-slate-100 dark:border-slate-800 pb-3">
                             <span class="text-xs font-semibold text-primary-500 uppercase">Traducción</span>
@@ -274,35 +243,27 @@
                                 <p id="fc-example" class="text-sm italic text-center text-slate-600 dark:text-slate-300">"This is an example of the word in a sentence."</p>
                             </div>
                         </div>
-                        <p class="text-center text-xs text-slate-400 font-medium tracking-wide">HAZ CLIC PARA VOLTEAR</p>
+                        <p class="text-center text-xs text-slate-400 font-medium tracking-wide">HAZ CLIC O PRESIONA ESPACIO PARA VOLTEAR</p>
                     </div>
-
                 </div>
             </div>
 
-            <!-- Controls -->
             <div class="flex items-center justify-between mt-8">
                 <button onclick="prevFlashcard()" class="flex items-center gap-2 px-5 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition font-medium text-sm">
-                    <!-- Left Arrow SVG -->
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
                     Anterior
                 </button>
                 <button onclick="randomizeFlashcards()" class="p-3 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition" title="Mezclar Tarjetas">
-                    <!-- Shuffle SVG -->
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 4.79M9 11l3 3m0 0l3-3m-3 3V8" /></svg>
                 </button>
                 <button onclick="nextFlashcard()" class="flex items-center gap-2 px-5 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl transition font-medium text-sm">
                     Siguiente
-                    <!-- Right Arrow SVG -->
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
                 </button>
             </div>
         </main>
 
-        <!-- VIEW 3: Interactive Quiz Mode -->
         <main id="view-quiz" class="hidden max-w-2xl mx-auto py-4">
-            
-            <!-- Quiz Start / Configuration Screen -->
             <div id="quiz-setup" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
                 <div class="text-center space-y-2">
                     <span class="p-3 bg-purple-50 dark:bg-purple-950/30 text-purple-500 rounded-2xl inline-block">
@@ -314,9 +275,7 @@
 
                 <div class="space-y-3">
                     <p class="text-xs font-bold text-slate-400 uppercase">Unidades a Incluir:</p>
-                    <div id="quiz-units-selection" class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                        <!-- Checked checkboxes will be loaded dynamically -->
-                    </div>
+                    <div id="quiz-units-selection" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
                     <div class="flex gap-2 justify-end pt-1">
                         <button onclick="toggleAllQuizUnits(true)" class="text-xs text-primary-600 dark:text-primary-400 font-semibold hover:underline">Seleccionar todo</button>
                         <span class="text-slate-300">|</span>
@@ -329,37 +288,28 @@
                 </button>
             </div>
 
-            <!-- Quiz Play Screen -->
             <div id="quiz-play" class="hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
-                <!-- Progress Header -->
                 <div class="flex items-center justify-between text-xs text-slate-400 font-bold border-b border-slate-100 dark:border-slate-800 pb-3">
                     <span id="quiz-current-question-num">PREGUNTA 1 DE 10</span>
                     <span id="quiz-score-badge" class="px-2 py-1 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-500 rounded-md">Correctas: 0/0</span>
                 </div>
 
-                <!-- Progress Bar -->
                 <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
                     <div id="quiz-progress-bar" class="bg-primary-600 h-full rounded-full transition-all duration-300" style="width: 10%;"></div>
                 </div>
 
-                <!-- Question Prompt -->
                 <div class="space-y-3 py-2">
                     <span id="quiz-q-type" class="text-xs font-bold text-slate-400 uppercase bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-md">TRADUCCIÓN</span>
                     <h3 id="quiz-question-text" class="text-xl font-bold leading-snug">¿Cómo se traduce "absent-minded"?</h3>
                 </div>
 
-                <!-- Multiple Choice Options -->
-                <div id="quiz-options-container" class="space-y-3">
-                    <!-- Dynamic option buttons -->
-                </div>
+                <div id="quiz-options-container" class="space-y-3"></div>
 
-                <!-- Explanation Area (Revealed after choice) -->
                 <div id="quiz-explanation-box" class="hidden p-4 rounded-xl space-y-1 transition duration-300">
                     <p id="quiz-feedback-title" class="font-bold text-sm">¡Correcto!</p>
                     <p id="quiz-feedback-detail" class="text-xs text-slate-500 dark:text-slate-400"></p>
                 </div>
 
-                <!-- Action Button -->
                 <div class="flex justify-end pt-2">
                     <button id="quiz-next-btn" onclick="nextQuizQuestion()" disabled class="px-6 py-3 bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 rounded-xl font-bold text-sm transition cursor-not-allowed">
                         Comprobar selección
@@ -367,7 +317,6 @@
                 </div>
             </div>
 
-            <!-- Quiz Result Screen -->
             <div id="quiz-results" class="hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 shadow-sm text-center space-y-6">
                 <div class="space-y-2">
                     <span id="quiz-result-emoji" class="text-5xl block">🎉</span>
@@ -375,21 +324,16 @@
                     <p class="text-sm text-slate-400">Has finalizado la prueba de vocabulario.</p>
                 </div>
 
-                <!-- Big Score Counter -->
                 <div class="inline-block bg-primary-50 dark:bg-primary-950/40 px-8 py-5 rounded-3xl border border-primary-100 dark:border-primary-900/30">
                     <p class="text-xs text-primary-400 font-bold uppercase tracking-wider mb-1">Puntuación Final</p>
                     <h3 id="quiz-result-score-txt" class="text-4xl font-extrabold text-primary-600 dark:text-primary-400">8 / 10</h3>
                 </div>
 
-                <!-- Quick review failed words -->
                 <div id="quiz-failed-section" class="hidden text-left space-y-3 border-t border-slate-100 dark:border-slate-800 pt-6">
                     <h4 class="text-xs font-bold text-slate-400 uppercase">Palabras para revisar:</h4>
-                    <div id="quiz-failed-words" class="flex flex-wrap gap-2">
-                        <!-- Badges with words -->
-                    </div>
+                    <div id="quiz-failed-words" class="flex flex-wrap gap-2"></div>
                 </div>
 
-                <!-- Actions -->
                 <div class="flex flex-col sm:flex-row gap-3 pt-4 justify-center">
                     <button onclick="switchView('dictionary')" class="px-6 py-3.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-xl text-sm transition">
                         Volver al Diccionario
@@ -399,12 +343,9 @@
                     </button>
                 </div>
             </div>
-
         </main>
-
     </div>
 
-    <!-- Custom Toast Notification -->
     <div id="custom-toast" class="fixed bottom-5 right-5 z-[9999] bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-5 py-4 rounded-2xl shadow-2xl items-center gap-3 transition-all duration-300 transform translate-y-10 opacity-0 hidden max-w-sm">
         <span class="p-1.5 bg-primary-600 rounded-xl text-white">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -412,12 +353,9 @@
         <span id="toast-text" class="text-xs font-semibold"></span>
     </div>
 
-    <!-- MAIN DICTIONARY DATABASE & JS LOGIC -->
     <script>
-        // Vocabulary Database (Units 1A - 5B & Extra Unit)
-        // Strictly structured with all word types, Spanish translations, and examples.
         const vocabularyData = [
-            // UNIT 1A (Working out meaning from context)
+            // UNIT 1A
             { unit: "1A", word: "foolproof", type: "adjective", translation: "infalible / a prueba de errores", example: "The instructions are so simple that they make the assembly foolproof." },
             { unit: "1A", word: "geek", type: "noun", translation: "apasionado/a / informático/a obsesivo/a", example: "He is a total computer geek who spends his weekends coding." },
             { unit: "1A", word: "good-natured rivalry", type: "noun phrase", translation: "rivalidad sana / amistosa", example: "There is a good-natured rivalry between the two school sports teams." },
@@ -427,7 +365,6 @@
             { unit: "1A", word: "the point", type: "noun phrase", translation: "el quid de la cuestión / lo fundamental", example: "I think you are missing the point of this conversation." },
             { unit: "1A", word: "work-life balance", type: "noun phrase", translation: "equilibrio entre vida laboral y personal", example: "Having a good work-life balance reduces stress and increases productivity." },
 
-            // UNIT 1B (Personality Adjectives only)
             { unit: "1B", word: "absent-minded", type: "compound adjective", translation: "despiste / despistado/a", example: "He's so absent-minded that he always forgets where he parked his car." },
             { unit: "1B", word: "ambitious", type: "adjective", translation: "ambicioso/a", example: "She is an ambitious lawyer who wants to become a partner soon." },
             { unit: "1B", word: "arrogant", type: "adjective", translation: "arrogante", example: "He is so arrogant that he thinks he knows everything." },
@@ -465,7 +402,6 @@
             { unit: "1B", word: "well-balanced", type: "compound adjective", translation: "equilibrado/a", example: "She grew up in a stable, well-balanced family environment." },
             { unit: "1B", word: "well-behaved", type: "compound adjective", translation: "bien educado/a", example: "The children were very well-behaved during the church service." },
 
-            // UNIT 2A (Minor/major illnesses, conditions AND Body & Gestures)
             { unit: "2A", word: "allergic reaction", type: "noun", translation: "reacción alérgica", example: "He had an allergic reaction to the nuts in the dessert." },
             { unit: "2A", word: "ankle", type: "noun", translation: "tobillo", example: "She twisted her ankle while jogging in the park." },
             { unit: "2A", word: "backache", type: "noun", translation: "dolor de espalda", example: "Lifting heavy boxes gave him terrible backache." },
@@ -528,7 +464,6 @@
             { unit: "2A", word: "wrist", type: "noun", translation: "muñeca", example: "She wears a gold watch on her left wrist." },
             { unit: "2A", word: "yawn", type: "verb", translation: "bostezar", example: "The boring speech made everyone yawn." },
 
-            // UNIT 2B (Clothing & Fashion ONLY)
             { unit: "2B", word: "casual", type: "adjective", translation: "informal", example: "He wore casual clothes like jeans and a T-shirt to the barbecue." },
             { unit: "2B", word: "checked", type: "adjective", translation: "a cuadros", example: "He loves wearing checked shirts in the autumn." },
             { unit: "2B", word: "classic", type: "adjective", translation: "clásico/a", example: "A black dress is a classic style that never goes out of fashion." },
@@ -568,7 +503,6 @@
             { unit: "2B", word: "velvet", type: "noun", translation: "terciopelo", example: "The theater seats were covered in red velvet." },
             { unit: "2B", word: "wool", type: "noun", translation: "lana", example: "This thick winter coat is made of pure wool." },
 
-            // UNIT 3A (Air Travel ONLY)
             { unit: "3A", word: "aisle seat", type: "noun", translation: "asiento de pasillo", example: "I prefer an aisle seat so I can get up easily without disturbing others." },
             { unit: "3A", word: "arrivals", type: "noun", translation: "llegadas", example: "We met our relatives in the arrivals hall at the airport." },
             { unit: "3A", word: "baggage reclaim", type: "noun", translation: "retiro de equipaje", example: "After landing, proceed to baggage reclaim to collect your suitcases." },
@@ -591,7 +525,6 @@
             { unit: "3A", word: "turbulence", type: "noun", translation: "turbulencia", example: "Please fasten your seatbelts as we are experiencing some turbulence." },
             { unit: "3A", word: "window seat", type: "noun", translation: "asiento de ventana", example: "He loves the window seat because he likes looking at the clouds." },
 
-            // UNIT 3B (Adverbs and Adverbial Phrases - Complete from Vocabulary Bank)
             { unit: "3B", word: "actually", type: "adverb", translation: "en realidad / de hecho", example: "She looks younger than me, but actually she's two years older." },
             { unit: "3B", word: "apparently", type: "adverb", translation: "al parecer / por lo visto", example: "I thought they'd broken up, but apparently they're back together again." },
             { unit: "3B", word: "at the end", type: "adverb", translation: "al final / al terminar", example: "At the end of a film, I always stay and watch the credits roll." },
@@ -617,7 +550,6 @@
             { unit: "3B", word: "still", type: "adverb", translation: "todavía / aún", example: "He's 35, but he still lives with his parents." },
             { unit: "3B", word: "yet", type: "adverb", translation: "aún / todavía / ya", example: "Have you found a job yet?" },
 
-            // UNIT 4A (Weather & Environment ONLY)
             { unit: "4A", word: "blizzard", type: "noun", translation: "tormenta de nieve", example: "The school was closed due to a heavy blizzard." },
             { unit: "4A", word: "breeze", type: "noun", translation: "brisa", example: "A cool sea breeze made the hot afternoon much more pleasant." },
             { unit: "4A", word: "chilly", type: "adjective", translation: "frío/a / fresco/a", example: "It's a bit chilly today, so you might need a jacket." },
@@ -644,7 +576,6 @@
             { unit: "4A", word: "thunder", type: "noun", translation: "trueno", example: "The sound of loud thunder frightened the dog." },
             { unit: "4A", word: "warm up", type: "phrasal verb", translation: "calentarse", example: "I hope the weather warms up before our beach trip." },
 
-            // UNIT 4B (Expressions & Phrases with "TAKE" ONLY)
             { unit: "4B", word: "take advantage of", type: "verb phrase", translation: "aprovecharse de / sacar partido de", example: "You should take advantage of this opportunity to practice your English." },
             { unit: "4B", word: "take after", type: "verb", translation: "parecerse a (un familiar)", example: "She takes after her mother; they have the same green eyes and curly hair." },
             { unit: "4B", word: "take care of", type: "verb phrase", translation: "cuidar de / encargarse de", example: "Don't worry about the kids; I will take care of them tonight." },
@@ -657,7 +588,6 @@
             { unit: "4B", word: "take seriously", type: "verb phrase", translation: "tomar en serio", example: "You should take your doctor's advice seriously." },
             { unit: "4B", word: "take up", type: "phrasal verb", translation: "empezar (un hobby) / ocupar (tiempo)", example: "He decided to take up tennis to stay in shape." },
 
-            // UNIT 5A (Feelings ONLY - Complete from Vocabulary Bank 5A PDF)
             { unit: "5A", word: "astonished", type: "adjective", translation: "asombrado/a / atónito/a", example: "She was astonished by the incredible news." },
             { unit: "5A", word: "bewildered", type: "adjective", translation: "desconcertado/a / perplejo/a", example: "He was bewildered by the complex instructions." },
             { unit: "5A", word: "delighted", type: "adjective", translation: "encantado/a / deleitado/a", example: "She was delighted to receive a bouquet of flowers." },
@@ -684,7 +614,6 @@
             { unit: "5A", word: "thrilled", type: "adjective", translation: "emocionado/a / entusiasmado/a", example: "They were thrilled to win a free trip to Hawaii." },
             { unit: "5A", word: "upset", type: "adjective", translation: "disgustado/a / apenado/a", example: "She was very upset when her phone got stolen." },
 
-            // UNIT 5B (Expressing feelings with verbs or -ed/-ing adjectives)
             { unit: "5B", word: "annoy", type: "verb", translation: "molestar / irritar", example: "It really annoys me when people talk during the movie." },
             { unit: "5B", word: "annoyed", type: "adjective", translation: "molesto/a / irritado/a", example: "She was annoyed with him for forgetting her birthday." },
             { unit: "5B", word: "annoying", type: "adjective", translation: "molesto/a / irritante", example: "Loud construction noise early in the morning is very annoying." },
@@ -719,7 +648,6 @@
             { unit: "5B", word: "thrilled", type: "adjective", translation: "entusiasmado/a / emocionado/a", example: "They were thrilled to receive tickets to the concert." },
             { unit: "5B", word: "thrilling", type: "adjective", translation: "emocionante / apasionante", example: "It was a thrilling finish to the championship race." },
 
-            // EXTRA UNIT (Crime and Punishment, Media, & Business Vocabulary)
             { unit: "Extra", word: "accurate", type: "adjective", translation: "preciso/a / exacto/a", example: "Journalists must ensure their reports are accurate." },
             { unit: "Extra", word: "acquit", type: "verb", translation: "absolver / declarar inocente", example: "The jury decided to acquit the defendant due to a lack of evidence." },
             { unit: "Extra", word: "advertising campaign", type: "noun", translation: "campaña publicitaria", example: "The company launched a massive advertising campaign for its new phone." },
@@ -790,17 +718,28 @@
             { unit: "Extra", word: "witness", type: "noun", translation: "testigo", example: "An eyewitness saw the suspect fleeing the scene." }
         ];
 
-        // Global State
+        const unitThemes = {
+            "1A": "Questions, Interviews & Working Out",
+            "1B": "Personality & Character Traits",
+            "2A": "Illnesses, Injuries & Body Language",
+            "2B": "Clothes & Fashion",
+            "3A": "Air Travel & Airports",
+            "3B": "Adverbs & Adverbial Phrases",
+            "4A": "Weather & Climate",
+            "4B": "Expressions with 'Take' & Risk",
+            "5A": "Feelings & Emotions",
+            "5B": "Expressing Feelings (-ed / -ing)",
+            "Extra": "Crime, Business & Media"
+        };
+
         let currentView = 'dictionary';
         let selectedUnit = 'all';
         let searchQuery = '';
         let selectedType = 'all';
         let showFavoritesOnly = false;
         
-        // Favorite Words list (persisted in LocalStorage)
         let favorites = JSON.parse(localStorage.getItem('lexilearn_favorites')) || [];
 
-        // Quiz State
         let quizUnits = ["1A", "1B", "2A", "2B", "3A", "3B", "4A", "4B", "5A", "5B", "Extra"];
         let quizQuestions = [];
         let quizCurrentIndex = 0;
@@ -809,57 +748,72 @@
         let quizFailedWords = [];
         let highestScorePercent = parseInt(localStorage.getItem('lexilearn_quiz_score')) || 0;
 
-        // Flashcards state
         let flashcardIndex = 0;
         let flashcardList = [];
         let isCardFlipped = false;
 
-        // Elegant custom notification system (Toast fallback for alerts)
+        // Touch swipe tracking variables
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
         function showToast(message) {
             const toast = document.getElementById('custom-toast');
             const toastText = document.getElementById('toast-text');
             toastText.innerText = message;
             
-            // Show toast gracefully
             toast.classList.remove('hidden', 'translate-y-10', 'opacity-0');
             toast.classList.add('flex', 'translate-y-0', 'opacity-100');
             
-            // Dismiss after 4 seconds
             setTimeout(() => {
                 toast.classList.add('translate-y-10', 'opacity-0');
                 setTimeout(() => {
                     toast.classList.add('hidden');
                 }, 300);
-            }, 4000);
+            }, 3500);
         }
 
-        // Sound Engine
         function speakWord(event, text) {
-            if (event) event.stopPropagation(); // Prevents flipping card when clicking audio
+            if (event) event.stopPropagation();
+            if (!text) return;
             if ('speechSynthesis' in window) {
-                // Cancel ongoing speeches
                 window.speechSynthesis.cancel();
                 
                 const utterance = new SpeechSynthesisUtterance(text);
-                const accent = document.getElementById('voice-accent').value;
+                const accent = document.getElementById('voice-accent') ? document.getElementById('voice-accent').value : 'en-GB';
                 utterance.lang = accent;
                 
-                // Try to find matching voice
                 const voices = window.speechSynthesis.getVoices();
-                const matchedVoice = voices.find(voice => voice.lang.startsWith(accent));
-                if (matchedVoice) {
-                    utterance.voice = matchedVoice;
+                if (voices.length > 0) {
+                    const matchedVoice = voices.find(voice => voice.lang.replace('_', '-').startsWith(accent));
+                    if (matchedVoice) {
+                        utterance.voice = matchedVoice;
+                    }
                 }
                 
                 window.speechSynthesis.speak(utterance);
             } else {
-                showToast("La síntesis de voz no está soportada en este navegador.");
+                showToast("La síntesis de voz no está disponible en este navegador.");
             }
         }
 
-        // Initialize App
+        function speakFlashcardWord(event) {
+            if (event) event.stopPropagation();
+            if (flashcardList.length > 0 && flashcardList[flashcardIndex]) {
+                speakWord(null, flashcardList[flashcardIndex].word);
+            }
+        }
+
         window.onload = function() {
-            // Apply theme preference from localStorage if exists
             if (localStorage.getItem('lexilearn_theme') === 'dark' || 
                 (!('lexilearn_theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark');
@@ -867,22 +821,72 @@
                 document.documentElement.classList.remove('dark');
             }
 
-            // Render stats
             updateStats();
-
-            // Render navigation buttons for units
             renderUnitTabs();
-
-            // Render initial dictionary content
             renderDictionary();
 
-            // Setup voices list (async loading in some browsers)
             if ('speechSynthesis' in window) {
-                window.speechSynthesis.onvoiceschanged = () => {};
+                window.speechSynthesis.onvoiceschanged = function() {
+                    window.speechSynthesis.getVoices();
+                };
             }
+
+            setupGestureAndKeyboardListeners();
         };
 
-        // Dark Mode Toggle
+        function setupGestureAndKeyboardListeners() {
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (currentView === 'flashcards') {
+                    if (e.key === 'ArrowRight') {
+                        nextFlashcard();
+                    } else if (e.key === 'ArrowLeft') {
+                        prevFlashcard();
+                    } else if (e.key === ' ' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        flipFlashcard();
+                    }
+                } else if (currentView === 'quiz' && !document.getElementById('quiz-play').classList.contains('hidden')) {
+                    if (['1', '2', '3', '4'].includes(e.key)) {
+                        const optionIndex = parseInt(e.key) - 1;
+                        const opts = quizQuestions[quizCurrentIndex]?.options;
+                        if (opts && opts[optionIndex]) {
+                            selectQuizOption(optionIndex, opts[optionIndex]);
+                        }
+                    } else if (e.key === 'Enter') {
+                        const nextBtn = document.getElementById('quiz-next-btn');
+                        if (nextBtn && !nextBtn.disabled) {
+                            nextQuizQuestion();
+                        }
+                    }
+                }
+            });
+
+            // Touch swipe handling for Flashcards
+            const fcContainer = document.getElementById('flashcard-container');
+            if (fcContainer) {
+                fcContainer.addEventListener('touchstart', function(e) {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, { passive: true });
+
+                fcContainer.addEventListener('touchend', function(e) {
+                    touchEndX = e.changedTouches[0].screenX;
+                    handleSwipe();
+                }, { passive: true });
+            }
+        }
+
+        function handleSwipe() {
+            const swipeDistance = touchEndX - touchStartX;
+            if (Math.abs(swipeDistance) > 50) {
+                if (swipeDistance < 0) {
+                    nextFlashcard();
+                } else {
+                    prevFlashcard();
+                }
+            }
+        }
+
         function toggleDarkMode() {
             if (document.documentElement.classList.contains('dark')) {
                 document.documentElement.classList.remove('dark');
@@ -893,16 +897,13 @@
             }
         }
 
-        // View Switcher
         function switchView(viewName) {
             currentView = viewName;
             
-            // Toggle Views
             document.getElementById('view-dictionary').style.display = (viewName === 'dictionary') ? 'block' : 'none';
             document.getElementById('view-flashcards').style.display = (viewName === 'flashcards') ? 'block' : 'none';
             document.getElementById('view-quiz').style.display = (viewName === 'quiz') ? 'block' : 'none';
 
-            // Style Active Button
             const btnDict = document.getElementById('btn-dict-view');
             const btnCard = document.getElementById('btn-card-view');
             const btnQuiz = document.getElementById('btn-quiz-view');
@@ -921,7 +922,6 @@
             }
         }
 
-        // Update Dashboard Stats
         function updateStats() {
             document.getElementById('stat-total').innerText = vocabularyData.length;
             document.getElementById('stat-units').innerText = [...new Set(vocabularyData.map(item => item.unit))].length;
@@ -929,15 +929,12 @@
             document.getElementById('stat-score').innerText = highestScorePercent + '%';
         }
 
-        // Generate unit buttons dynamically
         function renderUnitTabs() {
             const container = document.getElementById('unit-tabs-container');
-            // Remove previous dynamically loaded unit tabs (keep 'TODAS')
             const allBtn = document.getElementById('unit-tab-all');
             container.innerHTML = '';
             container.appendChild(allBtn);
 
-            // Get unique units from data
             const units = [...new Set(vocabularyData.map(item => item.unit))].sort();
 
             units.forEach(unit => {
@@ -950,11 +947,9 @@
             });
         }
 
-        // Select Unit Tab
         function selectUnit(unit) {
             selectedUnit = unit;
             
-            // Toggle active styles
             const tabs = document.querySelectorAll('#unit-tabs-container button');
             tabs.forEach(tab => {
                 if (tab.id === `unit-tab-${unit}`) {
@@ -967,7 +962,6 @@
             renderDictionary();
         }
 
-        // Toggle Favorites Filter button
         function toggleFavoriteFilter() {
             showFavoritesOnly = !showFavoritesOnly;
             const btn = document.getElementById('btn-toggle-fav-filter');
@@ -986,12 +980,10 @@
             renderDictionary();
         }
 
-        // Handle typing search or select category
         function handleFilterChange() {
             searchQuery = document.getElementById('search-box').value.toLowerCase().trim();
             selectedType = document.getElementById('type-filter').value;
             
-            // Show clear button if search input is filled
             const clearBtn = document.getElementById('search-clear');
             if (searchQuery.length > 0) {
                 clearBtn.classList.remove('hidden');
@@ -1007,7 +999,6 @@
             handleFilterChange();
         }
 
-        // Toggle Favorite Word
         function toggleFavoriteWord(wordStr) {
             const index = favorites.indexOf(wordStr);
             if (index > -1) {
@@ -1017,46 +1008,39 @@
             }
             localStorage.setItem('lexilearn_favorites', JSON.stringify(favorites));
             
-            // Re-render and update UI
             updateStats();
             renderDictionary();
         }
 
-        // Helper to Highlight matched query
         function highlightMatch(text, query) {
-            if (!query) return text;
-            const index = text.toLowerCase().indexOf(query);
-            if (index === -1) return text;
+            if (!query) return escapeHtml(text);
+            const safeText = escapeHtml(text);
+            const safeQuery = escapeHtml(query);
+            const index = safeText.toLowerCase().indexOf(safeQuery.toLowerCase());
+            if (index === -1) return safeText;
             
-            const originalMatch = text.substr(index, query.length);
-            return text.replace(new RegExp(query, 'gi'), `<mark class="bg-yellow-200 dark:bg-yellow-950 text-slate-900 dark:text-slate-100 px-0.5 rounded">${originalMatch}</mark>`);
+            const originalMatch = safeText.substr(index, safeQuery.length);
+            return safeText.replace(new RegExp(safeQuery, 'gi'), `<mark class="bg-yellow-200 dark:bg-yellow-950 text-slate-900 dark:text-slate-100 px-0.5 rounded">${originalMatch}</mark>`);
         }
 
-        // Main Rendering Logic of the Dictionary View
         function renderDictionary() {
             const container = document.getElementById('dictionary-content');
             container.innerHTML = '';
 
-            // 1. Group data by unit
             let groupedData = {};
             const units = [...new Set(vocabularyData.map(item => item.unit))].sort();
             units.forEach(u => groupedData[u] = []);
 
-            // 2. Filter words & distribute to groups
             let totalFound = 0;
 
             vocabularyData.forEach(item => {
-                // Apply Unit Filter
                 if (selectedUnit !== 'all' && item.unit !== selectedUnit) return;
 
-                // Apply Favorite Filter
                 const isFavorite = favorites.includes(item.word);
                 if (showFavoritesOnly && !isFavorite) return;
 
-                // Apply POS Filter
                 if (selectedType !== 'all' && item.type !== selectedType) return;
 
-                // Apply Search Query Filter
                 if (searchQuery) {
                     const matchesWord = item.word.toLowerCase().includes(searchQuery);
                     const matchesTranslation = item.translation.toLowerCase().includes(searchQuery);
@@ -1069,7 +1053,6 @@
                 totalFound++;
             });
 
-            // If empty database
             if (totalFound === 0) {
                 container.innerHTML = `
                     <div class="text-center py-16 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-3">
@@ -1083,32 +1066,28 @@
                 return;
             }
 
-            // 3. Render tables for each active group
             Object.keys(groupedData).forEach(unit => {
                 const wordsInUnit = groupedData[unit];
-                if (wordsInUnit.length === 0) return; // Skip empty sections
+                if (wordsInUnit.length === 0) return;
 
-                // Sort words in unit alphabetically
                 wordsInUnit.sort((a, b) => a.word.localeCompare(b.word));
 
-                // Create section wrapper
                 const section = document.createElement('div');
                 section.className = "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm";
 
                 const unitLabel = unit.toLowerCase() === 'extra' ? 'Extra Unit' : `Unit ${unit}`;
+                const topicName = unitThemes[unit] || "Vocabulario";
 
-                // Section Header
                 section.innerHTML = `
                     <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-900/60 dark:to-slate-900 px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <span class="text-xs font-bold tracking-wider uppercase bg-primary-600 text-white px-3 py-1 rounded-full shadow-sm">${unitLabel}</span>
-                            <h2 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Vocabulario Completo</h2>
+                            <h2 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">${escapeHtml(topicName)}</h2>
                         </div>
                         <span class="text-xs font-semibold text-slate-400">${wordsInUnit.length} ${wordsInUnit.length === 1 ? 'palabra' : 'palabras'}</span>
                     </div>
                 `;
 
-                // Table Layout (Desktop & responsive wrapper)
                 const tableContainer = document.createElement('div');
                 tableContainer.className = "overflow-x-auto";
                 
@@ -1126,7 +1105,6 @@
                         <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 text-sm">
                 `;
 
-                // Mobile Card Layout
                 let mobileCardsHTML = `<div class="md:hidden divide-y divide-slate-100 dark:divide-slate-800/60">`;
 
                 wordsInUnit.forEach(item => {
@@ -1134,7 +1112,6 @@
                     const starIcon = isFavorite ? '★' : '☆';
                     const starBtnColor = isFavorite ? 'text-amber-500 hover:text-amber-600' : 'text-slate-300 dark:text-slate-600 hover:text-slate-400';
 
-                    // Word Type Tag Colors
                     let typeColor = "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400";
                     if (item.type === 'verb' || item.type === 'phrasal verb' || item.type === 'verb phrase') {
                         typeColor = "bg-blue-50 text-blue-600 dark:bg-blue-950/30 dark:text-blue-400";
@@ -1146,17 +1123,17 @@
                         typeColor = "bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400";
                     }
 
-                    // Highlight words based on search
                     const highlightedWord = highlightMatch(item.word, searchQuery);
                     const highlightedTranslation = highlightMatch(item.translation, searchQuery);
                     const highlightedExample = highlightMatch(item.example, searchQuery);
                     const highlightedType = highlightMatch(item.type, searchQuery);
 
-                    // Render Table Row (Desktop)
+                    const safeWordAttr = escapeHtml(item.word);
+
                     tableHTML += `
                         <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-900/10 transition group">
                             <td class="px-6 py-4.5 font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                <button onclick="speakWord(null, '${item.word.replace(/'/g, "\\'")}')" class="p-1.5 bg-slate-50 hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 rounded-lg transition" title="Escuchar pronunciación">
+                                <button data-word="${safeWordAttr}" onclick="speakWord(event, this.getAttribute('data-word'))" class="p-1.5 bg-slate-50 hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 rounded-lg transition" title="Escuchar pronunciación">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
                                 </button>
                                 <span>${highlightedWord}</span>
@@ -1171,27 +1148,26 @@
                                 "${highlightedExample}"
                             </td>
                             <td class="px-6 py-4.5 text-right">
-                                <button onclick="toggleFavoriteWord('${item.word.replace(/'/g, "\\'")}')" class="text-xl p-1 transition ${starBtnColor}" title="${isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}">
+                                <button data-word="${safeWordAttr}" onclick="toggleFavoriteWord(this.getAttribute('data-word'))" class="text-xl p-1 transition ${starBtnColor}" title="${isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}">
                                     ${starIcon}
                                 </button>
                             </td>
                         </tr>
                     `;
 
-                    // Render Mobile Card
                     mobileCardsHTML += `
                         <div class="p-5 space-y-3">
                             <div class="flex justify-between items-start">
                                 <div class="space-y-1">
                                     <div class="flex items-center gap-1.5">
-                                        <button onclick="speakWord(null, '${item.word.replace(/'/g, "\\'")}')" class="p-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-700 rounded-lg transition">
+                                        <button data-word="${safeWordAttr}" onclick="speakWord(event, this.getAttribute('data-word'))" class="p-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-700 rounded-lg transition">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
                                         </button>
                                         <h3 class="font-extrabold text-lg text-slate-900 dark:text-white">${highlightedWord}</h3>
                                     </div>
                                     <span class="inline-block px-2.5 py-0.5 text-[10px] font-bold rounded-md uppercase ${typeColor}">${highlightedType}</span>
                                 </div>
-                                <button onclick="toggleFavoriteWord('${item.word.replace(/'/g, "\\'")}')" class="text-2xl p-1 transition ${starBtnColor}">
+                                <button data-word="${safeWordAttr}" onclick="toggleFavoriteWord(this.getAttribute('data-word'))" class="text-2xl p-1 transition ${starBtnColor}">
                                     ${starIcon}
                                 </button>
                             </div>
@@ -1216,24 +1192,18 @@
             });
         }
 
-        // ==========================================
-        // VIEW 2: FLASHCARDS STUDY ENGINE
-        // ==========================================
         function setupFlashcardView() {
-            // Get active words list based on unit tab (or load all)
             if (selectedUnit === 'all') {
                 flashcardList = [...vocabularyData];
             } else {
                 flashcardList = vocabularyData.filter(item => item.unit === selectedUnit);
             }
 
-            // Shuffle initial flashcard order for better study outcomes
             flashcardList.sort(() => Math.random() - 0.5);
 
             flashcardIndex = 0;
             isCardFlipped = false;
             
-            // Apply un-flipped style
             document.getElementById('flashcard-inner').classList.remove('rotate-y-180');
 
             renderFlashcard();
@@ -1254,9 +1224,11 @@
             counter.innerText = `${flashcardIndex + 1} / ${flashcardList.length}`;
             const item = flashcardList[flashcardIndex];
 
-            // Render Card Data
+            const unitLabel = item.unit.toLowerCase() === 'extra' ? 'Extra Unit' : `Unit ${item.unit}`;
+            const themeName = unitThemes[item.unit] ? ` • ${unitThemes[item.unit]}` : '';
+
             document.getElementById('fc-word').innerText = item.word;
-            document.getElementById('fc-unit').innerText = item.unit.toLowerCase() === 'extra' ? 'Extra Unit' : `Unit ${item.unit}`;
+            document.getElementById('fc-unit').innerText = unitLabel + themeName;
             document.getElementById('fc-type').innerText = item.type;
             document.getElementById('fc-translation').innerText = item.translation;
             document.getElementById('fc-example').innerText = `"${item.example}"`;
@@ -1272,27 +1244,22 @@
             }
         }
 
-        // Next Flashcard Function
         function nextFlashcard() {
             if (flashcardList.length === 0) return;
             
-            // Volver la tarjeta a su estado original antes de avanzar
             const inner = document.getElementById('flashcard-inner');
             inner.classList.remove('rotate-y-180');
             isCardFlipped = false;
 
-            // Delayed state change so user doesn't see front content change mid-flip
             setTimeout(() => {
                 flashcardIndex = (flashcardIndex + 1) % flashcardList.length;
                 renderFlashcard();
             }, 150);
         }
 
-        // Previous Flashcard Function
         function prevFlashcard() {
             if (flashcardList.length === 0) return;
 
-            // Volver la tarjeta a su estado original antes de retroceder
             const inner = document.getElementById('flashcard-inner');
             inner.classList.remove('rotate-y-180');
             isCardFlipped = false;
@@ -1317,16 +1284,11 @@
             }, 150);
         }
 
-        // ==========================================
-        // VIEW 3: INTERACTIVE QUIZ MODE ENGINE
-        // ==========================================
         function setupQuizView() {
-            // Display Setup Screen
             document.getElementById('quiz-setup').classList.remove('hidden');
             document.getElementById('quiz-play').classList.add('hidden');
             document.getElementById('quiz-results').classList.add('hidden');
 
-            // Render checkboxes of units to test
             const selectionContainer = document.getElementById('quiz-units-selection');
             selectionContainer.innerHTML = '';
 
@@ -1334,11 +1296,15 @@
             units.forEach(unit => {
                 const checkedAttr = quizUnits.includes(unit) ? 'checked' : '';
                 const div = document.createElement('div');
-                div.className = "flex items-center gap-2.5 p-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl";
+                div.className = "flex items-center gap-2.5 p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl";
                 const displayUnitName = unit.toLowerCase() === 'extra' ? 'EXTRA UNIT' : `UNIT ${unit}`;
+                const themeName = unitThemes[unit] || '';
                 div.innerHTML = `
                     <input type="checkbox" id="quiz-unit-chk-${unit}" value="${unit}" ${checkedAttr} class="w-4.5 h-4.5 rounded text-primary-600 focus:ring-primary-500 bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-800 transition">
-                    <label for="quiz-unit-chk-${unit}" class="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase select-none cursor-pointer">${displayUnitName}</label>
+                    <label for="quiz-unit-chk-${unit}" class="text-xs select-none cursor-pointer flex-1">
+                        <span class="font-bold text-slate-700 dark:text-slate-200 uppercase block">${displayUnitName}</span>
+                        <span class="text-[10px] text-slate-400 block">${escapeHtml(themeName)}</span>
+                    </label>
                 `;
                 selectionContainer.appendChild(div);
             });
@@ -1350,7 +1316,6 @@
         }
 
         function startQuiz() {
-            // Find checked units
             const checkboxes = document.querySelectorAll('#quiz-units-selection input[type="checkbox"]');
             const selected = [];
             checkboxes.forEach(chk => {
@@ -1362,28 +1327,22 @@
                 return;
             }
 
-            // Save selection
             quizUnits = selected;
 
-            // Generate Questions
             const pool = vocabularyData.filter(item => quizUnits.includes(item.unit));
             if (pool.length < 5) {
                 showToast("Hay muy poco vocabulario en las unidades seleccionadas. Por favor agrega más.");
                 return;
             }
 
-            // Create 10 random questions
             quizQuestions = [];
             const shuffledPool = [...pool].sort(() => Math.random() - 0.5);
             const questionCount = Math.min(10, shuffledPool.length);
 
             for (let i = 0; i < questionCount; i++) {
                 const targetWord = shuffledPool[i];
-                
-                // Question Type: 0 = "What is translation", 1 = "Fill sentence blank"
                 const qType = Math.random() > 0.5 ? 0 : 1;
 
-                // Pick 3 false answers (distractors)
                 const distractors = [];
                 const otherWords = pool.filter(item => item.word !== targetWord.word);
                 otherWords.sort(() => Math.random() - 0.5);
@@ -1392,7 +1351,6 @@
                     distractors.push(qType === 0 ? otherWords[d].translation : otherWords[d].word);
                 }
 
-                // Make sure we have 4 options
                 const correctOptionText = qType === 0 ? targetWord.translation : targetWord.word;
                 const options = [correctOptionText, ...distractors].sort(() => Math.random() - 0.5);
 
@@ -1404,13 +1362,11 @@
                 });
             }
 
-            // Start Quiz Variables
             quizCurrentIndex = 0;
             quizScore = 0;
             quizFailedWords = [];
             quizSelectedOption = null;
 
-            // Show Play Mode
             document.getElementById('quiz-setup').classList.add('hidden');
             document.getElementById('quiz-play').classList.remove('hidden');
             document.getElementById('quiz-results').classList.add('hidden');
@@ -1421,36 +1377,29 @@
         function renderQuizQuestion() {
             const currentQ = quizQuestions[quizCurrentIndex];
             
-            // Reset feedback box
             document.getElementById('quiz-explanation-box').className = "hidden";
             document.getElementById('quiz-next-btn').disabled = true;
             document.getElementById('quiz-next-btn').className = "px-6 py-3 bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 rounded-xl font-bold text-sm transition cursor-not-allowed";
             document.getElementById('quiz-next-btn').innerText = "Comprobar selección";
 
-            // Header state
             document.getElementById('quiz-current-question-num').innerText = `PREGUNTA ${quizCurrentIndex + 1} DE ${quizQuestions.length}`;
             document.getElementById('quiz-score-badge').innerText = `Correctas: ${quizScore}/${quizCurrentIndex}`;
 
-            // Progress bar
             const percent = ((quizCurrentIndex + 1) / quizQuestions.length) * 100;
             document.getElementById('quiz-progress-bar').style.width = `${percent}%`;
 
-            // Reset selection variable
             quizSelectedOption = null;
 
-            // Render Prompt & Text
             if (currentQ.type === 0) {
                 document.getElementById('quiz-q-type').innerText = "TRADUCCIÓN";
-                document.getElementById('quiz-question-text').innerHTML = `¿Cuál es la traducción correcta de <span class="text-primary-600 dark:text-primary-400 font-extrabold font-serif">"${currentQ.wordItem.word}"</span>?`;
+                document.getElementById('quiz-question-text').innerHTML = `¿Cuál es la traducción correcta de <span class="text-primary-600 dark:text-primary-400 font-extrabold font-serif">"${escapeHtml(currentQ.wordItem.word)}"</span>?`;
             } else {
                 document.getElementById('quiz-q-type').innerText = "COMPLETAR ESPACIO EN BLANCO";
-                // replace target word in example with blanks
                 const regex = new RegExp(`\\b${currentQ.wordItem.word}\\b`, 'gi');
                 const sentenceWithBlanks = currentQ.wordItem.example.replace(regex, "________");
-                document.getElementById('quiz-question-text').innerHTML = `<p class="text-slate-500 dark:text-slate-400 text-sm mb-2">Selecciona la palabra que completa la oración:</p> <p class="italic font-serif text-lg">"${sentenceWithBlanks}"</p>`;
+                document.getElementById('quiz-question-text').innerHTML = `<p class="text-slate-500 dark:text-slate-400 text-sm mb-2">Selecciona la palabra que completa la oración:</p> <p class="italic font-serif text-lg">"${escapeHtml(sentenceWithBlanks)}"</p>`;
             }
 
-            // Render Option Buttons
             const optionsBox = document.getElementById('quiz-options-container');
             optionsBox.innerHTML = '';
 
@@ -1460,7 +1409,7 @@
                 btn.onclick = () => selectQuizOption(idx, opt);
                 btn.className = "w-full text-left p-4 bg-slate-50 hover:bg-slate-100 dark:bg-slate-950 dark:hover:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-semibold transition flex items-center justify-between";
                 btn.innerHTML = `
-                    <span>${opt}</span>
+                    <span>${escapeHtml(opt)}</span>
                     <span id="quiz-opt-marker-${idx}" class="w-5 h-5 rounded-full border border-slate-300 dark:border-slate-700 flex items-center justify-center text-[10px] text-white"></span>
                 `;
                 optionsBox.appendChild(btn);
@@ -1468,12 +1417,10 @@
         }
 
         function selectQuizOption(idx, optionText) {
-            // Only allow selection before checking
             if (document.getElementById('quiz-next-btn').innerText === "Siguiente Pregunta") return;
 
             quizSelectedOption = optionText;
 
-            // Reset option outline visual styles
             const options = quizQuestions[quizCurrentIndex].options;
             options.forEach((opt, i) => {
                 const btn = document.getElementById(`quiz-opt-${i}`);
@@ -1489,45 +1436,37 @@
                 }
             });
 
-            // Activate submit button
             const nextBtn = document.getElementById('quiz-next-btn');
             nextBtn.disabled = false;
             nextBtn.className = "px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-bold text-sm transition";
         }
 
-        // Check or Next Question Handler
         function nextQuizQuestion() {
             const nextBtn = document.getElementById('quiz-next-btn');
             const currentQ = quizQuestions[quizCurrentIndex];
 
-            // Scenario 1: Compiling/Checking Selection
             if (nextBtn.innerText === "Comprobar selección") {
                 const isCorrect = (quizSelectedOption === currentQ.correctOption);
                 
-                // Show explanation boxes
                 const feedbackBox = document.getElementById('quiz-explanation-box');
                 const feedbackTitle = document.getElementById('quiz-feedback-title');
                 const feedbackDetail = document.getElementById('quiz-feedback-detail');
 
                 feedbackBox.classList.remove('hidden');
 
-                // Style options with correct / incorrect colors
                 currentQ.options.forEach((opt, i) => {
                     const btn = document.getElementById(`quiz-opt-${i}`);
                     const marker = document.getElementById(`quiz-opt-marker-${i}`);
                     
                     if (opt === currentQ.correctOption) {
-                        // Color Correct Choice
                         btn.className = "w-full text-left p-4 bg-emerald-50 dark:bg-emerald-950/20 border-2 border-emerald-500 text-emerald-900 dark:text-emerald-400 rounded-xl text-sm font-bold transition flex items-center justify-between";
                         marker.className = "w-5 h-5 rounded-full bg-emerald-500 border border-emerald-600 flex items-center justify-center text-[10px] text-white font-bold";
                         marker.innerHTML = "✓";
                     } else if (opt === quizSelectedOption && !isCorrect) {
-                        // Color Bad Choice
                         btn.className = "w-full text-left p-4 bg-rose-50 dark:bg-rose-950/20 border-2 border-rose-500 text-rose-900 dark:text-rose-400 rounded-xl text-sm font-bold transition flex items-center justify-between";
                         marker.className = "w-5 h-5 rounded-full bg-rose-500 border border-rose-600 flex items-center justify-center text-[10px] text-white font-bold";
                         marker.innerHTML = "✗";
                     } else {
-                        // Muted others
                         btn.className = "w-full text-left p-4 bg-slate-50 dark:bg-slate-950 opacity-40 border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-semibold transition flex items-center justify-between cursor-not-allowed";
                     }
                 });
@@ -1544,12 +1483,10 @@
                     feedbackDetail.innerText = `La respuesta correcta era "${currentQ.correctOption}". "${currentQ.wordItem.word}" (${currentQ.wordItem.type}) significa "${currentQ.wordItem.translation}".`;
                 }
 
-                // Change action button state
                 nextBtn.innerText = "Siguiente Pregunta";
                 return;
             }
 
-            // Scenario 2: Advancing to next question or showing results
             quizCurrentIndex++;
             if (quizCurrentIndex < quizQuestions.length) {
                 renderQuizQuestion();
@@ -1565,14 +1502,12 @@
 
             const percent = Math.round((quizScore / quizQuestions.length) * 100);
             
-            // Save highest score
             if (percent > highestScorePercent) {
                 highestScorePercent = percent;
                 localStorage.setItem('lexilearn_quiz_score', percent);
                 updateStats();
             }
 
-            // Render header text
             const emojiEl = document.getElementById('quiz-result-emoji');
             const titleEl = document.getElementById('quiz-result-title');
             
@@ -1592,7 +1527,6 @@
 
             document.getElementById('quiz-result-score-txt').innerText = `${quizScore} / ${quizQuestions.length} (${percent}%)`;
 
-            // Render failed words for review
             const failedSection = document.getElementById('quiz-failed-section');
             const failedContainer = document.getElementById('quiz-failed-words');
             failedContainer.innerHTML = '';
@@ -1600,15 +1534,15 @@
             if (quizFailedWords.length > 0) {
                 failedSection.classList.remove('hidden');
                 
-                // Keep only unique words
                 const uniqueFailed = [...new Map(quizFailedWords.map(item => [item.word, item])).values()];
 
                 uniqueFailed.forEach(item => {
+                    const safeWord = escapeHtml(item.word);
                     const badge = document.createElement('span');
                     badge.className = "inline-flex items-center gap-1 bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-900/40 px-3 py-1.5 rounded-xl text-xs font-semibold";
                     badge.innerHTML = `
-                        <span>${item.word} (${item.translation})</span>
-                        <button onclick="speakWord(null, '${item.word.replace(/'/g, "\\'")}')" class="p-0.5 hover:bg-rose-100 dark:hover:bg-rose-900 rounded transition">
+                        <span>${escapeHtml(item.word)} (${escapeHtml(item.translation)})</span>
+                        <button data-word="${safeWord}" onclick="speakWord(event, this.getAttribute('data-word'))" class="p-0.5 hover:bg-rose-100 dark:hover:bg-rose-900 rounded transition">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
                         </button>
                     `;
