@@ -4,7 +4,7 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LexiLearn - Diccionario Interactivo de Inglés</title>
+    <title>Dictionary's Level 7</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -85,10 +85,10 @@
                         </svg>
                     </span>
                     <h1 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-primary-600 to-indigo-500 bg-clip-text text-transparent dark:from-primary-400 dark:to-indigo-300">
-                        Dictionary's ANA- LEVEL 7
+                        Dictionary's ANA - LEVEL 7
                     </h1>
                 </div>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Diccionario y Centro de Estudio Interactivo de Ana (Units 1A - 5B)</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Diccionario y Centro de Estudio Interactivo de Ana (Units 1A - 5B & Extra Unit)</p>
             </div>
 
             <!-- Toolbar / Settings -->
@@ -106,7 +106,7 @@
                     </button>
                 </div>
 
-                <!-- Accent Accent Accent -->
+                <!-- Accent Ambient Setup -->
                 <div class="flex items-center gap-2 border-l border-slate-200 dark:border-slate-800 pl-3">
                     <!-- Accent Selector (US vs UK) -->
                     <select id="voice-accent" class="text-xs bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-2 focus:ring-2 focus:ring-primary-500 outline-none">
@@ -143,7 +143,7 @@
             <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm flex items-center justify-between">
                 <div>
                     <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Unidades</p>
-                    <h3 class="text-2xl font-bold mt-1 text-slate-800 dark:text-slate-100">10</h3>
+                    <h3 id="stat-units" class="text-2xl font-bold mt-1 text-slate-800 dark:text-slate-100">-</h3>
                 </div>
                 <span class="p-2 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-500 rounded-xl">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
@@ -194,6 +194,7 @@
                         <select id="type-filter" onchange="handleFilterChange()" class="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition w-full sm:w-auto">
                             <option value="all">Todas las categorías</option>
                             <option value="noun">Noun (Sustantivo)</option>
+                            <option value="noun phrase">Noun Phrase (Frase Nominal)</option>
                             <option value="verb">Verb (Verbo)</option>
                             <option value="adjective">Adjective (Adjetivo)</option>
                             <option value="adverb">Adverb (Adverbio)</option>
@@ -313,7 +314,7 @@
 
                 <div class="space-y-3">
                     <p class="text-xs font-bold text-slate-400 uppercase">Unidades a Incluir:</p>
-                    <div id="quiz-units-selection" class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                    <div id="quiz-units-selection" class="grid grid-cols-2 sm:grid-cols-4 gap-2">
                         <!-- Checked checkboxes will be loaded dynamically -->
                     </div>
                     <div class="flex gap-2 justify-end pt-1">
@@ -403,299 +404,390 @@
 
     </div>
 
+    <!-- Custom Toast Notification -->
+    <div id="custom-toast" class="fixed bottom-5 right-5 z-[9999] bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-5 py-4 rounded-2xl shadow-2xl items-center gap-3 transition-all duration-300 transform translate-y-10 opacity-0 hidden max-w-sm">
+        <span class="p-1.5 bg-primary-600 rounded-xl text-white">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        </span>
+        <span id="toast-text" class="text-xs font-semibold"></span>
+    </div>
+
     <!-- MAIN DICTIONARY DATABASE & JS LOGIC -->
     <script>
-        // Vocabulary Database (Units 1A - 5B)
+        // Vocabulary Database (Units 1A - 5B & Extra Unit)
         // Strictly structured with all word types, Spanish translations, and examples.
         const vocabularyData = [
-            // UNIT 1A
-            { unit: "1A", word: "absent-minded", type: "compound adjective", translation: "despistado/a", example: "He's so absent-minded that he always forgets where he parked his car." },
-            { unit: "1A", word: "ambitious", type: "adjective", translation: "ambicioso/a", example: "She is an ambitious lawyer who wants to become a partner soon." },
-            { unit: "1A", word: "arrogant", type: "adjective", translation: "arrogante", example: "He is so arrogant that he thinks he knows everything." },
-            { unit: "1A", word: "assertive", type: "adjective", translation: "asertivo/a", example: "You need to be more assertive if you want people to listen to your opinions." },
-            { unit: "1A", word: "bad-tempered", type: "compound adjective", translation: "de mal genio", example: "Our boss is very bad-tempered, especially on Monday mornings." },
-            { unit: "1A", word: "calm", type: "adjective", translation: "tranquilo/a", example: "She stayed calm despite the emergency situation." },
-            { unit: "1A", word: "cheerful", type: "adjective", translation: "alegre / risueño/a", example: "He always has a cheerful smile on his face." },
-            { unit: "1A", word: "conscientious", type: "adjective", translation: "concienzudo/a / meticuloso/a", example: "She is a conscientious worker who always completes tasks on time." },
-            { unit: "1A", word: "easy-going", type: "compound adjective", translation: "de trato fácil / relajado/a", example: "My roommate is very easy-going and never gets upset about small things." },
-            { unit: "1A", word: "eccentric", type: "adjective", translation: "excéntrico/a", example: "The eccentric artist lived in a house shaped like a giant teapot." },
-            { unit: "1A", word: "funny", type: "adjective", translation: "gracioso/a", example: "He told a funny joke that made everyone laugh." },
-            { unit: "1A", word: "immature", type: "adjective", translation: "inmaduro/a", example: "Stop being so immature and start acting like an adult." },
-            { unit: "1A", word: "impatient", type: "adjective", translation: "impaciente", example: "She grew impatient waiting for the delayed bus." },
-            { unit: "1A", word: "impulsive", type: "adjective", translation: "impulsivo/a", example: "Buying that expensive jacket was an impulsive decision." },
-            { unit: "1A", word: "insecure", type: "adjective", translation: "inseguro/a", example: "He felt insecure about speaking English in front of a large crowd." },
-            { unit: "1A", word: "insincere", type: "adjective", translation: "falso/a / hipócrita", example: "Her insincere compliments made everyone feel uncomfortable." },
-            { unit: "1A", word: "laid-back", type: "compound adjective", translation: "relajado/a / tranquilo/a", example: "They have a very laid-back lifestyle near the beach." },
-            { unit: "1A", word: "loyal", type: "adjective", translation: "leal", example: "A loyal friend will always support you through difficult times." },
-            { unit: "1A", word: "narrow-minded", type: "compound adjective", translation: "de mente cerrada", example: "He is too narrow-minded to accept new ways of working." },
-            { unit: "1A", word: "open-minded", type: "compound adjective", translation: "de mente abierta", example: "Travelers are often open-minded about trying different foods." },
-            { unit: "1A", word: "optimistic", type: "adjective", translation: "optimista", example: "Despite the difficulties, she remains optimistic about the future." },
-            { unit: "1A", word: "pessimistic", type: "adjective", translation: "pesimista", example: "Don't be so pessimistic; things will get better." },
-            { unit: "1A", word: "possessive", type: "adjective", translation: "posesivo/a", example: "He is very possessive of his toys and doesn't like sharing them." },
-            { unit: "1A", word: "practical", type: "adjective", translation: "práctico/a", example: "Let's find a practical solution to this problem rather than discussing theory." },
-            { unit: "1A", word: "rebellious", type: "adjective", translation: "rebelde", example: "Teenagers can be quite rebellious against their parents." },
-            { unit: "1A", word: "reserved", type: "adjective", translation: "reservado/a", example: "She is a quiet, reserved person who keeps her feelings to herself." },
-            { unit: "1A", word: "self-centered", type: "compound adjective", translation: "egocéntrico/a", example: "He is too self-centered to notice when others are suffering." },
-            { unit: "1A", word: "self-confident", type: "compound adjective", translation: "seguro/a de sí mismo/a", example: "She gave a self-confident presentation to the investors." },
-            { unit: "1A", word: "sensible", type: "adjective", translation: "sensato/a", example: "It would be sensible to check the weather forecast before going on a hike." },
-            { unit: "1A", word: "sensitive", type: "adjective", translation: "sensible", example: "He is very sensitive to criticism and gets upset easily." },
-            { unit: "1A", word: "strong-willed", type: "compound adjective", translation: "obstinado/a / de carácter fuerte", example: "She is a strong-willed woman who always achieves her goals." },
-            { unit: "1A", word: "stubborn", type: "adjective", translation: "testarudo/a / terco/a", example: "My brother is so stubborn that he refuses to admit when he is wrong." },
-            { unit: "1A", word: "tight-fisted", type: "compound adjective", translation: "tacaño/a", example: "My tight-fisted uncle never leaves a tip at restaurants." },
-            { unit: "1A", word: "two-faced", type: "compound adjective", translation: "hipócrita / de doble cara", example: "Beware of two-faced colleagues who talk behind your back." },
-            { unit: "1A", word: "well-balanced", type: "compound adjective", translation: "equilibrado/a", example: "She grew up in a stable, well-balanced family environment." },
-            { unit: "1A", word: "well-behaved", type: "compound adjective", translation: "bien educado/a", example: "The children were very well-behaved during the church service." },
+            // UNIT 1A (Working out meaning from context)
+            { unit: "1A", word: "foolproof", type: "adjective", translation: "infalible / a prueba de errores", example: "The instructions are so simple that they make the assembly foolproof." },
+            { unit: "1A", word: "geek", type: "noun", translation: "apasionado/a / informático/a obsesivo/a", example: "He is a total computer geek who spends his weekends coding." },
+            { unit: "1A", word: "good-natured rivalry", type: "noun phrase", translation: "rivalidad sana / amistosa", example: "There is a good-natured rivalry between the two school sports teams." },
+            { unit: "1A", word: "gut feeling", type: "noun", translation: "presentimiento / intuición", example: "I have a gut feeling that she is going to pass the exam easily." },
+            { unit: "1A", word: "job-seekers", type: "noun", translation: "buscadores de empleo / candidatos", example: "The job fair provides great opportunities for local job-seekers." },
+            { unit: "1A", word: "light-hearted response", type: "noun phrase", translation: "respuesta bromista / ligera", example: "His light-hearted response to the serious question defused the tension." },
+            { unit: "1A", word: "the point", type: "noun phrase", translation: "el quid de la cuestión / lo fundamental", example: "I think you are missing the point of this conversation." },
+            { unit: "1A", word: "work-life balance", type: "noun phrase", translation: "equilibrio entre vida laboral y personal", example: "Having a good work-life balance reduces stress and increases productivity." },
 
-            // UNIT 1B
-            { unit: "1B", word: "casual", type: "adjective", translation: "informal", example: "He wore casual clothes like jeans and a T-shirt to the barbecue." },
-            { unit: "1B", word: "checked", type: "adjective", translation: "a cuadros", example: "He loves wearing checked shirts in the autumn." },
-            { unit: "1B", word: "classic", type: "adjective", translation: "clásico/a", example: "A black dress is a classic style that never goes out of fashion." },
-            { unit: "1B", word: "cotton", type: "noun", translation: "algodón", example: "This T-shirt is made of 100% natural cotton." },
-            { unit: "1B", word: "denim", type: "noun", translation: "mezclilla / jean", example: "She bought a stylish denim jacket." },
-            { unit: "1B", word: "dress up", type: "phrasal verb", translation: "vestirse elegante / disfrazarse", example: "You don't need to dress up for the party; casual wear is fine." },
-            { unit: "1B", word: "fit", type: "verb", translation: "quedar bien (talla)", example: "These jeans fit perfectly; they are neither too tight nor too loose." },
-            { unit: "1B", word: "flowery", type: "adjective", translation: "floreado/a", example: "She chose a flowery dress for the spring wedding." },
-            { unit: "1B", word: "fur", type: "noun", translation: "piel", example: "She wore a soft faux fur coat in the winter." },
-            { unit: "1B", word: "get changed", type: "verb phrase", translation: "cambiarse de ropa", example: "I need to get changed before we go out to dinner." },
-            { unit: "1B", word: "get dressed", type: "verb phrase", translation: "vestirse", example: "I usually get dressed right after having breakfast." },
-            { unit: "1B", word: "get undressed", type: "verb phrase", translation: "desvestirse", example: "He got undressed and hopped into the shower." },
-            { unit: "1B", word: "go with", type: "phrasal verb", translation: "combinar con", example: "That tie doesn't go with your shirt." },
-            { unit: "1B", word: "hang up", type: "phrasal verb", translation: "colgar", example: "Please hang up your coat in the wardrobe." },
-            { unit: "1B", word: "hooded", type: "adjective", translation: "con capucha", example: "He wore a hooded sweatshirt to protect himself from the rain." },
-            { unit: "1B", word: "lace", type: "noun", translation: "encaje", example: "The wedding gown was decorated with beautiful lace." },
-            { unit: "1B", word: "leather", type: "noun", translation: "cuero", example: "He bought an expensive black leather jacket." },
-            { unit: "1B", word: "linen", type: "noun", translation: "lino", example: "Linen trousers are great for keeping cool in summer." },
-            { unit: "1B", word: "long-sleeved", type: "adjective", translation: "de manga larga", example: "You should wear a long-sleeved shirt to protect against sunburn." },
-            { unit: "1B", word: "loose", type: "adjective", translation: "holgado/a / flojo/a", example: "I prefer loose clothing when it's hot." },
-            { unit: "1B", word: "match", type: "verb", translation: "hacer juego / combinar", example: "The curtains match the carpet perfectly." },
-            { unit: "1B", word: "old-fashioned", type: "adjective", translation: "anticuado/a", example: "My grandfather has some old-fashioned ideas about society." },
-            { unit: "1B", word: "patterned", type: "adjective", translation: "estampado/a", example: "She bought some patterned wallpaper for her bedroom." },
-            { unit: "1B", word: "plain", type: "adjective", translation: "liso/a / sencillo/a", example: "I prefer a plain white shirt over a patterned one." },
-            { unit: "1B", word: "polo neck", type: "noun", translation: "cuello de tortuga / cuello alto", example: "He wore a black polo neck sweater under his coat." },
-            { unit: "1B", word: "scruffy", type: "adjective", translation: "desaliñado/a", example: "He looked scruffy because he hadn't shaved or combed his hair." },
-            { unit: "1B", word: "short-sleeved", type: "adjective", translation: "de manga corta", example: "A short-sleeved shirt is perfect for hot days." },
-            { unit: "1B", word: "silk", type: "noun", translation: "seda", example: "The luxury tie was made of pure Chinese silk." },
-            { unit: "1B", word: "smart", type: "adjective", translation: "elegante / prolijo/a", example: "You look very smart in that new suit." },
-            { unit: "1B", word: "spotted", type: "adjective", translation: "a lunares / moteado/a", example: "She wore a red dress with white spotted patterns." },
-            { unit: "1B", word: "striped", type: "adjective", translation: "a rayas", example: "He chose a blue and white striped tie." },
-            { unit: "1B", word: "suede", type: "noun", translation: "gamuza / ante", example: "Avoid wearing suede shoes when it is raining." },
-            { unit: "1B", word: "suit", type: "verb", translation: "quedar bien (estilo/color)", example: "That hairstyle really suits you." },
-            { unit: "1B", word: "tight", type: "adjective", translation: "ajustado/a", example: "These shoes are a bit too tight and they hurt my feet." },
-            { unit: "1B", word: "trendy", type: "adjective", translation: "de moda / moderno/a", example: "She always dines at trendy restaurants in the city center." },
-            { unit: "1B", word: "V-neck", type: "adjective", translation: "cuello en V", example: "He wore a classic grey V-neck sweater." },
-            { unit: "1B", word: "velvet", type: "noun", translation: "terciopelo", example: "The theater seats were covered in red velvet." },
-            { unit: "1B", word: "wool", type: "noun", translation: "lana", example: "This thick winter coat is made of pure wool." },
+            // UNIT 1B (Personality Adjectives only)
+            { unit: "1B", word: "absent-minded", type: "compound adjective", translation: "despiste / despistado/a", example: "He's so absent-minded that he always forgets where he parked his car." },
+            { unit: "1B", word: "ambitious", type: "adjective", translation: "ambicioso/a", example: "She is an ambitious lawyer who wants to become a partner soon." },
+            { unit: "1B", word: "arrogant", type: "adjective", translation: "arrogante", example: "He is so arrogant that he thinks he knows everything." },
+            { unit: "1B", word: "assertive", type: "adjective", translation: "asertivo/a", example: "You need to be more assertive if you want people to listen to your opinions." },
+            { unit: "1B", word: "bad-tempered", type: "compound adjective", translation: "de mal genio", example: "Our boss is very bad-tempered, especially on Monday mornings." },
+            { unit: "1B", word: "calm", type: "adjective", translation: "tranquilo/a", example: "She stayed calm despite the emergency situation." },
+            { unit: "1B", word: "cheerful", type: "adjective", translation: "alegre / risueño/a", example: "He always has a cheerful smile on his face." },
+            { unit: "1B", word: "conscientious", type: "adjective", translation: "concienzudo/a / meticuloso/a", example: "She is a conscientious worker who always completes tasks on time." },
+            { unit: "1B", word: "easy-going", type: "compound adjective", translation: "de trato fácil / relajado/a", example: "My roommate is very easy-going and never gets upset about small things." },
+            { unit: "1B", word: "eccentric", type: "adjective", translation: "excéntrico/a", example: "The eccentric artist lived in a house shaped like a giant teapot." },
+            { unit: "1B", word: "funny", type: "adjective", translation: "gracioso/a", example: "He told a funny joke that made everyone laugh." },
+            { unit: "1B", word: "immature", type: "adjective", translation: "inmaduro/a", example: "Stop being so immature and start acting like an adult." },
+            { unit: "1B", word: "impatient", type: "adjective", translation: "impaciente", example: "She grew impatient waiting for the delayed bus." },
+            { unit: "1B", word: "impulsive", type: "adjective", translation: "impulsivo/a", example: "Buying that expensive jacket was an impulsive decision." },
+            { unit: "1B", word: "insecure", type: "adjective", translation: "inseguro/a", example: "He felt insecure about speaking English in front of a large crowd." },
+            { unit: "1B", word: "insincere", type: "adjective", translation: "falso/a / hipócrita", example: "Her insincere compliments made everyone feel uncomfortable." },
+            { unit: "1B", word: "laid-back", type: "compound adjective", translation: "relajado/a / tranquilo/a", example: "They have a very laid-back lifestyle near the beach." },
+            { unit: "1B", word: "loyal", type: "adjective", translation: "leal", example: "A loyal friend will always support you through difficult times." },
+            { unit: "1B", word: "narrow-minded", type: "compound adjective", translation: "de mente cerrada", example: "He is too narrow-minded to accept new ways of working." },
+            { unit: "1B", word: "open-minded", type: "compound adjective", translation: "de mente abierta", example: "Travelers are often open-minded about trying different foods." },
+            { unit: "1B", word: "optimistic", type: "adjective", translation: "optimista", example: "Despite the difficulties, she remains optimistic about the future." },
+            { unit: "1B", word: "pessimistic", type: "adjective", translation: "pesimista", example: "Don't be so pessimistic; things will get better." },
+            { unit: "1B", word: "possessive", type: "adjective", translation: "posesivo/a", example: "He is very possessive of his toys and doesn't like sharing them." },
+            { unit: "1B", word: "practical", type: "adjective", translation: "práctico/a", example: "Let's find a practical solution to this problem rather than discussing theory." },
+            { unit: "1B", word: "rebellious", type: "adjective", translation: "rebelde", example: "Teenagers can be quite rebellious against their parents." },
+            { unit: "1B", word: "reserved", type: "adjective", translation: "reservado/a", example: "She is a quiet, reserved person who keeps her feelings to herself." },
+            { unit: "1B", word: "self-centered", type: "compound adjective", translation: "egocéntrico/a", example: "He is too self-centered to notice when others are suffering." },
+            { unit: "1B", word: "self-confident", type: "compound adjective", translation: "seguro/a de sí mismo/a", example: "She gave a self-confident presentation to the investors." },
+            { unit: "1B", word: "sensible", type: "adjective", translation: "sensato/a", example: "It would be sensible to check the weather forecast before going on a hike." },
+            { unit: "1B", word: "sensitive", type: "adjective", translation: "sensible", example: "He is very sensitive to criticism and gets upset easily." },
+            { unit: "1B", word: "strong-willed", type: "compound adjective", translation: "obstinado/a / de carácter fuerte", example: "She is a strong-willed woman who always achieves her goals." },
+            { unit: "1B", word: "stubborn", type: "adjective", translation: "testarudo/a / terco/a", example: "My brother is so stubborn that he refuses to admit when he is wrong." },
+            { unit: "1B", word: "tight-fisted", type: "compound adjective", translation: "tacaño/a", example: "My tight-fisted uncle never leaves a tip at restaurants." },
+            { unit: "1B", word: "two-faced", type: "compound adjective", translation: "hipócrita / de doble cara", example: "Beware of two-faced colleagues who talk behind your back." },
+            { unit: "1B", word: "well-balanced", type: "compound adjective", translation: "equilibrado/a", example: "She grew up in a stable, well-balanced family environment." },
+            { unit: "1B", word: "well-behaved", type: "compound adjective", translation: "bien educado/a", example: "The children were very well-behaved during the church service." },
 
-            // UNIT 2A
+            // UNIT 2A (Minor/major illnesses, conditions AND Body & Gestures)
             { unit: "2A", word: "allergic reaction", type: "noun", translation: "reacción alérgica", example: "He had an allergic reaction to the nuts in the dessert." },
+            { unit: "2A", word: "ankle", type: "noun", translation: "tobillo", example: "She twisted her ankle while jogging in the park." },
             { unit: "2A", word: "backache", type: "noun", translation: "dolor de espalda", example: "Lifting heavy boxes gave him terrible backache." },
             { unit: "2A", word: "blister", type: "noun", translation: "ampolla", example: "I got a blister on my heel from walking in new shoes." },
+            { unit: "2A", word: "blow your nose", type: "verb phrase", translation: "sonarse la nariz", example: "Please use a tissue to blow your nose." },
+            { unit: "2A", word: "brain", type: "noun", translation: "cerebro", example: "The brain is the most complex organ in the human body." },
             { unit: "2A", word: "burn", type: "verb", translation: "quemar(se)", example: "Be careful not to burn your hand on the hot stove." },
+            { unit: "2A", word: "calf", type: "noun", translation: "pantorrilla", example: "He suffered a painful cramp in his left calf during the race." },
+            { unit: "2A", word: "chest", type: "noun", translation: "pecho / tórax", example: "He complained of severe pains in his chest." },
             { unit: "2A", word: "choke", type: "verb", translation: "atragantarse", example: "He started to choke on a piece of steak." },
             { unit: "2A", word: "cold", type: "noun", translation: "resfriado", example: "She stayed at home because she caught a bad cold." },
+            { unit: "2A", word: "comb your hair", type: "verb phrase", translation: "peinarse", example: "You should comb your hair before the job interview." },
             { unit: "2A", word: "cough", type: "noun", translation: "tos", example: "He has a dry cough that keeps him awake at night." },
+            { unit: "2A", word: "cross your legs", type: "verb phrase", translation: "cruzar las piernas", example: "It's polite to sit down and cross your legs at the meeting." },
             { unit: "2A", word: "cut oneself", type: "verb phrase", translation: "cortarse", example: "He cut himself while chopping onions in the kitchen." },
             { unit: "2A", word: "diarrhoea", type: "noun", translation: "diarrea", example: "Drinking tap water during his trip gave him diarrhoea." },
             { unit: "2A", word: "dizzy", type: "adjective", translation: "mareado/a", example: "I felt dizzy after spinning around too fast." },
             { unit: "2A", word: "earache", type: "noun", translation: "dolor de oído", example: "Swimming in the cold lake gave him a painful earache." },
+            { unit: "2A", word: "elbow", type: "noun", translation: "codo", example: "He rested his elbows on the table." },
             { unit: "2A", word: "faint", type: "verb", translation: "desmayarse", example: "The room was so hot that she started to feel faint." },
             { unit: "2A", word: "flu", type: "noun", translation: "gripe / influenza", example: "He missed a week of work because he was down with the flu." },
+            { unit: "2A", word: "fold your arms", type: "verb phrase", translation: "cruzar los brazos", example: "He stood there with his arms folded, looking annoyed." },
             { unit: "2A", word: "food poisoning", type: "noun", translation: "intoxicación alimentaria", example: "They got food poisoning after eating raw shellfish." },
+            { unit: "2A", word: "forehead", type: "noun", translation: "frente", example: "She wiped the sweat from her forehead." },
             { unit: "2A", word: "headache", type: "noun", translation: "dolor de cabeza", example: "Take an aspirin if you have a bad headache." },
+            { unit: "2A", word: "heart", type: "noun", translation: "corazón", example: "Regular exercise keeps your heart healthy." },
+            { unit: "2A", word: "heel", type: "noun", translation: "talón", example: "The new shoes rubbed against my heel and gave me a blister." },
             { unit: "2A", word: "high blood pressure", type: "noun", translation: "presión arterial alta", example: "Eating too much salt can lead to high blood pressure." },
+            { unit: "2A", word: "hip", type: "noun", translation: "cadera", example: "She fell and broke her hip." },
+            { unit: "2A", word: "kidneys", type: "noun", translation: "riñones", example: "The kidneys help filter waste products from the blood." },
             { unit: "2A", word: "lie down", type: "phrasal verb", translation: "acostarse / tumbarse", example: "You should lie down on the sofa if you're not feeling well." },
+            { unit: "2A", word: "liver", type: "noun", translation: "hígado", example: "Drinking alcohol heavily can damage your liver." },
+            { unit: "2A", word: "lungs", type: "noun", translation: "pulmones", example: "Smoking causes severe damage to your lungs." },
+            { unit: "2A", word: "nod", type: "verb", translation: "asentir con la cabeza", example: "She nodded her head in agreement with my proposal." },
+            { unit: "2A", word: "palm", type: "noun", translation: "palma de la mano", example: "He read his palm to predict his future." },
             { unit: "2A", word: "pass out", type: "phrasal verb", translation: "desmayarse / perder el conocimiento", example: "The runner passed out due to dehydration." },
+            { unit: "2A", word: "point", type: "verb", translation: "señalar / apuntar", example: "Don't point your finger at people; it's rude." },
             { unit: "2A", word: "rash", type: "noun", translation: "erupción cutánea / sarpullido", example: "She got a red rash on her arm after touching the plant." },
             { unit: "2A", word: "recover", type: "verb", translation: "recuperarse", example: "It took him several weeks to recover from the surgery." },
+            { unit: "2A", word: "scratch", type: "verb", translation: "rascar(se) / arañar", example: "The cat managed to scratch his hand." },
+            { unit: "2A", word: "shrug", type: "verb", translation: "encogerse de hombros", example: "When I asked him the question, he just shrugged his shoulders." },
+            { unit: "2A", word: "sigh", type: "verb", translation: "suspirar", example: "She let out a deep sigh of relief." },
             { unit: "2A", word: "sneeze", type: "verb", translation: "estornudar", example: "Dust always makes me sneeze." },
+            { unit: "2A", word: "snore", type: "verb", translation: "roncar", example: "He snores so loudly that I can't sleep." },
             { unit: "2A", word: "sore throat", type: "noun", translation: "dolor de garganta", example: "I have a sore throat and it hurts when I swallow." },
             { unit: "2A", word: "sprain", type: "verb", translation: "torcerse / hacerse un esguince", example: "She managed to sprain her ankle while playing tennis." },
+            { unit: "2A", word: "stare", type: "verb", translation: "mirar fijamente", example: "It's impolite to stare at people." },
             { unit: "2A", word: "stomach ache", type: "noun", translation: "dolor de estómago", example: "Eating too much candy gave the child a stomach ache." },
+            { unit: "2A", word: "stretch", type: "verb", translation: "estirarse", example: "It's a good idea to stretch your muscles before exercising." },
             { unit: "2A", word: "sunburn", type: "noun", translation: "quemadura de sol", example: "Always apply sunscreen to avoid getting sunburn." },
             { unit: "2A", word: "swollen", type: "adjective", translation: "hinchado/a", example: "His ankle was swollen after he tripped on the stairs." },
             { unit: "2A", word: "temperature", type: "noun", translation: "temperatura / fiebre", example: "The doctor checked his temperature and saw he had a fever." },
+            { unit: "2A", word: "thigh", type: "noun", translation: "muslo", example: "He pulled a muscle in his thigh during football practice." },
             { unit: "2A", word: "toothache", type: "noun", translation: "dolor de muelas", example: "You need to visit the dentist if you have toothache." },
             { unit: "2A", word: "unconscious", type: "adjective", translation: "inconsciente", example: "The driver was found unconscious inside the crashed car." },
             { unit: "2A", word: "vomit", type: "verb", translation: "vomitar", example: "The child began to vomit after eating spoiled food." },
+            { unit: "2A", word: "wave", type: "verb", translation: "saludar con la mano", example: "She waved goodbye to her friends from the train." },
+            { unit: "2A", word: "whisper", type: "verb", translation: "susurrar", example: "They began to whisper so they wouldn't disturb others in the library." },
+            { unit: "2A", word: "wink", type: "verb", translation: "guiñar un ojo", example: "He gave me a friendly wink to show he was joking." },
+            { unit: "2A", word: "wrist", type: "noun", translation: "muñeca", example: "She wears a gold watch on her left wrist." },
+            { unit: "2A", word: "yawn", type: "verb", translation: "bostezar", example: "The boring speech made everyone yawn." },
 
-            // UNIT 2B
-            { unit: "2B", word: "aisle seat", type: "noun", translation: "asiento de pasillo", example: "I prefer an aisle seat so I can get up easily without disturbing others." },
-            { unit: "2B", word: "arrivals", type: "noun", translation: "llegadas", example: "We met our relatives in the arrivals hall at the airport." },
-            { unit: "2B", word: "baggage reclaim", type: "noun", translation: "retiro de equipaje", example: "After landing, proceed to baggage reclaim to collect your suitcases." },
-            { unit: "2B", word: "boarding pass", type: "noun", translation: "tarjeta de embarque", example: "You must show your boarding pass before getting on the plane." },
-            { unit: "2B", word: "cabin crew", type: "noun", translation: "tripulación de cabina", example: "The cabin crew demonstrated the emergency safety procedures." },
-            { unit: "2B", word: "check in", type: "phrasal verb", translation: "registrarse / facturar equipaje", example: "We need to check in our luggage two hours before the flight." },
-            { unit: "2B", word: "customs", type: "noun", translation: "aduana", example: "You must go through customs if you have goods to declare." },
-            { unit: "2B", word: "departures", type: "noun", translation: "salidas", example: "Let's head to the departures terminal to find our gate." },
-            { unit: "2B", word: "drop off", type: "phrasal verb", translation: "dejar a alguien / dejar algo", example: "My friend offered to drop me off at the airport." },
-            { unit: "2B", word: "fill in", type: "phrasal verb", translation: "completar / rellenar (un formulario)", example: "Passengers must fill in a landing card before arrival." },
-            { unit: "2B", word: "flight attendant", type: "noun", translation: "auxiliar de vuelo / azafata", example: "The flight attendant served us drinks and snacks during the flight." },
-            { unit: "2B", word: "gate", type: "noun", translation: "puerta de embarque", example: "Flight BA142 is now boarding at gate 17." },
-            { unit: "2B", word: "get on", type: "phrasal verb", translation: "subirse a (avión, tren, bus)", example: "We were the last passengers to get on the plane." },
-            { unit: "2B", word: "hand luggage", type: "noun", translation: "equipaje de mano", example: "Only one piece of hand luggage is allowed in the cabin." },
-            { unit: "2B", word: "jet lag", type: "noun", translation: "desfase horario / jet lag", example: "It took her three days to get over her jet lag after flying to Tokyo." },
-            { unit: "2B", word: "land", type: "verb", translation: "aterrizar", example: "The plane is scheduled to land at 6:00 AM." },
-            { unit: "2B", word: "runway", type: "noun", translation: "pista de aterrizaje / despegue", example: "The airplane waited on the runway for clearance to take off." },
-            { unit: "2B", word: "take off", type: "phrasal verb", translation: "despegar", example: "The plane will take off as soon as the weather improves." },
-            { unit: "2B", word: "terminal", type: "noun", translation: "terminal", example: "International flights depart from Terminal 2." },
-            { unit: "2B", word: "turbulence", type: "noun", translation: "turbulencia", example: "Please fasten your seatbelts as we are experiencing some turbulence." },
-            { unit: "2B", word: "window seat", type: "noun", translation: "asiento de ventana", example: "He loves the window seat because he likes looking at the clouds." },
+            // UNIT 2B (Clothing & Fashion ONLY)
+            { unit: "2B", word: "casual", type: "adjective", translation: "informal", example: "He wore casual clothes like jeans and a T-shirt to the barbecue." },
+            { unit: "2B", word: "checked", type: "adjective", translation: "a cuadros", example: "He loves wearing checked shirts in the autumn." },
+            { unit: "2B", word: "classic", type: "adjective", translation: "clásico/a", example: "A black dress is a classic style that never goes out of fashion." },
+            { unit: "2B", word: "cotton", type: "noun", translation: "algodón", example: "This T-shirt is made of 100% natural cotton." },
+            { unit: "2B", word: "denim", type: "noun", translation: "mezclilla / jean", example: "She bought a stylish denim jacket." },
+            { unit: "2B", word: "dress up", type: "phrasal verb", translation: "vestirse elegante / disfrazarse", example: "You don't need to dress up for the party; casual wear is fine." },
+            { unit: "2B", word: "fit", type: "verb", translation: "quedar bien (talla)", example: "These jeans fit perfectly; they are neither too tight nor too loose." },
+            { unit: "2B", word: "flowery", type: "adjective", translation: "floreado/a", example: "She chose a flowery dress for the spring wedding." },
+            { unit: "2B", word: "fur", type: "noun", translation: "piel", example: "She wore a soft faux fur coat in the winter." },
+            { unit: "2B", word: "get changed", type: "verb phrase", translation: "cambiarse de ropa", example: "I need to get changed before we go out to dinner." },
+            { unit: "2B", word: "get dressed", type: "verb phrase", translation: "vestirse", example: "I usually get dressed right after having breakfast." },
+            { unit: "2B", word: "get undressed", type: "verb phrase", translation: "desvestirse", example: "He got undressed and hopped into the shower." },
+            { unit: "2B", word: "go with", type: "phrasal verb", translation: "combinar con", example: "That tie doesn't go with your shirt." },
+            { unit: "2B", word: "hang up", type: "phrasal verb", translation: "colgar", example: "Please hang up your coat in the wardrobe." },
+            { unit: "2B", word: "hooded", type: "adjective", translation: "con capucha", example: "He wore a hooded sweatshirt to protect himself from the rain." },
+            { unit: "2B", word: "lace", type: "noun", translation: "encaje", example: "The wedding gown was decorated with beautiful lace." },
+            { unit: "2B", word: "leather", type: "noun", translation: "cuero", example: "He bought an expensive black leather jacket." },
+            { unit: "2B", word: "linen", type: "noun", translation: "lino", example: "Linen trousers are great for keeping cool in summer." },
+            { unit: "2B", word: "long-sleeved", type: "adjective", translation: "de manga larga", example: "You should wear a long-sleeved shirt to protect against sunburn." },
+            { unit: "2B", word: "loose", type: "adjective", translation: "holgado/a / flojo/a", example: "I prefer loose clothing when it's hot." },
+            { unit: "2B", word: "match", type: "verb", translation: "hacer juego / combinar", example: "The curtains match the carpet perfectly." },
+            { unit: "2B", word: "old-fashioned", type: "adjective", translation: "anticuado/a", example: "My grandfather has some old-fashioned ideas about society." },
+            { unit: "2B", word: "patterned", type: "adjective", translation: "estampado/a", example: "She bought some patterned wallpaper for her bedroom." },
+            { unit: "2B", word: "plain", type: "adjective", translation: "liso/a / sencillo/a", example: "I prefer a plain white shirt over a patterned one." },
+            { unit: "2B", word: "polo neck", type: "noun", translation: "cuello de tortuga / cuello alto", example: "He wore a black polo neck sweater under his coat." },
+            { unit: "2B", word: "scruffy", type: "adjective", translation: "desaliñado/a", example: "He looked scruffy because he hadn't shaved or combed his hair." },
+            { unit: "2B", word: "short-sleeved", type: "adjective", translation: "de manga corta", example: "A short-sleeved shirt is perfect for hot days." },
+            { unit: "2B", word: "silk", type: "noun", translation: "seda", example: "The luxury tie was made of pure Chinese silk." },
+            { unit: "2B", word: "smart", type: "adjective", translation: "elegante / prolijo/a", example: "You look very smart in that new suit." },
+            { unit: "2B", word: "spotted", type: "adjective", translation: "a lunares / moteado/a", example: "She wore a red dress with white spotted patterns." },
+            { unit: "2B", word: "striped", type: "adjective", translation: "a rayas", example: "He chose a blue and white striped tie." },
+            { unit: "2B", word: "suede", type: "noun", translation: "gamuza / ante", example: "Avoid wearing suede shoes when it is raining." },
+            { unit: "2B", word: "suit", type: "verb", translation: "quedar bien (estilo/color)", example: "That hairstyle really suits you." },
+            { unit: "2B", word: "tight", type: "adjective", translation: "ajustado/a", example: "These shoes are a bit too tight and they hurt my feet." },
+            { unit: "2B", word: "trendy", type: "adjective", translation: "de moda / moderno/a", example: "She always dines at trendy restaurants in the city center." },
+            { unit: "2B", word: "V-neck", type: "adjective", translation: "cuello en V", example: "He wore a classic grey V-neck sweater." },
+            { unit: "2B", word: "velvet", type: "noun", translation: "terciopelo", example: "The theater seats were covered in red velvet." },
+            { unit: "2B", word: "wool", type: "noun", translation: "lana", example: "This thick winter coat is made of pure wool." },
 
-            // UNIT 3A
-            { unit: "3A", word: "blizzard", type: "noun", translation: "tormenta de nieve", example: "The school was closed due to a heavy blizzard." },
-            { unit: "3A", word: "breeze", type: "noun", translation: "brisa", example: "A cool sea breeze made the hot afternoon much more pleasant." },
-            { unit: "3A", word: "chilly", type: "adjective", translation: "frío/a / fresco/a", example: "It's a bit chilly today, so you might need a jacket." },
-            { unit: "3A", word: "clear up", type: "phrasal verb", translation: "despejarse (el cielo)", example: "The weather forecast says the rain will stop and it will clear up later." },
-            { unit: "3A", word: "cool down", type: "phrasal verb", translation: "refrescar / enfriarse", example: "The temperature will cool down in the evening." },
-            { unit: "3A", word: "damp", type: "adjective", translation: "húmedo/a (ropa, pared)", example: "The clothes are still damp; they need more time to dry." },
-            { unit: "3A", word: "drizzling", type: "adjective", translation: "lloviznando", example: "It’s not raining heavily, just drizzling a bit." },
-            { unit: "3A", word: "drought", type: "noun", translation: "sequía", example: "The crops failed due to the worst drought in thirty years." },
-            { unit: "3A", word: "flood", type: "noun", translation: "inundación", example: "The heavy rain caused a massive flood in the valley." },
-            { unit: "3A", word: "fog", type: "noun", translation: "niebla (densa)", example: "Thick fog made driving extremely dangerous on the highway." },
-            { unit: "3A", word: "freezing", type: "adjective", translation: "helado/a / gélido/a", example: "It’s freezing outside; wear your gloves and scarf." },
-            { unit: "3A", word: "gale", type: "noun", translation: "vendaval / viento muy fuerte", example: "The strong gale blew down several trees in our street." },
-            { unit: "3A", word: "heatwave", type: "noun", translation: "ola de calor", example: "Many elderly people suffered during the summer heatwave." },
-            { unit: "3A", word: "humid", type: "adjective", translation: "húmedo/a (clima / aire)", example: "The air is very humid in tropical rainforests." },
-            { unit: "3A", word: "hurricane", type: "noun", translation: "huracán", example: "The coastal town was evacuated before the hurricane hit." },
-            { unit: "3A", word: "lightning", type: "noun", translation: "relámpago / rayo", example: "A flash of lightning illuminated the dark sky." },
-            { unit: "3A", word: "mild", type: "adjective", translation: "templado/a / suave", example: "We had a mild winter this year, with very little snow." },
-            { unit: "3A", word: "mist", type: "noun", translation: "neblina (ligera)", example: "A thin mist lay over the lake in the early morning." },
-            { unit: "3A", word: "monsoon", type: "noun", translation: "monzón", example: "The monsoon season brings heavy rains to Southeast Asia." },
-            { unit: "3A", word: "pouring", type: "adjective", translation: "lloviendo a cántaros", example: "Don't go out now; it's pouring rain." },
-            { unit: "3A", word: "scorching", type: "adjective", translation: "abrasador/a / sofocante", example: "It was a scorching hot day in the desert." },
-            { unit: "3A", word: "shower", type: "noun", translation: "chubasco / chaparrón", example: "There will be a brief shower in the afternoon, but it won't last long." },
-            { unit: "3A", word: "smog", type: "noun", translation: "esmog / niebla contaminante", example: "The city is often covered in a thick blanket of smog." },
-            { unit: "3A", word: "thunder", type: "noun", translation: "trueno", example: "The sound of loud thunder frightened the dog." },
-            { unit: "3A", word: "warm up", type: "phrasal verb", translation: "calentarse", example: "I hope the weather warms up before our beach trip." },
+            // UNIT 3A (Air Travel ONLY)
+            { unit: "3A", word: "aisle seat", type: "noun", translation: "asiento de pasillo", example: "I prefer an aisle seat so I can get up easily without disturbing others." },
+            { unit: "3A", word: "arrivals", type: "noun", translation: "llegadas", example: "We met our relatives in the arrivals hall at the airport." },
+            { unit: "3A", word: "baggage reclaim", type: "noun", translation: "retiro de equipaje", example: "After landing, proceed to baggage reclaim to collect your suitcases." },
+            { unit: "3A", word: "boarding pass", type: "noun", translation: "tarjeta de embarque", example: "You must show your boarding pass before getting on the plane." },
+            { unit: "3A", word: "cabin crew", type: "noun", translation: "tripulación de cabina", example: "The cabin crew demonstrated the emergency safety procedures." },
+            { unit: "3A", word: "check in", type: "phrasal verb", translation: "registrarse / facturar equipaje", example: "We need to check in our luggage two hours before the flight." },
+            { unit: "3A", word: "customs", type: "noun", translation: "aduana", example: "You must go through customs if you have goods to declare." },
+            { unit: "3A", word: "departures", type: "noun", translation: "salidas", example: "Let's head to the departures terminal to find our gate." },
+            { unit: "3A", word: "drop off", type: "phrasal verb", translation: "dejar a alguien / dejar algo", example: "My friend offered to drop me off at the airport." },
+            { unit: "3A", word: "fill in", type: "phrasal verb", translation: "completar / rellenar (un formulario)", example: "Passengers must fill in a landing card before arrival." },
+            { unit: "3A", word: "flight attendant", type: "noun", translation: "auxiliar de vuelo / azafata", example: "The flight attendant served us drinks and snacks during the flight." },
+            { unit: "3A", word: "gate", type: "noun", translation: "puerta de embarque", example: "Flight BA142 is now boarding at gate 17." },
+            { unit: "3A", word: "get on", type: "phrasal verb", translation: "subirse a (avión, tren, bus)", example: "We were the last passengers to get on the plane." },
+            { unit: "3A", word: "hand luggage", type: "noun", translation: "equipaje de mano", example: "Only one piece of hand luggage is allowed in the cabin." },
+            { unit: "3A", word: "jet lag", type: "noun", translation: "desfase horario / jet lag", example: "It took her three days to get over her jet lag after flying to Tokyo." },
+            { unit: "3A", word: "land", type: "verb", translation: "aterrizar", example: "The plane is scheduled to land at 6:00 AM." },
+            { unit: "3A", word: "runway", type: "noun", translation: "pista de aterrizaje / despegue", example: "The airplane waited on the runway for clearance to take off." },
+            { unit: "3A", word: "take off", type: "phrasal verb", translation: "despegar", example: "The plane will take off as soon as the weather improves." },
+            { unit: "3A", word: "terminal", type: "noun", translation: "terminal", example: "International flights depart from Terminal 2." },
+            { unit: "3A", word: "turbulence", type: "noun", translation: "turbulencia", example: "Please fasten your seatbelts as we are experiencing some turbulence." },
+            { unit: "3A", word: "window seat", type: "noun", translation: "asiento de ventana", example: "He loves the window seat because he likes looking at the clouds." },
 
-            // UNIT 3B
-            { unit: "3B", word: "bewildered", type: "adjective", translation: "desconcertado/a / perplejo/a", example: "He was bewildered by the complex instructions." },
-            { unit: "3B", word: "delighted", type: "adjective", translation: "encantado/a / deleitado/a", example: "She was delighted to receive a bouquet of flowers." },
-            { unit: "3B", word: "desperate", type: "adjective", translation: "desesperado/a", example: "They were desperate for food and water after being lost for two days." },
-            { unit: "3B", word: "devastated", type: "adjective", translation: "devastado/a / destrozado/a", example: "She was devastated when she heard the tragic news." },
-            { unit: "3B", word: "disappointed", type: "adjective", translation: "decepcionado/a / desilusionado/a", example: "I was disappointed that the movie wasn't as good as I expected." },
-            { unit: "3B", word: "exasperated", type: "adjective", translation: "exasperado/a", example: "The teacher became exasperated by the students' constant talking." },
-            { unit: "3B", word: "grateful", type: "adjective", translation: "agradecido/a", example: "I am extremely grateful for all your help." },
-            { unit: "3B", word: "gutted", type: "adjective", translation: "destrozado/a (coloquial)", example: "He was gutted when his team lost the championship game." },
-            { unit: "3B", word: "homesick", type: "adjective", translation: "nostálgico/a (extrañar el hogar)", example: "She felt homesick during her first semester at university abroad." },
-            { unit: "3B", word: "lonely", type: "adjective", translation: "solitario/a / solo/a", example: "Living alone in a big city can feel very lonely." },
-            { unit: "3B", word: "offended", type: "adjective", translation: "ofendido/a", example: "He got offended because they didn't invite him to the party." },
-            { unit: "3B", word: "overwhelmed", type: "adjective", translation: "abrumado/a", example: "She felt overwhelmed by the amount of work she had to do." },
-            { unit: "3B", word: "proud", type: "adjective", translation: "orgulloso/a", example: "Her parents were very proud of her academic achievements." },
-            { unit: "3B", word: "relieved", type: "adjective", translation: "aliviado/a", example: "We were relieved to hear that the surgery was successful." },
-            { unit: "3B", word: "shattered", type: "adjective", translation: "agotado/a / exhausto/a (coloquial)", example: "After working a double shift, she was absolutely shattered." },
-            { unit: "3B", word: "shocked", type: "adjective", translation: "conmocionado/a / estupefacto/a", example: "Everyone was shocked by the sudden news of his departure." },
-            { unit: "3B", word: "stunned", type: "adjective", translation: "atónito/a / pasmado/a", example: "She was stunned into silence by his unexpected proposal." },
-            { unit: "3B", word: "terrified", type: "adjective", translation: "aterrorizado/a", example: "The child was terrified of the dark." },
-            { unit: "3B", word: "thrilled", type: "adjective", translation: "emocionado/a / entusiasmado/a", example: "They were thrilled to win a free trip to Hawaii." },
+            // UNIT 3B (Adverbs and Adverbial Phrases - Complete from Vocabulary Bank)
+            { unit: "3B", word: "actually", type: "adverb", translation: "en realidad / de hecho", example: "She looks younger than me, but actually she's two years older." },
+            { unit: "3B", word: "apparently", type: "adverb", translation: "al parecer / por lo visto", example: "I thought they'd broken up, but apparently they're back together again." },
+            { unit: "3B", word: "at the end", type: "adverb", translation: "al final / al terminar", example: "At the end of a film, I always stay and watch the credits roll." },
+            { unit: "3B", word: "at the moment", type: "adverb", translation: "por el momento / en este momento", example: "At the moment they're renting a flat, but they're hoping to buy one soon." },
+            { unit: "3B", word: "basically", type: "adverb", translation: "básicamente", example: "Basically, it's quite a simple idea." },
+            { unit: "3B", word: "certainly", type: "adverb", translation: "ciertamente / sin duda", example: "I'm certainly never going back to that restaurant; it was awful." },
+            { unit: "3B", word: "especially", type: "adverb", translation: "especialmente / sobre todo", example: "I love most kinds of music, but especially jazz." },
+            { unit: "3B", word: "even", type: "adverb", translation: "incluso", example: "I've been all over the USA - I've even been to Alaska!" },
+            { unit: "3B", word: "ever", type: "adverb", translation: "alguna vez / jamás", example: "Have you ever been to the USA?" },
+            { unit: "3B", word: "eventually", type: "adverb", translation: "finalmente / con el tiempo", example: "It took us over five hours to get there, but eventually we were able to relax." },
+            { unit: "3B", word: "gradually", type: "adverb", translation: "poco a poco / gradualmente", example: "She's been ill for weeks, but gradually she's getting better." },
+            { unit: "3B", word: "hard", type: "adverb", translation: "duramente / con esfuerzo", example: "He trains very hard - at least three hours a day." },
+            { unit: "3B", word: "hardly", type: "adverb", translation: "apenas / casi no", example: "It's incredibly foggy. I can hardly see anything." },
+            { unit: "3B", word: "ideally", type: "adverb", translation: "idealmente / en un mundo ideal", example: "Ideally, we'd go to Australia if we could afford it." },
+            { unit: "3B", word: "in fact", type: "adverb", translation: "de hecho / en realidad", example: "I thought the job was going to be difficult, but in fact it's quite easy." },
+            { unit: "3B", word: "in the end", type: "adverb", translation: "al final / finalmente", example: "I didn't want to go, but in the end they persuaded me." },
+            { unit: "3B", word: "late", type: "adverb", translation: "tarde", example: "I hate it when people arrive late for meetings." },
+            { unit: "3B", word: "lately", type: "adverb", translation: "últimamente", example: "I haven't heard from Mike lately. He must be very busy." },
+            { unit: "3B", word: "near", type: "adverb", translation: "cerca", example: "Excuse me, is there a bank near here?" },
+            { unit: "3B", word: "nearly", type: "adverb", translation: "casi / por poco", example: "I've nearly finished my book. I'm on the last chapter." },
+            { unit: "3B", word: "obviously", type: "adverb", translation: "obviamente / evidentemente", example: "She's only 14, so obviously she can't stay at home on her own." },
+            { unit: "3B", word: "specially", type: "adverb", translation: "especialmente / a propósito", example: "My wedding dress was specially made for me by a dressmaker." },
+            { unit: "3B", word: "still", type: "adverb", translation: "todavía / aún", example: "He's 35, but he still lives with his parents." },
+            { unit: "3B", word: "yet", type: "adverb", translation: "aún / todavía / ya", example: "Have you found a job yet?" },
 
-            // UNIT 4A
-            { unit: "4A", word: "acquit", type: "verb", translation: "absolver / declarar inocente", example: "The jury decided to acquit the defendant due to a lack of evidence." },
-            { unit: "4A", word: "arrest", type: "verb", translation: "arrestar", example: "The police came to arrest him for shoplifting." },
-            { unit: "4A", word: "burglar", type: "noun", translation: "ladrón/ona (de viviendas)", example: "The burglar broke in through the kitchen window." },
-            { unit: "4A", word: "charge", type: "verb", translation: "acusar formalmente / imputar", example: "They decided to charge him with armed robbery." },
-            { unit: "4A", word: "commit", type: "verb", translation: "cometer", example: "It is a serious crime to commit fraud." },
-            { unit: "4A", word: "court", type: "noun", translation: "tribunal / corte de justicia", example: "He had to appear in court as a witness." },
-            { unit: "4A", word: "evidence", type: "noun", translation: "evidencia / pruebas", example: "The police gathered physical evidence from the crime scene." },
-            { unit: "4A", word: "fraud", type: "noun", translation: "fraude", example: "He was sentenced to prison for credit card fraud." },
-            { unit: "4A", word: "guilty", type: "adjective", translation: "culpable", example: "The judge found him guilty of tax evasion." },
-            { unit: "4A", word: "hacking", type: "noun", translation: "piratería informática", example: "He was arrested for hacking into government databases." },
-            { unit: "4A", word: "hijacking", type: "noun", translation: "secuestro (de aviones o vehículos)", example: "The hijacking of the plane ended without any casualties." },
-            { unit: "4A", word: "judge", type: "noun", translation: "juez/jueza", example: "The judge passed a harsh sentence on the criminal." },
-            { unit: "4A", word: "jury", type: "noun", translation: "jurado", example: "The jury took three hours to reach their verdict." },
-            { unit: "4A", word: "kidnapping", type: "noun", translation: "secuestro (de personas)", example: "The kidnappers demanded a ransom of one million dollars." },
-            { unit: "4A", word: "mugging", type: "noun", translation: "asalto / atraco callejero", example: "Street mugging has increased in the downtown area." },
-            { unit: "4A", word: "murder", type: "noun", translation: "asesinato", example: "He was charged with the murder of his business partner." },
-            { unit: "4A", word: "proof", type: "noun", translation: "prueba (irrefutable)", example: "Do you have any proof that you own this bicycle?" },
-            { unit: "4A", word: "question", type: "verb", translation: "interrogar", example: "The police wanted to question the suspect about his whereabouts." },
-            { unit: "4A", word: "robbery", type: "noun", translation: "robo (con intimidación o fuerza)", example: "They planned a bank robbery but were caught by the alarms." },
-            { unit: "4A", word: "sentence", type: "noun", translation: "sentencia / condena", example: "The judge gave him a five-year prison sentence." },
-            { unit: "4A", word: "shoplifting", type: "noun", translation: "hurto en tiendas", example: "Shoplifting cost the retail store thousands of dollars last year." },
-            { unit: "4A", word: "smuggling", type: "noun", translation: "contrabando", example: "He was caught smuggling exotic animals across the border." },
-            { unit: "4A", word: "stalking", type: "noun", translation: "acoso obsesivo", example: "She reported him to the police for stalking her." },
-            { unit: "4A", word: "suspect", type: "noun", translation: "sospechoso/a", example: "The main suspect was arrested near the train station." },
-            { unit: "4A", word: "terrorism", type: "noun", translation: "terrorismo", example: "Governments worldwide are working together to combat international terrorism." },
-            { unit: "4A", word: "theft", type: "noun", translation: "robo / hurto", example: "The car theft occurred while they were asleep inside." },
-            { unit: "4A", word: "trial", type: "noun", translation: "juicio", example: "The high-profile murder trial lasted for three months." },
-            { unit: "4A", word: "verdict", type: "noun", translation: "veredicto", example: "The court eagerly awaited the jury's verdict." },
-            { unit: "4A", word: "witness", type: "noun", translation: "testigo", example: "An eyewitness saw the suspect fleeing the scene." },
+            // UNIT 4A (Weather & Environment ONLY)
+            { unit: "4A", word: "blizzard", type: "noun", translation: "tormenta de nieve", example: "The school was closed due to a heavy blizzard." },
+            { unit: "4A", word: "breeze", type: "noun", translation: "brisa", example: "A cool sea breeze made the hot afternoon much more pleasant." },
+            { unit: "4A", word: "chilly", type: "adjective", translation: "frío/a / fresco/a", example: "It's a bit chilly today, so you might need a jacket." },
+            { unit: "4A", word: "clear up", type: "phrasal verb", translation: "despejarse (el cielo)", example: "The weather forecast says the rain will stop and it will clear up later." },
+            { unit: "4A", word: "cool down", type: "phrasal verb", translation: "refrescar / enfriarse", example: "The temperature will cool down in the evening." },
+            { unit: "4A", word: "damp", type: "adjective", translation: "húmedo/a (ropa, pared)", example: "The clothes are still damp; they need more time to dry." },
+            { unit: "4A", word: "drizzling", type: "adjective", translation: "lloviznando", example: "It’s not raining heavily, just drizzling a bit." },
+            { unit: "4A", word: "drought", type: "noun", translation: "sequía", example: "The crops failed due to the worst drought in thirty years." },
+            { unit: "4A", word: "flood", type: "noun", translation: "inundación", example: "The heavy rain caused a massive flood in the valley." },
+            { unit: "4A", word: "fog", type: "noun", translation: "niebla (densa)", example: "Thick fog made driving extremely dangerous on the highway." },
+            { unit: "4A", word: "freezing", type: "adjective", translation: "helado/a / gélido/a", example: "It’s freezing outside; wear your gloves and scarf." },
+            { unit: "4A", word: "gale", type: "noun", translation: "vendaval / viento muy fuerte", example: "The strong gale blew down several trees in our street." },
+            { unit: "4A", word: "heatwave", type: "noun", translation: "ola de calor", example: "Many elderly people suffered during the summer heatwave." },
+            { unit: "4A", word: "humid", type: "adjective", translation: "húmedo/a (clima / aire)", example: "The air is very humid in tropical rainforests." },
+            { unit: "4A", word: "hurricane", type: "noun", translation: "huracán", example: "The coastal town was evacuated before the hurricane hit." },
+            { unit: "4A", word: "lightning", type: "noun", translation: "relámpago / rayo", example: "A flash of lightning illuminated the dark sky." },
+            { unit: "4A", word: "mild", type: "adjective", translation: "templado/a / suave", example: "We had a mild winter this year, with very little snow." },
+            { unit: "4A", word: "mist", type: "noun", translation: "neblina (ligera)", example: "A thin mist lay over the lake in the early morning." },
+            { unit: "4A", word: "monsoon", type: "noun", translation: "monzón", example: "The monsoon season brings heavy rains to Southeast Asia." },
+            { unit: "4A", word: "pouring", type: "adjective", translation: "lloviendo a cántaros", example: "Don't go out now; it's pouring rain." },
+            { unit: "4A", word: "scorching", type: "adjective", translation: "abrasador/a / sofocante", example: "It was a scorching hot day in the desert." },
+            { unit: "4A", word: "shower", type: "noun", translation: "chubasco / chaparrón", example: "There will be a brief shower in the afternoon, but it won't last long." },
+            { unit: "4A", word: "smog", type: "noun", translation: "esmog / niebla contaminante", example: "The city is often covered in a thick blanket of smog." },
+            { unit: "4A", word: "thunder", type: "noun", translation: "trueno", example: "The sound of loud thunder frightened the dog." },
+            { unit: "4A", word: "warm up", type: "phrasal verb", translation: "calentarse", example: "I hope the weather warms up before our beach trip." },
 
-            // UNIT 4B
-            { unit: "4B", word: "ankle", type: "noun", translation: "tobillo", example: "She twisted her ankle while jogging in the park." },
-            { unit: "4B", word: "blow your nose", type: "verb phrase", translation: "sonarse la nariz", example: "Please use a tissue to blow your nose." },
-            { unit: "4B", word: "brain", type: "noun", translation: "cerebro", example: "The brain is the most complex organ in the human body." },
-            { unit: "4B", word: "calf", type: "noun", translation: "pantorrilla", example: "He suffered a painful cramp in his left calf during the race." },
-            { unit: "4B", word: "chest", type: "noun", translation: "pecho / tórax", example: "He complained of severe pains in his chest." },
-            { unit: "4B", word: "comb your hair", type: "verb phrase", translation: "peinarse", example: "You should comb your hair before the job interview." },
-            { unit: "4B", word: "cross your legs", type: "verb phrase", translation: "cruzar las piernas", example: "It's polite to sit down and cross your legs at the meeting." },
-            { unit: "4B", word: "elbow", type: "noun", translation: "codo", example: "He rested his elbows on the table." },
-            { unit: "4B", word: "fold your arms", type: "verb phrase", translation: "cruzar los brazos", example: "He stood there with his arms folded, looking annoyed." },
-            { unit: "4B", word: "forehead", type: "noun", translation: "frente", example: "She wiped the sweat from her forehead." },
-            { unit: "4B", word: "heart", type: "noun", translation: "corazón", example: "Regular exercise keeps your heart healthy." },
-            { unit: "4B", word: "heel", type: "noun", translation: "talón", example: "The new shoes rubbed against my heel and gave me a blister." },
-            { unit: "4B", word: "hip", type: "noun", translation: "cadera", example: "She fell and broke her hip." },
-            { unit: "4B", word: "kidneys", type: "noun", translation: "riñones", example: "The kidneys help filter waste products from the blood." },
-            { unit: "4B", word: "liver", type: "noun", translation: "hígado", example: "Drinking alcohol heavily can damage your liver." },
-            { unit: "4B", word: "lungs", type: "noun", translation: "pulmones", example: "Smoking causes severe damage to your lungs." },
-            { unit: "4B", word: "nod", type: "verb", translation: "asentir con la cabeza", example: "She nodded her head in agreement with my proposal." },
-            { unit: "4B", word: "palm", type: "noun", translation: "palma de la mano", example: "He read his palm to predict his future." },
-            { unit: "4B", word: "point", type: "verb", translation: "señalar / apuntar", example: "Don't point your finger at people; it's rude." },
-            { unit: "4B", word: "scratch", type: "verb", translation: "rascar(se) / arañar", example: "The cat managed to scratch his hand." },
-            { unit: "4B", word: "shrug", type: "verb", translation: "encogerse de hombros", example: "When I asked him the question, he just shrugged his shoulders." },
-            { unit: "4B", word: "sigh", type: "verb", translation: "suspirar", example: "She let out a deep sigh of relief." },
-            { unit: "4B", word: "snore", type: "verb", translation: "roncar", example: "He snores so loudly that I can't sleep." },
-            { unit: "4B", word: "stare", type: "verb", translation: "mirar fijamente", example: "It's impolite to stare at people." },
-            { unit: "4B", word: "stretch", type: "verb", translation: "estirarse", example: "It's a good idea to stretch your muscles before exercising." },
-            { unit: "4B", word: "thigh", type: "noun", translation: "muslo", example: "He pulled a muscle in his thigh during football practice." },
-            { unit: "4B", word: "wave", type: "verb", translation: "saludar con la mano", example: "She waved goodbye to her friends from the train." },
-            { unit: "4B", word: "whisper", type: "verb", translation: "susurrar", example: "They began to whisper so they wouldn't disturb others in the library." },
-            { unit: "4B", word: "wink", type: "verb", translation: "guiñar un ojo", example: "He gave me a friendly wink to show he was joking." },
-            { unit: "4B", word: "wrist", type: "noun", translation: "muñeca", example: "She wears a gold watch on her left wrist." },
-            { unit: "4B", word: "yawn", type: "verb", translation: "bostezar", example: "The boring speech made everyone yawn." },
+            // UNIT 4B (Expressions & Phrases with "TAKE" ONLY)
+            { unit: "4B", word: "take advantage of", type: "verb phrase", translation: "aprovecharse de / sacar partido de", example: "You should take advantage of this opportunity to practice your English." },
+            { unit: "4B", word: "take after", type: "verb", translation: "parecerse a (un familiar)", example: "She takes after her mother; they have the same green eyes and curly hair." },
+            { unit: "4B", word: "take care of", type: "verb phrase", translation: "cuidar de / encargarse de", example: "Don't worry about the kids; I will take care of them tonight." },
+            { unit: "4B", word: "take into account", type: "verb phrase", translation: "tener en cuenta / considerar", example: "We must take into account the weather conditions before planning the trip." },
+            { unit: "4B", word: "take no notice of", type: "verb phrase", translation: "no hacer caso de / ignorar", example: "Take no notice of what he says; he is just bad-tempered today." },
+            { unit: "4B", word: "take over", type: "phrasal verb", translation: "adquirir / absorber / tomar el control", example: "The larger corporation is planning to take over its smaller competitor." },
+            { unit: "4B", word: "take part in", type: "verb phrase", translation: "participar en", example: "Thousands of runners took part in the annual marathon." },
+            { unit: "4B", word: "take place", type: "verb phrase", translation: "tener lugar / ocurrir", example: "The graduation ceremony will take place in the main auditorium next week." },
+            { unit: "4B", word: "take risks", type: "verb phrase", translation: "asumir riesgos / correr riesgos", example: "Starting a new business always requires you to take some risks." },
+            { unit: "4B", word: "take seriously", type: "verb phrase", translation: "tomar en serio", example: "You should take your doctor's advice seriously." },
+            { unit: "4B", word: "take up", type: "phrasal verb", translation: "empezar (un hobby) / ocupar (tiempo)", example: "He decided to take up tennis to stay in shape." },
 
-            // UNIT 5A
-            { unit: "5A", word: "accurate", type: "adjective", translation: "preciso/a / exacto/a", example: "Journalists must ensure their reports are accurate." },
-            { unit: "5A", word: "anchor", type: "noun", translation: "presentador/a de noticias principal", example: "The famous news anchor retired after thirty years." },
-            { unit: "5A", word: "axe", type: "verb", translation: "recortar / cancelar (jerga de prensa)", example: "The government plans to axe funding for the new arts program." },
-            { unit: "5A", word: "back", type: "verb", translation: "apoyar / respaldar (jerga de prensa)", example: "Many local businesses decided to back the mayor's plan." },
-            { unit: "5A", word: "biased", type: "adjective", translation: "sesgado/a / parcial", example: "The newspaper was accused of being biased towards the ruling party." },
-            { unit: "5A", word: "censored", type: "adjective", translation: "censurado/a", example: "The controversial scene was completely censored in the televised version." },
-            { unit: "5A", word: "clash", type: "verb", translation: "enfrentarse / chocar", example: "Protesters clashed with police officers outside the parliament." },
-            { unit: "5A", word: "commentator", type: "noun", translation: "comentarista", example: "The sports commentator described the match with great enthusiasm." },
-            { unit: "5A", word: "critic", type: "noun", translation: "crítico/a", example: "The movie critic gave the film a terrible review." },
-            { unit: "5A", word: "editor", type: "noun", translation: "editor/a", example: "The editor decided which articles would appear on the front page." },
-            { unit: "5A", word: "freelance journalist", type: "noun", translation: "periodista independiente", example: "She works as a freelance journalist for several international magazines." },
-            { unit: "5A", word: "hit", type: "verb", translation: "afectar gravemente / golpear", example: "The economy was hit hard by the sudden rise in oil prices." },
-            { unit: "5A", word: "newsreader", type: "noun", translation: "locutor/a de telediario", example: "The newsreader announced the results of the presidential election." },
-            { unit: "5A", word: "objective", type: "adjective", translation: "objetivo/a", example: "Reporters should try to remain objective and neutral." },
-            { unit: "5A", word: "presenter", type: "noun", translation: "presentador/a", example: "The television presenter welcomed the special guest to the show." },
-            { unit: "5A", word: "quit", type: "verb", translation: "dimitir / renunciar (jerga de prensa)", example: "The prime minister decided to quit following the scandal." },
-            { unit: "5A", word: "quiz", type: "verb", translation: "interrogar (jerga de prensa)", example: "Police are planning to quiz the neighbors about the incident." },
-            { unit: "5A", word: "reporter", type: "noun", translation: "reportero/a", example: "The investigative reporter uncovered a massive corruption case." },
-            { unit: "5A", word: "row", type: "noun", translation: "disputa / fuerte altercado (jerga de prensa)", example: "There was a major row between the two political leaders." },
-            { unit: "5A", word: "sensational", type: "adjective", translation: "sensacionalista / asombroso/a", example: "The tabloid headline was highly sensational and exaggerated." },
-            { unit: "5A", word: "split", type: "verb", translation: "separarse / romper una relación", example: "The celebrity couple decided to split after five years of marriage." },
-            { unit: "5A", word: "vow", type: "verb", translation: "prometer / jurar (jerga de prensa)", example: "The president vowed to punish those responsible for the crime." },
-            { unit: "5A", word: "wed", type: "verb", translation: "casarse con (jerga de prensa)", example: "The royal prince is set to wed his fiancée next spring." },
+            // UNIT 5A (Feelings ONLY - Complete from Vocabulary Bank 5A PDF)
+            { unit: "5A", word: "astonished", type: "adjective", translation: "asombrado/a / atónito/a", example: "She was astonished by the incredible news." },
+            { unit: "5A", word: "bewildered", type: "adjective", translation: "desconcertado/a / perplejo/a", example: "He was bewildered by the complex instructions." },
+            { unit: "5A", word: "delighted", type: "adjective", translation: "encantado/a / deleitado/a", example: "She was delighted to receive a bouquet of flowers." },
+            { unit: "5A", word: "desperate", type: "adjective", translation: "desesperado/a", example: "They were desperate for food and water after being lost for two days." },
+            { unit: "5A", word: "devastated", type: "adjective", translation: "devastado/a / destrozado/a", example: "She was devastated when she heard the tragic news." },
+            { unit: "5A", word: "disappointed", type: "adjective", translation: "decepcionado/a / desilusionado/a", example: "I was disappointed that the movie wasn't as good as I expected." },
+            { unit: "5A", word: "down", type: "adjective", translation: "triste / deprimido/a (coloquial)", example: "You look a bit down today; is something wrong?" },
+            { unit: "5A", word: "fed up", type: "adjective", translation: "harto/a / cansado/a", example: "I'm really fed up with the constant rain." },
+            { unit: "5A", word: "gobsmacked", type: "adjective", translation: "estupefacto/a / asombrado/a (coloquial)", example: "I was completely gobsmacked when I heard they got married." },
+            { unit: "5A", word: "grateful", type: "adjective", translation: "agradecido/a", example: "I am extremely grateful for all your help." },
+            { unit: "5A", word: "gutted", type: "adjective", translation: "destrozado/a / desilusionado/a (coloquial)", example: "He was gutted when his team lost the championship game." },
+            { unit: "5A", word: "homesick", type: "adjective", translation: "nostálgico/a (extrañar el hogar)", example: "She felt homesick during her first semester at university abroad." },
+            { unit: "5A", word: "horrified", type: "adjective", translation: "horrorizado/a / espantado/a", example: "We were horrified by the terrible accident on the highway." },
+            { unit: "5A", word: "lonely", type: "adjective", translation: "solitario/a / solo/a", example: "Living alone in a big city can feel very lonely." },
+            { unit: "5A", word: "miserable", type: "adjective", translation: "triste / abatido/a", example: "He felt miserable after failing his driving test." },
+            { unit: "5A", word: "offended", type: "adjective", translation: "ofendido/a", example: "He got offended because they didn't invite him to the party." },
+            { unit: "5A", word: "overwhelmed", type: "adjective", translation: "abrumado/a", example: "She felt overwhelmed by the amount of work she had to do." },
+            { unit: "5A", word: "proud", type: "adjective", translation: "orgulloso/a", example: "Her parents were very proud of her academic achievements." },
+            { unit: "5A", word: "relieved", type: "adjective", translation: "aliviado/a", example: "We were relieved to hear that the surgery was successful." },
+            { unit: "5A", word: "scared stiff", type: "adjective", translation: "muerto/a de miedo (coloquial)", example: "I was scared stiff when I heard a noise in the dark." },
+            { unit: "5A", word: "shattered", type: "adjective", translation: "exhausto/a / agotado/a (coloquial)", example: "After working a double shift, she was absolutely shattered." },
+            { unit: "5A", word: "sick of", type: "verb phrase", translation: "harto/a de / cansado/a de", example: "I'm sick of listening to his constant complaining." },
+            { unit: "5A", word: "stunned", type: "adjective", translation: "atónito/a / pasmado/a", example: "She was stunned into silence by his unexpected proposal." },
+            { unit: "5A", word: "thrilled", type: "adjective", translation: "emocionado/a / entusiasmado/a", example: "They were thrilled to win a free trip to Hawaii." },
+            { unit: "5A", word: "upset", type: "adjective", translation: "disgustado/a / apenado/a", example: "She was very upset when her phone got stolen." },
 
-            // UNIT 5B
-            { unit: "5B", word: "advertising campaign", type: "noun", translation: "campaña publicitaria", example: "The company launched a massive advertising campaign for its new phone." },
-            { unit: "5B", word: "branch", type: "noun", translation: "sucursal", example: "The bank opened a new branch in our local neighborhood." },
-            { unit: "5B", word: "chain", type: "noun", translation: "cadena (comercial/hoteles)", example: "They own a successful chain of coffee shops across the country." },
-            { unit: "5B", word: "commercial", type: "noun", translation: "comercial (anuncio de TV/radio)", example: "I always mute the television when the commercials come on." },
-            { unit: "5B", word: "do business", type: "verb phrase", translation: "hacer negocios", example: "Our firm is proud to do business with you." },
-            { unit: "5B", word: "headquarters", type: "noun", translation: "oficina central / sede central", example: "The company's global headquarters is located in New York." },
-            { unit: "5B", word: "image", type: "noun", translation: "imagen corporativa", example: "The brand revamped its public image to attract younger customers." },
-            { unit: "5B", word: "launch", type: "verb", translation: "lanzar / presentar un producto", example: "They plan to launch their new eco-friendly product line next month." },
-            { unit: "5B", word: "logo", type: "noun", translation: "logotipo", example: "The famous brand is recognized worldwide by its simple swoosh logo." },
-            { unit: "5B", word: "make a loss", type: "verb phrase", translation: "sufrir pérdidas", example: "The startup made a loss in its first year, but is now profitable." },
-            { unit: "5B", word: "make a profit", type: "verb phrase", translation: "obtener ganancias", example: "It takes time for a new business to start making a profit." },
-            { unit: "5B", word: "market share", type: "noun", translation: "cuota de mercado", example: "The tech giant currently holds a 40% market share." },
-            { unit: "5B", word: "merge", type: "verb", translation: "fusionarse", example: "The two local banks agreed to merge into a single institution." },
-            { unit: "5B", word: "multinational", type: "noun", translation: "multinacional", example: "He works as an accountant for a large multinational corporation." },
-            { unit: "5B", word: "set up", type: "phrasal verb", translation: "fundar / constituir una empresa", example: "She wants to set up her own graphic design business." },
-            { unit: "5B", word: "slogan", type: "noun", translation: "eslogan / lema publicitario", example: "A catchy slogan is vital for successful brand recognition." },
-            { unit: "5B", word: "take over", type: "phrasal verb", translation: "adquirir / absorber / tomar el control", example: "The larger corporation is planning to take over its smaller competitor." }
+            // UNIT 5B (Expressing feelings with verbs or -ed/-ing adjectives)
+            { unit: "5B", word: "annoy", type: "verb", translation: "molestar / irritar", example: "It really annoys me when people talk during the movie." },
+            { unit: "5B", word: "annoyed", type: "adjective", translation: "molesto/a / irritado/a", example: "She was annoyed with him for forgetting her birthday." },
+            { unit: "5B", word: "annoying", type: "adjective", translation: "molesto/a / irritante", example: "Loud construction noise early in the morning is very annoying." },
+            { unit: "5B", word: "disappoint", type: "verb", translation: "decepcionar / desilusionar", example: "I am sorry to disappoint you, but the trip has been cancelled." },
+            { unit: "5B", word: "disappointed", type: "adjective", translation: "decepcionado/a / desilusionado/a", example: "He was deeply disappointed with his exam grade." },
+            { unit: "5B", word: "disappointing", type: "adjective", translation: "decepcionante", example: "The team had a disappointing season this year." },
+            { unit: "5B", word: "embarrass", type: "verb", translation: "avergonzar", example: "My parents always embarrass me when they show old family photos." },
+            { unit: "5B", word: "embarrassed", type: "adjective", translation: "avergonzado/a", example: "She felt embarrassed when she forgot her speaker notes." },
+            { unit: "5B", word: "embarrassing", type: "adjective", translation: "vergonzoso/a / embarazoso/a", example: "Tripping on stage was an embarrassing moment for him." },
+            { unit: "5B", word: "exhaust", type: "verb", translation: "agotar / exhaustar", example: "Carrying those heavy suitcases will exhaust you." },
+            { unit: "5B", word: "exhausted", type: "adjective", translation: "exhausto/a / agotado/a", example: "After running fifteen miles, he was completely exhausted." },
+            { unit: "5B", word: "exhausting", type: "adjective", translation: "agotador/a", example: "It was an exhausting day at work with back-to-back meetings." },
+            { unit: "5B", word: "fascinate", type: "verb", translation: "fascinar", example: "Dinosaurs continue to fascinate children of all ages." },
+            { unit: "5B", word: "fascinated", type: "adjective", translation: "fascinado/a", example: "We were fascinated by the ancient ruins in Rome." },
+            { unit: "5B", word: "fascinating", type: "adjective", translation: "fascinante", example: "She wrote a fascinating book about marine biology." },
+            { unit: "5B", word: "frustrate", type: "verb", translation: "frustrar", example: "Constant traffic delays frustrate daily commuters." },
+            { unit: "5B", word: "frustrated", type: "adjective", translation: "frustrado/a", example: "He felt frustrated when his computer crashed without saving." },
+            { unit: "5B", word: "frustrating", type: "adjective", translation: "frustrante", example: "It is frustrating to deal with bad customer support." },
+            { unit: "5B", word: "infuriate", type: "verb", translation: "enfurecer / enfadar muchísimo", example: "Rude drivers infuriate my father whenever he drives." },
+            { unit: "5B", word: "infuriated", type: "adjective", translation: "enfurecido/a / furioso/a", example: "The passenger was infuriated when his flight got delayed again." },
+            { unit: "5B", word: "infuriating", type: "adjective", translation: "enfurecedor/a / desesperante", example: "It is infuriating when people don't keep their promises." },
+            { unit: "5B", word: "inspire", type: "verb", translation: "inspirar", example: "Great teachers inspire their students to reach their full potential." },
+            { unit: "5B", word: "inspired", type: "adjective", translation: "inspirado/a", example: "After visiting the art gallery, she felt inspired to paint." },
+            { unit: "5B", word: "inspiring", type: "adjective", translation: "inspirador/a", example: "He gave an inspiring talk about overcoming life's challenges." },
+            { unit: "5B", word: "irritate", type: "verb", translation: "irritar / enojar", example: "Smoke and dust irritate my eyes." },
+            { unit: "5B", word: "irritated", type: "adjective", translation: "irritado/a", example: "She got irritated when he kept interrupting her." },
+            { unit: "5B", word: "irritating", type: "adjective", translation: "irritante", example: "That high-pitched noise is extremely irritating." },
+            { unit: "5B", word: "terrify", type: "verb", translation: "aterrorizar", example: "Horror movies terrify my younger sister." },
+            { unit: "5B", word: "terrified", type: "adjective", translation: "aterrorizado/a", example: "He was terrified of heights and refused to climb the ladder." },
+            { unit: "5B", word: "terrifying", type: "adjective", translation: "aterrorizante / espeluznante", example: "Surviving a severe storm at sea was a terrifying experience." },
+            { unit: "5B", word: "thrill", type: "verb", translation: "entusiasmar / emocionar", example: "Extreme sports thrill adventure seekers around the world." },
+            { unit: "5B", word: "thrilled", type: "adjective", translation: "entusiasmado/a / emocionado/a", example: "They were thrilled to receive tickets to the concert." },
+            { unit: "5B", word: "thrilling", type: "adjective", translation: "emocionante / apasionante", example: "It was a thrilling finish to the championship race." },
+
+            // EXTRA UNIT (Crime and Punishment, Media, & Business Vocabulary)
+            { unit: "Extra", word: "accurate", type: "adjective", translation: "preciso/a / exacto/a", example: "Journalists must ensure their reports are accurate." },
+            { unit: "Extra", word: "acquit", type: "verb", translation: "absolver / declarar inocente", example: "The jury decided to acquit the defendant due to a lack of evidence." },
+            { unit: "Extra", word: "advertising campaign", type: "noun", translation: "campaña publicitaria", example: "The company launched a massive advertising campaign for its new phone." },
+            { unit: "Extra", word: "anchor", type: "noun", translation: "presentador/a de noticias principal", example: "The famous news anchor retired after thirty years." },
+            { unit: "Extra", word: "arrest", type: "verb", translation: "arrestar", example: "The police came to arrest him for shoplifting." },
+            { unit: "Extra", word: "axe", type: "verb", translation: "recortar / cancelar (jerga de prensa)", example: "The government plans to axe funding for the new arts program." },
+            { unit: "Extra", word: "back", type: "verb", translation: "apoyar / respaldar (jerga de prensa)", example: "Many local businesses decided to back the mayor's plan." },
+            { unit: "Extra", word: "biased", type: "adjective", translation: "sesgado/a / parcial", example: "The newspaper was accused of being biased towards the ruling party." },
+            { unit: "Extra", word: "branch", type: "noun", translation: "sucursal", example: "The bank opened a new branch in our local neighborhood." },
+            { unit: "Extra", word: "burglar", type: "noun", translation: "ladrón/ona (de viviendas)", example: "The burglar broke in through the kitchen window." },
+            { unit: "Extra", word: "censored", type: "adjective", translation: "censurado/a", example: "The controversial scene was completely censored in the televised version." },
+            { unit: "Extra", word: "chain", type: "noun", translation: "cadena (comercial/hoteles)", example: "They own a successful chain of coffee shops across the country." },
+            { unit: "Extra", word: "charge", type: "verb", translation: "acusar formalmente / imputar", example: "They decided to charge him with armed robbery." },
+            { unit: "Extra", word: "clash", type: "verb", translation: "enfrentarse / chocar", example: "Protesters clashed with police officers outside the parliament." },
+            { unit: "Extra", word: "commentator", type: "noun", translation: "comentarista", example: "The sports commentator described the match with great enthusiasm." },
+            { unit: "Extra", word: "commercial", type: "noun", translation: "comercial (anuncio de TV/radio)", example: "I always mute the television when the commercials come on." },
+            { unit: "Extra", word: "commit", type: "verb", translation: "cometer", example: "It is a serious crime to commit fraud." },
+            { unit: "Extra", word: "court", type: "noun", translation: "tribunal / corte de justicia", example: "He had to appear in court as a witness." },
+            { unit: "Extra", word: "critic", type: "noun", translation: "crítico/a", example: "The movie critic gave the film a terrible review." },
+            { unit: "Extra", word: "do business", type: "verb phrase", translation: "hacer negocios", example: "Our firm is proud to do business with you." },
+            { unit: "Extra", word: "editor", type: "noun", translation: "editor/a", example: "The editor decided which articles would appear on the front page." },
+            { unit: "Extra", word: "evidence", type: "noun", translation: "evidencia / pruebas", example: "The police gathered physical evidence from the crime scene." },
+            { unit: "Extra", word: "fraud", type: "noun", translation: "fraude", example: "He was sentenced to prison for credit card fraud." },
+            { unit: "Extra", word: "freelance journalist", type: "noun", translation: "periodista independiente", example: "She works as freelance journalist for several international magazines." },
+            { unit: "Extra", word: "guilty", type: "adjective", translation: "culpable", example: "The judge found him guilty of tax evasion." },
+            { unit: "Extra", word: "hacking", type: "noun", translation: "piratería informática", example: "He was arrested for hacking into government databases." },
+            { unit: "Extra", word: "headquarters", type: "noun", translation: "oficina central / sede central", example: "The company's global headquarters is located in New York." },
+            { unit: "Extra", word: "hijacking", type: "noun", translation: "secuestro (de aviones o vehículos)", example: "The hijacking of the plane ended without any casualties." },
+            { unit: "Extra", word: "hit", type: "verb", translation: "afectar gravemente / golpear", example: "The economy was hit hard by the sudden rise in oil prices." },
+            { unit: "Extra", word: "image", type: "noun", translation: "imagen corporativa", example: "The brand revamped its public image to attract younger customers." },
+            { unit: "Extra", word: "judge", type: "noun", translation: "juez/jueza", example: "The judge passed a harsh sentence on the criminal." },
+            { unit: "Extra", word: "jury", type: "noun", translation: "jurado", example: "The jury took three hours to reach their verdict." },
+            { unit: "Extra", word: "kidnapping", type: "noun", translation: "secuestro (de personas)", example: "The kidnappers demanded a ransom of one million dollars." },
+            { unit: "Extra", word: "launch", type: "verb", translation: "lanzar / presentar un producto", example: "They plan to launch their new eco-friendly product line next month." },
+            { unit: "Extra", word: "logo", type: "noun", translation: "logotipo", example: "The famous brand is recognized worldwide by its simple swoosh logo." },
+            { unit: "Extra", word: "make a loss", type: "verb phrase", translation: "sufrir pérdidas", example: "The startup made a loss in its first year, but is now profitable." },
+            { unit: "Extra", word: "make a profit", type: "verb phrase", translation: "obtener ganancias", example: "It takes time for a new business to start making a profit." },
+            { unit: "Extra", word: "market share", type: "noun", translation: "cuota de mercado", example: "The tech giant currently holds a 40% market share." },
+            { unit: "Extra", word: "merge", type: "verb", translation: "fusionarse", example: "The two local banks agreed to merge into a single institution." },
+            { unit: "Extra", word: "mugging", type: "noun", translation: "asalto / atraco callejero", example: "Street mugging has increased in the downtown area." },
+            { unit: "Extra", word: "multinational", type: "noun", translation: "multinacional", example: "He works as an accountant for a large multinational corporation." },
+            { unit: "Extra", word: "murder", type: "noun", translation: "asesinato", example: "He was charged with the murder of his business partner." },
+            { unit: "Extra", word: "newsreader", type: "noun", translation: "locutor/a de telediario", example: "The newsreader announced the results of the presidential election." },
+            { unit: "Extra", word: "objective", type: "adjective", translation: "objetivo/a", example: "Reporters should try to remain objective and neutral." },
+            { unit: "Extra", word: "presenter", type: "noun", translation: "presentador/a", example: "The television presenter welcomed the special guest to the show." },
+            { unit: "Extra", word: "proof", type: "noun", translation: "prueba (irrefutable)", example: "Do you have any proof that you own this bicycle?" },
+            { unit: "Extra", word: "question", type: "verb", translation: "interrogar", example: "The police wanted to question the suspect about his whereabouts." },
+            { unit: "Extra", word: "quit", type: "verb", translation: "dimitir / renunciar (jerga de prensa)", example: "The prime minister decided to quit following the scandal." },
+            { unit: "Extra", word: "quiz", type: "verb", translation: "interrogar (jerga de prensa)", example: "Police are planning to quiz the neighbors about the incident." },
+            { unit: "Extra", word: "reporter", type: "noun", translation: "reportero/a", example: "The investigative reporter uncovered a massive corruption case." },
+            { unit: "Extra", word: "robbery", type: "noun", translation: "robo (con intimidación o fuerza)", example: "They planned a bank robbery but were caught by the alarms." },
+            { unit: "Extra", word: "row", type: "noun", translation: "disputa / fuerte altercado (jerga de prensa)", example: "There was a major row between the two political leaders." },
+            { unit: "Extra", word: "sensational", type: "adjective", translation: "sensacionalista / asombroso/a", example: "The tabloid headline was highly sensational and exaggerated." },
+            { unit: "Extra", word: "sentence", type: "noun", translation: "sentencia / condena", example: "The judge gave him a five-year prison sentence." },
+            { unit: "Extra", word: "set up", type: "phrasal verb", translation: "fundar / constituir una empresa", example: "She wants to set up her own graphic design business." },
+            { unit: "Extra", word: "shoplifting", type: "noun", translation: "hurto en tiendas", example: "Shoplifting cost the retail store thousands of dollars last year." },
+            { unit: "Extra", word: "slogan", type: "noun", translation: "eslogan / lema publicitario", example: "A catchy slogan is vital for successful brand recognition." },
+            { unit: "Extra", word: "smuggling", type: "noun", translation: "contrabando", example: "He was caught smuggling exotic animals across the border." },
+            { unit: "Extra", word: "split", type: "verb", translation: "separarse / romper una relación", example: "The celebrity couple decided to split after five years of marriage." },
+            { unit: "Extra", word: "stalking", type: "noun", translation: "acoso obsesivo", example: "She reported him to the police for stalking her." },
+            { unit: "Extra", word: "suspect", type: "noun", translation: "sospechoso/a", example: "The main suspect was arrested near the train station." },
+            { unit: "Extra", word: "terrorism", type: "noun", translation: "terrorismo", example: "Governments worldwide are working together to combat international terrorism." },
+            { unit: "Extra", word: "theft", type: "noun", translation: "robo / hurto", example: "The car theft occurred while they were asleep inside." },
+            { unit: "Extra", word: "trial", type: "noun", translation: "juicio", example: "The high-profile murder trial lasted for three months." },
+            { unit: "Extra", word: "verdict", type: "noun", translation: "veredicto", example: "The court eagerly awaited the jury's verdict." },
+            { unit: "Extra", word: "vow", type: "verb", translation: "prometer / jurar (jerga de prensa)", example: "The president vowed to punish those responsible for the crime." },
+            { unit: "Extra", word: "wed", type: "verb", translation: "casarse con (jerga de prensa)", example: "The royal prince is set to wed his fiancée next spring." },
+            { unit: "Extra", word: "witness", type: "noun", translation: "testigo", example: "An eyewitness saw the suspect fleeing the scene." }
         ];
 
         // Global State
@@ -709,7 +801,7 @@
         let favorites = JSON.parse(localStorage.getItem('lexilearn_favorites')) || [];
 
         // Quiz State
-        let quizUnits = ["1A", "1B", "2A", "2B", "3A", "3B", "4A", "4B", "5A", "5B"];
+        let quizUnits = ["1A", "1B", "2A", "2B", "3A", "3B", "4A", "4B", "5A", "5B", "Extra"];
         let quizQuestions = [];
         let quizCurrentIndex = 0;
         let quizScore = 0;
@@ -721,6 +813,25 @@
         let flashcardIndex = 0;
         let flashcardList = [];
         let isCardFlipped = false;
+
+        // Elegant custom notification system (Toast fallback for alerts)
+        function showToast(message) {
+            const toast = document.getElementById('custom-toast');
+            const toastText = document.getElementById('toast-text');
+            toastText.innerText = message;
+            
+            // Show toast gracefully
+            toast.classList.remove('hidden', 'translate-y-10', 'opacity-0');
+            toast.classList.add('flex', 'translate-y-0', 'opacity-100');
+            
+            // Dismiss after 4 seconds
+            setTimeout(() => {
+                toast.classList.add('translate-y-10', 'opacity-0');
+                setTimeout(() => {
+                    toast.classList.add('hidden');
+                }, 300);
+            }, 4000);
+        }
 
         // Sound Engine
         function speakWord(event, text) {
@@ -742,7 +853,7 @@
                 
                 window.speechSynthesis.speak(utterance);
             } else {
-                alert("La síntesis de voz no está soportada en este navegador.");
+                showToast("La síntesis de voz no está soportada en este navegador.");
             }
         }
 
@@ -813,6 +924,7 @@
         // Update Dashboard Stats
         function updateStats() {
             document.getElementById('stat-total').innerText = vocabularyData.length;
+            document.getElementById('stat-units').innerText = [...new Set(vocabularyData.map(item => item.unit))].length;
             document.getElementById('stat-favs').innerText = favorites.length;
             document.getElementById('stat-score').innerText = highestScorePercent + '%';
         }
@@ -832,7 +944,7 @@
                 const btn = document.createElement('button');
                 btn.id = `unit-tab-${unit}`;
                 btn.onclick = () => selectUnit(unit);
-                btn.innerText = `UNIT ${unit}`;
+                btn.innerText = unit.toLowerCase() === 'extra' ? 'EXTRA UNIT' : `UNIT ${unit}`;
                 btn.className = "px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-slate-200 dark:hover:bg-slate-800 transition uppercase";
                 container.appendChild(btn);
             });
@@ -983,11 +1095,13 @@
                 const section = document.createElement('div');
                 section.className = "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm";
 
+                const unitLabel = unit.toLowerCase() === 'extra' ? 'Extra Unit' : `Unit ${unit}`;
+
                 // Section Header
                 section.innerHTML = `
                     <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-900/60 dark:to-slate-900 px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <span class="text-xs font-bold tracking-wider uppercase bg-primary-600 text-white px-3 py-1 rounded-full shadow-sm">Unit ${unit}</span>
+                            <span class="text-xs font-bold tracking-wider uppercase bg-primary-600 text-white px-3 py-1 rounded-full shadow-sm">${unitLabel}</span>
                             <h2 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Vocabulario Completo</h2>
                         </div>
                         <span class="text-xs font-semibold text-slate-400">${wordsInUnit.length} ${wordsInUnit.length === 1 ? 'palabra' : 'palabras'}</span>
@@ -1024,12 +1138,12 @@
                     let typeColor = "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400";
                     if (item.type === 'verb' || item.type === 'phrasal verb' || item.type === 'verb phrase') {
                         typeColor = "bg-blue-50 text-blue-600 dark:bg-blue-950/30 dark:text-blue-400";
-                    } else if (item.type === 'noun') {
+                    } else if (item.type === 'noun' || item.type === 'noun phrase') {
                         typeColor = "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400";
-                    } else if (item.type === 'compound adjective') {
+                    } else if (item.type === 'compound adjective' || item.type === 'adjective') {
                         typeColor = "bg-purple-50 text-purple-600 dark:bg-purple-950/30 dark:text-purple-400";
-                    } else if (item.type === 'adjective') {
-                        typeColor = "bg-purple-50 text-purple-600 dark:bg-purple-950/30 dark:text-purple-400";
+                    } else if (item.type === 'adverb') {
+                        typeColor = "bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400";
                     }
 
                     // Highlight words based on search
@@ -1142,7 +1256,7 @@
 
             // Render Card Data
             document.getElementById('fc-word').innerText = item.word;
-            document.getElementById('fc-unit').innerText = `Unit ${item.unit}`;
+            document.getElementById('fc-unit').innerText = item.unit.toLowerCase() === 'extra' ? 'Extra Unit' : `Unit ${item.unit}`;
             document.getElementById('fc-type').innerText = item.type;
             document.getElementById('fc-translation').innerText = item.translation;
             document.getElementById('fc-example').innerText = `"${item.example}"`;
@@ -1158,6 +1272,7 @@
             }
         }
 
+        // Next Flashcard Function
         function nextFlashcard() {
             if (flashcardList.length === 0) return;
             
@@ -1173,6 +1288,7 @@
             }, 150);
         }
 
+        // Previous Flashcard Function
         function prevFlashcard() {
             if (flashcardList.length === 0) return;
 
@@ -1219,9 +1335,10 @@
                 const checkedAttr = quizUnits.includes(unit) ? 'checked' : '';
                 const div = document.createElement('div');
                 div.className = "flex items-center gap-2.5 p-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl";
+                const displayUnitName = unit.toLowerCase() === 'extra' ? 'EXTRA UNIT' : `UNIT ${unit}`;
                 div.innerHTML = `
                     <input type="checkbox" id="quiz-unit-chk-${unit}" value="${unit}" ${checkedAttr} class="w-4.5 h-4.5 rounded text-primary-600 focus:ring-primary-500 bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-800 transition">
-                    <label for="quiz-unit-chk-${unit}" class="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase select-none cursor-pointer">Unit ${unit}</label>
+                    <label for="quiz-unit-chk-${unit}" class="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase select-none cursor-pointer">${displayUnitName}</label>
                 `;
                 selectionContainer.appendChild(div);
             });
@@ -1241,7 +1358,7 @@
             });
 
             if (selected.length === 0) {
-                alert("Por favor selecciona al menos una unidad para evaluar.");
+                showToast("Por favor selecciona al menos una unidad para evaluar.");
                 return;
             }
 
@@ -1251,7 +1368,7 @@
             // Generate Questions
             const pool = vocabularyData.filter(item => quizUnits.includes(item.unit));
             if (pool.length < 5) {
-                alert("Hay muy poco vocabulario en las unidades seleccionadas. Por favor agrega más.");
+                showToast("Hay muy poco vocabulario en las unidades seleccionadas. Por favor agrega más.");
                 return;
             }
 
@@ -1378,6 +1495,7 @@
             nextBtn.className = "px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-bold text-sm transition";
         }
 
+        // Check or Next Question Handler
         function nextQuizQuestion() {
             const nextBtn = document.getElementById('quiz-next-btn');
             const currentQ = quizQuestions[quizCurrentIndex];
