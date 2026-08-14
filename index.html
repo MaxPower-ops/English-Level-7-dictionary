@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" class="scroll-smooth">
 <head>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LexiLearn - Diccionario Interactivo de Inglés</title>
@@ -81,10 +80,10 @@
                         </svg>
                     </span>
                     <h1 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-primary-600 to-indigo-500 bg-clip-text text-transparent dark:from-primary-400 dark:to-indigo-300">
-                        Dictionary's ANA - LEVEL 7
+                        ANA's Dictionary - LEVEL 7 & 8
                     </h1>
                 </div>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Diccionario y Centro de Estudio Interactivo de Ana (Units 1A - 5B & Extra Unit)</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Diccionario y Centro de Estudio Interactivo (Level 7: Units 1A-5B & Extra | Level 8: Unit 6A)</p>
             </div>
 
             <!-- Toolbar / Settings -->
@@ -192,10 +191,22 @@
                     </div>
                 </div>
 
-                <div>
-                    <p class="text-xs text-slate-400 uppercase font-semibold mb-2">Filtrar por Unidad:</p>
-                    <div id="unit-tabs-container" class="flex flex-wrap gap-2 overflow-x-auto pb-1 max-w-full">
-                        <button onclick="selectUnit('all')" id="unit-tab-all" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-primary-600 text-white shadow-sm transition">TODAS</button>
+                <!-- Level Selector Switcher -->
+                <div class="border-t border-slate-100 dark:border-slate-800 pt-4 space-y-3">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Filtrar por Nivel:</span>
+                        <div class="inline-flex p-1 bg-slate-100 dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 gap-1">
+                            <button id="level-tab-all" onclick="selectLevel('all')" class="px-3.5 py-1 text-xs font-bold rounded-lg transition bg-primary-600 text-white shadow-sm uppercase">TODOS</button>
+                            <button id="level-tab-7" onclick="selectLevel('Level 7')" class="px-3.5 py-1 text-xs font-bold rounded-lg transition text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 uppercase">LEVEL 7</button>
+                            <button id="level-tab-8" onclick="selectLevel('Level 8')" class="px-3.5 py-1 text-xs font-bold rounded-lg transition text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 uppercase">LEVEL 8</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="text-xs text-slate-400 uppercase font-semibold mb-2">Filtrar por Unidad:</p>
+                        <div id="unit-tabs-container" class="flex flex-wrap gap-2 overflow-x-auto pb-1 max-w-full">
+                            <button onclick="selectUnit('all')" id="unit-tab-all" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-primary-600 text-white shadow-sm transition">TODAS</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -273,14 +284,19 @@
                     <p class="text-slate-500 dark:text-slate-400 text-sm max-w-md mx-auto">Selecciona las unidades que deseas estudiar y pon a prueba tus conocimientos con un juego interactivo de 10 preguntas.</p>
                 </div>
 
-                <div class="space-y-3">
-                    <p class="text-xs font-bold text-slate-400 uppercase">Unidades a Incluir:</p>
-                    <div id="quiz-units-selection" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
-                    <div class="flex gap-2 justify-end pt-1">
-                        <button onclick="toggleAllQuizUnits(true)" class="text-xs text-primary-600 dark:text-primary-400 font-semibold hover:underline">Seleccionar todo</button>
-                        <span class="text-slate-300">|</span>
-                        <button onclick="toggleAllQuizUnits(false)" class="text-xs text-slate-400 font-semibold hover:underline">Deseleccionar todo</button>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <p class="text-xs font-bold text-slate-400 uppercase">Unidades a Incluir:</p>
+                        <div class="flex gap-2">
+                            <button onclick="toggleQuizByLevel('Level 7', true)" class="text-[11px] bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-300 font-semibold px-2 py-1 rounded-lg hover:bg-indigo-100 transition">Level 7</button>
+                            <button onclick="toggleQuizByLevel('Level 8', true)" class="text-[11px] bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-300 font-semibold px-2 py-1 rounded-lg hover:bg-purple-100 transition">Level 8</button>
+                            <button onclick="toggleAllQuizUnits(true)" class="text-[11px] text-primary-600 dark:text-primary-400 font-semibold hover:underline">Todos</button>
+                            <span class="text-slate-300">|</span>
+                            <button onclick="toggleAllQuizUnits(false)" class="text-[11px] text-slate-400 font-semibold hover:underline">Ninguno</button>
+                        </div>
                     </div>
+                    
+                    <div id="quiz-units-selection" class="space-y-4"></div>
                 </div>
 
                 <button onclick="startQuiz()" class="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl shadow-lg shadow-primary-500/20 transition-all duration-200 flex items-center justify-center gap-2">
@@ -355,7 +371,7 @@
 
     <script>
         const vocabularyData = [
-            // UNIT 1A
+            // UNIT 1A - LEVEL 7
             { unit: "1A", word: "foolproof", type: "adjective", translation: "infalible / a prueba de errores", example: "The instructions are so simple that they make the assembly foolproof." },
             { unit: "1A", word: "geek", type: "noun", translation: "apasionado/a / informático/a obsesivo/a", example: "He is a total computer geek who spends his weekends coding." },
             { unit: "1A", word: "good-natured rivalry", type: "noun phrase", translation: "rivalidad sana / amistosa", example: "There is a good-natured rivalry between the two school sports teams." },
@@ -365,6 +381,7 @@
             { unit: "1A", word: "the point", type: "noun phrase", translation: "el quid de la cuestión / lo fundamental", example: "I think you are missing the point of this conversation." },
             { unit: "1A", word: "work-life balance", type: "noun phrase", translation: "equilibrio entre vida laboral y personal", example: "Having a good work-life balance reduces stress and increases productivity." },
 
+            // UNIT 1B - LEVEL 7
             { unit: "1B", word: "absent-minded", type: "compound adjective", translation: "despiste / despistado/a", example: "He's so absent-minded that he always forgets where he parked his car." },
             { unit: "1B", word: "ambitious", type: "adjective", translation: "ambicioso/a", example: "She is an ambitious lawyer who wants to become a partner soon." },
             { unit: "1B", word: "arrogant", type: "adjective", translation: "arrogante", example: "He is so arrogant that he thinks he knows everything." },
@@ -402,6 +419,7 @@
             { unit: "1B", word: "well-balanced", type: "compound adjective", translation: "equilibrado/a", example: "She grew up in a stable, well-balanced family environment." },
             { unit: "1B", word: "well-behaved", type: "compound adjective", translation: "bien educado/a", example: "The children were very well-behaved during the church service." },
 
+            // UNIT 2A - LEVEL 7
             { unit: "2A", word: "allergic reaction", type: "noun", translation: "reacción alérgica", example: "He had an allergic reaction to the nuts in the dessert." },
             { unit: "2A", word: "ankle", type: "noun", translation: "tobillo", example: "She twisted her ankle while jogging in the park." },
             { unit: "2A", word: "backache", type: "noun", translation: "dolor de espalda", example: "Lifting heavy boxes gave him terrible backache." },
@@ -464,6 +482,7 @@
             { unit: "2A", word: "wrist", type: "noun", translation: "muñeca", example: "She wears a gold watch on her left wrist." },
             { unit: "2A", word: "yawn", type: "verb", translation: "bostezar", example: "The boring speech made everyone yawn." },
 
+            // UNIT 2B - LEVEL 7
             { unit: "2B", word: "casual", type: "adjective", translation: "informal", example: "He wore casual clothes like jeans and a T-shirt to the barbecue." },
             { unit: "2B", word: "checked", type: "adjective", translation: "a cuadros", example: "He loves wearing checked shirts in the autumn." },
             { unit: "2B", word: "classic", type: "adjective", translation: "clásico/a", example: "A black dress is a classic style that never goes out of fashion." },
@@ -503,6 +522,7 @@
             { unit: "2B", word: "velvet", type: "noun", translation: "terciopelo", example: "The theater seats were covered in red velvet." },
             { unit: "2B", word: "wool", type: "noun", translation: "lana", example: "This thick winter coat is made of pure wool." },
 
+            // UNIT 3A - LEVEL 7
             { unit: "3A", word: "aisle seat", type: "noun", translation: "asiento de pasillo", example: "I prefer an aisle seat so I can get up easily without disturbing others." },
             { unit: "3A", word: "arrivals", type: "noun", translation: "llegadas", example: "We met our relatives in the arrivals hall at the airport." },
             { unit: "3A", word: "baggage reclaim", type: "noun", translation: "retiro de equipaje", example: "After landing, proceed to baggage reclaim to collect your suitcases." },
@@ -525,6 +545,7 @@
             { unit: "3A", word: "turbulence", type: "noun", translation: "turbulencia", example: "Please fasten your seatbelts as we are experiencing some turbulence." },
             { unit: "3A", word: "window seat", type: "noun", translation: "asiento de ventana", example: "He loves the window seat because he likes looking at the clouds." },
 
+            // UNIT 3B - LEVEL 7
             { unit: "3B", word: "actually", type: "adverb", translation: "en realidad / de hecho", example: "She looks younger than me, but actually she's two years older." },
             { unit: "3B", word: "apparently", type: "adverb", translation: "al parecer / por lo visto", example: "I thought they'd broken up, but apparently they're back together again." },
             { unit: "3B", word: "at the end", type: "adverb", translation: "al final / al terminar", example: "At the end of a film, I always stay and watch the credits roll." },
@@ -550,6 +571,7 @@
             { unit: "3B", word: "still", type: "adverb", translation: "todavía / aún", example: "He's 35, but he still lives with his parents." },
             { unit: "3B", word: "yet", type: "adverb", translation: "aún / todavía / ya", example: "Have you found a job yet?" },
 
+            // UNIT 4A - LEVEL 7
             { unit: "4A", word: "blizzard", type: "noun", translation: "tormenta de nieve", example: "The school was closed due to a heavy blizzard." },
             { unit: "4A", word: "breeze", type: "noun", translation: "brisa", example: "A cool sea breeze made the hot afternoon much more pleasant." },
             { unit: "4A", word: "chilly", type: "adjective", translation: "frío/a / fresco/a", example: "It's a bit chilly today, so you might need a jacket." },
@@ -576,6 +598,7 @@
             { unit: "4A", word: "thunder", type: "noun", translation: "trueno", example: "The sound of loud thunder frightened the dog." },
             { unit: "4A", word: "warm up", type: "phrasal verb", translation: "calentarse", example: "I hope the weather warms up before our beach trip." },
 
+            // UNIT 4B - LEVEL 7
             { unit: "4B", word: "take advantage of", type: "verb phrase", translation: "aprovecharse de / sacar partido de", example: "You should take advantage of this opportunity to practice your English." },
             { unit: "4B", word: "take after", type: "verb", translation: "parecerse a (un familiar)", example: "She takes after her mother; they have the same green eyes and curly hair." },
             { unit: "4B", word: "take care of", type: "verb phrase", translation: "cuidar de / encargarse de", example: "Don't worry about the kids; I will take care of them tonight." },
@@ -592,6 +615,7 @@
             { unit: "4B", word: "take to", type: "phrasal verb", translation: "encariñarse con / tomar cariño a", example: "My boyfriend's little sister has really taken to me; she always wants to play." },
             { unit: "4B", word: "take up", type: "phrasal verb", translation: "empezar (un hobby) / ocupar (tiempo)", example: "He decided to take up tennis to stay in shape." },
 
+            // UNIT 5A - LEVEL 7
             { unit: "5A", word: "astonished", type: "adjective", translation: "asombrado/a / atónito/a", example: "She was astonished by the incredible news." },
             { unit: "5A", word: "bewildered", type: "adjective", translation: "desconcertado/a / perplejo/a", example: "He was bewildered by the complex instructions." },
             { unit: "5A", word: "delighted", type: "adjective", translation: "encantado/a / deleitado/a", example: "She was delighted to receive a bouquet of flowers." },
@@ -618,6 +642,7 @@
             { unit: "5A", word: "thrilled", type: "adjective", translation: "emocionado/a / entusiasmado/a", example: "They were thrilled to win a free trip to Hawaii." },
             { unit: "5A", word: "upset", type: "adjective", translation: "disgustado/a / apenado/a", example: "She was very upset when her phone got stolen." },
 
+            // UNIT 5B - LEVEL 7
             { unit: "5B", word: "annoy", type: "verb", translation: "molestar / irritar", example: "It really annoys me when people talk during the movie." },
             { unit: "5B", word: "annoyed", type: "adjective", translation: "molesto/a / irritado/a", example: "She was annoyed with him for forgetting her birthday." },
             { unit: "5B", word: "annoying", type: "adjective", translation: "molesto/a / irritante", example: "Loud construction noise early in the morning is very annoying." },
@@ -652,6 +677,7 @@
             { unit: "5B", word: "thrilled", type: "adjective", translation: "entusiasmado/a / emocionado/a", example: "They were thrilled to receive tickets to the concert." },
             { unit: "5B", word: "thrilling", type: "adjective", translation: "emocionante / apasionante", example: "It was a thrilling finish to the championship race." },
 
+            // EXTRA UNIT - LEVEL 7
             { unit: "Extra", word: "accurate", type: "adjective", translation: "preciso/a / exacto/a", example: "Journalists must ensure their reports are accurate." },
             { unit: "Extra", word: "acquit", type: "verb", translation: "absolver / declarar inocente", example: "The jury decided to acquit the defendant due to a lack of evidence." },
             { unit: "Extra", word: "advertising campaign", type: "noun", translation: "campaña publicitaria", example: "The company launched a massive advertising campaign for its new phone." },
@@ -719,7 +745,32 @@
             { unit: "Extra", word: "verdict", type: "noun", translation: "veredicto", example: "The court eagerly awaited the jury's verdict." },
             { unit: "Extra", word: "vow", type: "verb", translation: "prometer / jurar (jerga de prensa)", example: "The president vowed to punish those responsible for the crime." },
             { unit: "Extra", word: "wed", type: "verb", translation: "casarse con (jerga de prensa)", example: "The royal prince is set to wed his fiancée next spring." },
-            { unit: "Extra", word: "witness", type: "noun", translation: "testigo", example: "An eyewitness saw the suspect fleeing the scene." }
+            { unit: "Extra", word: "witness", type: "noun", translation: "testigo", example: "An eyewitness saw the suspect fleeing the scene." },
+
+            // UNIT 6A - LEVEL 8
+            { unit: "6A", word: "be a light sleeper", type: "noun phrase", translation: "tener el sueño ligero", example: "My father is a light sleeper, so any small noise wakes him up immediately." },
+            { unit: "6A", word: "be fast asleep", type: "verb phrase", translation: "estar profundamente dormido/a", example: "By midnight, all the children were fast asleep in their beds." },
+            { unit: "6A", word: "be used to", type: "verb phrase", translation: "estar acostumbrado/a a", example: "She is used to working night shifts, so staying up late doesn't tire her." },
+            { unit: "6A", word: "blanket", type: "noun", translation: "manta / cobija", example: "Put an extra wool blanket on the bed if you feel chilly tonight." },
+            { unit: "6A", word: "duvet", type: "noun", translation: "edredón / nórdico", example: "A warm feather duvet keeps you comfortable during freezing winter nights." },
+            { unit: "6A", word: "fall asleep", type: "verb phrase", translation: "quedarse dormido/a", example: "I usually fall asleep within ten minutes of turning off the light." },
+            { unit: "6A", word: "get used to", type: "verb phrase", translation: "acostumbrarse a", example: "It took him a few weeks to get used to sleeping without a pillow." },
+            { unit: "6A", word: "have nightmares", type: "verb phrase", translation: "tener pesadillas", example: "Watching scary movies right before bed often gives children nightmares." },
+            { unit: "6A", word: "insomnia", type: "noun", translation: "insomnio", example: "Stress at work can lead to severe insomnia and fatigue during the day." },
+            { unit: "6A", word: "keep awake", type: "verb phrase", translation: "mantener despierto/a", example: "Drinking strong coffee late in the evening will keep you awake all night." },
+            { unit: "6A", word: "nap", type: "noun", translation: "siesta", example: "Taking a short twenty-minute nap after lunch can boost your energy." },
+            { unit: "6A", word: "oversleep", type: "verb", translation: "quedarse dormido / pasarse de hora", example: "If I forget to set my alarm clock, I will definitely oversleep in the morning." },
+            { unit: "6A", word: "pillow", type: "noun", translation: "almohada", example: "He rests his head on a soft down pillow every night." },
+            { unit: "6A", word: "segmented sleep", type: "noun phrase", translation: "sueño segmentado", example: "In past centuries, segmented sleep involved waking up for an hour at midnight before sleeping again." },
+            { unit: "6A", word: "set the alarm", type: "verb phrase", translation: "poner la alarma / despertador", example: "Make sure you set the alarm for 6:30 a.m. so you don't miss your flight." },
+            { unit: "6A", word: "sheets", type: "noun", translation: "sábanas", example: "Freshly washed cotton sheets feel crisp and clean on the bed." },
+            { unit: "6A", word: "sleeping pills", type: "noun", translation: "pastillas para dormir / somníferos", example: "Her doctor prescribed sleeping pills to help her overcome temporary insomnia." },
+            { unit: "6A", word: "sleepy", type: "adjective", translation: "somnoliento/a / con sueño", example: "Reading a book in bed always makes me feel sleepy." },
+            { unit: "6A", word: "sleepwalk", type: "verb", translation: "ser sonámbulo/a / caminar dormido", example: "Some children sleepwalk when they are overtired or anxious." },
+            { unit: "6A", word: "sleep like a log", type: "verb phrase", translation: "dormir como un tronco", example: "After a long day of hiking in the mountains, I slept like a log." },
+            { unit: "6A", word: "snore", type: "verb", translation: "roncar", example: "He snores so loudly that his family members can hear him from another room." },
+            { unit: "6A", word: "used to", type: "verb phrase", translation: "solía", example: "I used to go to bed early when I was a young child." },
+            { unit: "6A", word: "yawn", type: "verb", translation: "bostezar", example: "People often yawn when they are tired, bored, or waking up." }
         ];
 
         const unitThemes = {
@@ -733,10 +784,27 @@
             "4B": "Expressions with 'Take' & Risk",
             "5A": "Feelings & Emotions",
             "5B": "Expressing Feelings (-ed / -ing)",
-            "Extra": "Crime, Business & Media"
+            "Extra": "Crime, Business & Media",
+            "6A": "Sleep, Night Habits & Routines"
+        };
+
+        const unitLevels = {
+            "1A": "Level 7",
+            "1B": "Level 7",
+            "2A": "Level 7",
+            "2B": "Level 7",
+            "3A": "Level 7",
+            "3B": "Level 7",
+            "4A": "Level 7",
+            "4B": "Level 7",
+            "5A": "Level 7",
+            "5B": "Level 7",
+            "Extra": "Level 7",
+            "6A": "Level 8"
         };
 
         let currentView = 'dictionary';
+        let selectedLevel = 'all'; // 'all', 'Level 7', 'Level 8'
         let selectedUnit = 'all';
         let searchQuery = '';
         let selectedType = 'all';
@@ -744,7 +812,7 @@
         
         let favorites = JSON.parse(localStorage.getItem('lexilearn_favorites')) || [];
 
-        let quizUnits = ["1A", "1B", "2A", "2B", "3A", "3B", "4A", "4B", "5A", "5B", "Extra"];
+        let quizUnits = ["1A", "1B", "2A", "2B", "3A", "3B", "4A", "4B", "5A", "5B", "Extra", "6A"];
         let quizQuestions = [];
         let quizCurrentIndex = 0;
         let quizScore = 0;
@@ -933,19 +1001,43 @@
             document.getElementById('stat-score').innerText = highestScorePercent + '%';
         }
 
+        function selectLevel(lvl) {
+            selectedLevel = lvl;
+            selectedUnit = 'all'; // Reset unit filter when switching level
+
+            const btnAll = document.getElementById('level-tab-all');
+            const btn7 = document.getElementById('level-tab-7');
+            const btn8 = document.getElementById('level-tab-8');
+
+            const activeStyle = "px-3.5 py-1 text-xs font-bold rounded-lg transition bg-primary-600 text-white shadow-sm uppercase";
+            const inactiveStyle = "px-3.5 py-1 text-xs font-bold rounded-lg transition text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 uppercase";
+
+            btnAll.className = lvl === 'all' ? activeStyle : inactiveStyle;
+            btn7.className = lvl === 'Level 7' ? activeStyle : inactiveStyle;
+            btn8.className = lvl === 'Level 8' ? activeStyle : inactiveStyle;
+
+            renderUnitTabs();
+            renderDictionary();
+        }
+
         function renderUnitTabs() {
             const container = document.getElementById('unit-tabs-container');
             const allBtn = document.getElementById('unit-tab-all');
             container.innerHTML = '';
             container.appendChild(allBtn);
 
-            const units = [...new Set(vocabularyData.map(item => item.unit))].sort();
+            let units = [...new Set(vocabularyData.map(item => item.unit))].sort();
+
+            if (selectedLevel !== 'all') {
+                units = units.filter(u => unitLevels[u] === selectedLevel);
+            }
 
             units.forEach(unit => {
                 const btn = document.createElement('button');
                 btn.id = `unit-tab-${unit}`;
                 btn.onclick = () => selectUnit(unit);
-                btn.innerText = unit.toLowerCase() === 'extra' ? 'EXTRA UNIT' : `UNIT ${unit}`;
+                const unitText = unit.toLowerCase() === 'extra' ? 'EXTRA UNIT' : `UNIT ${unit}`;
+                btn.innerText = unitText;
                 btn.className = "px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-slate-200 dark:hover:bg-slate-800 transition uppercase";
                 container.appendChild(btn);
             });
@@ -1038,6 +1130,8 @@
             let totalFound = 0;
 
             vocabularyData.forEach(item => {
+                const itemLvl = unitLevels[item.unit] || "Level 7";
+                if (selectedLevel !== 'all' && itemLvl !== selectedLevel) return;
                 if (selectedUnit !== 'all' && item.unit !== selectedUnit) return;
 
                 const isFavorite = favorites.includes(item.word);
@@ -1064,7 +1158,7 @@
                             <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                         </span>
                         <h3 class="text-xl font-bold">No se encontraron palabras</h3>
-                        <p class="text-sm text-slate-400 max-w-sm mx-auto">Prueba a cambiar tus filtros de búsqueda o activa otras unidades.</p>
+                        <p class="text-sm text-slate-400 max-w-sm mx-auto">Prueba a cambiar tus filtros de búsqueda o activa otros niveles/unidades.</p>
                     </div>
                 `;
                 return;
@@ -1079,14 +1173,20 @@
                 const section = document.createElement('div');
                 section.className = "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm";
 
+                const levelTag = unitLevels[unit] || "Level 7";
                 const unitLabel = unit.toLowerCase() === 'extra' ? 'Extra Unit' : `Unit ${unit}`;
                 const topicName = unitThemes[unit] || "Vocabulario";
 
+                const levelBadgeColor = levelTag === 'Level 8' 
+                    ? 'bg-purple-600 text-white' 
+                    : 'bg-indigo-600 text-white';
+
                 section.innerHTML = `
-                    <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-900/60 dark:to-slate-900 px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <span class="text-xs font-bold tracking-wider uppercase bg-primary-600 text-white px-3 py-1 rounded-full shadow-sm">${unitLabel}</span>
-                            <h2 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">${escapeHtml(topicName)}</h2>
+                    <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-900/60 dark:to-slate-900 px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex flex-wrap items-center gap-2.5">
+                            <span class="text-[10px] font-black tracking-widest uppercase px-2.5 py-0.5 rounded-full shadow-sm ${levelBadgeColor}">${levelTag}</span>
+                            <span class="text-xs font-bold tracking-wider uppercase bg-primary-600 text-white px-3 py-0.5 rounded-full shadow-sm">${unitLabel}</span>
+                            <h2 class="text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wide">${escapeHtml(topicName)}</h2>
                         </div>
                         <span class="text-xs font-semibold text-slate-400">${wordsInUnit.length} ${wordsInUnit.length === 1 ? 'palabra' : 'palabras'}</span>
                     </div>
@@ -1197,12 +1297,17 @@
         }
 
         function setupFlashcardView() {
-            if (selectedUnit === 'all') {
-                flashcardList = [...vocabularyData];
-            } else {
-                flashcardList = vocabularyData.filter(item => item.unit === selectedUnit);
+            let filtered = vocabularyData;
+
+            if (selectedLevel !== 'all') {
+                filtered = filtered.filter(item => (unitLevels[item.unit] || 'Level 7') === selectedLevel);
             }
 
+            if (selectedUnit !== 'all') {
+                filtered = filtered.filter(item => item.unit === selectedUnit);
+            }
+
+            flashcardList = [...filtered];
             flashcardList.sort(() => Math.random() - 0.5);
 
             flashcardIndex = 0;
@@ -1220,7 +1325,7 @@
                 document.getElementById('fc-word').innerText = "Sin palabras";
                 document.getElementById('fc-unit').innerText = "Unit -";
                 document.getElementById('fc-type').innerText = "-";
-                document.getElementById('fc-translation').innerText = "Por favor selecciona otra unidad";
+                document.getElementById('fc-translation').innerText = "Por favor selecciona otra unidad o nivel";
                 document.getElementById('fc-example').innerText = "No hay vocabulario que cumpla con los filtros.";
                 return;
             }
@@ -1228,11 +1333,12 @@
             counter.innerText = `${flashcardIndex + 1} / ${flashcardList.length}`;
             const item = flashcardList[flashcardIndex];
 
+            const levelLabel = unitLevels[item.unit] || 'Level 7';
             const unitLabel = item.unit.toLowerCase() === 'extra' ? 'Extra Unit' : `Unit ${item.unit}`;
             const themeName = unitThemes[item.unit] ? ` • ${unitThemes[item.unit]}` : '';
 
             document.getElementById('fc-word').innerText = item.word;
-            document.getElementById('fc-unit').innerText = unitLabel + themeName;
+            document.getElementById('fc-unit').innerText = `${levelLabel} • ${unitLabel}${themeName}`;
             document.getElementById('fc-type').innerText = item.type;
             document.getElementById('fc-translation').innerText = item.translation;
             document.getElementById('fc-example').innerText = `"${item.example}"`;
@@ -1296,21 +1402,52 @@
             const selectionContainer = document.getElementById('quiz-units-selection');
             selectionContainer.innerHTML = '';
 
-            const units = [...new Set(vocabularyData.map(item => item.unit))].sort();
-            units.forEach(unit => {
-                const checkedAttr = quizUnits.includes(unit) ? 'checked' : '';
-                const div = document.createElement('div');
-                div.className = "flex items-center gap-2.5 p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl";
-                const displayUnitName = unit.toLowerCase() === 'extra' ? 'EXTRA UNIT' : `UNIT ${unit}`;
-                const themeName = unitThemes[unit] || '';
-                div.innerHTML = `
-                    <input type="checkbox" id="quiz-unit-chk-${unit}" value="${unit}" ${checkedAttr} class="w-4.5 h-4.5 rounded text-primary-600 focus:ring-primary-500 bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-800 transition">
-                    <label for="quiz-unit-chk-${unit}" class="text-xs select-none cursor-pointer flex-1">
-                        <span class="font-bold text-slate-700 dark:text-slate-200 uppercase block">${displayUnitName}</span>
-                        <span class="text-[10px] text-slate-400 block">${escapeHtml(themeName)}</span>
-                    </label>
+            const levels = ["Level 7", "Level 8"];
+
+            levels.forEach(lvl => {
+                const lvlUnits = [...new Set(vocabularyData.filter(item => (unitLevels[item.unit] || "Level 7") === lvl).map(item => item.unit))].sort();
+                if (lvlUnits.length === 0) return;
+
+                const lvlBox = document.createElement('div');
+                lvlBox.className = "bg-slate-50 dark:bg-slate-950 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-3";
+
+                const badgeColor = lvl === 'Level 8' ? 'bg-purple-600 text-white' : 'bg-indigo-600 text-white';
+
+                lvlBox.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black tracking-widest uppercase px-2.5 py-1 rounded-full ${badgeColor}">${lvl}</span>
+                        <button onclick="toggleQuizByLevel('${lvl}', true)" class="text-[11px] text-primary-600 dark:text-primary-400 font-semibold hover:underline">Seleccionar Nivel</button>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="quiz-lvl-grid-${lvl.replace(' ', '')}"></div>
                 `;
-                selectionContainer.appendChild(div);
+
+                selectionContainer.appendChild(lvlBox);
+
+                const grid = lvlBox.querySelector(`#quiz-lvl-grid-${lvl.replace(' ', '')}`);
+
+                lvlUnits.forEach(unit => {
+                    const checkedAttr = quizUnits.includes(unit) ? 'checked' : '';
+                    const div = document.createElement('div');
+                    div.className = "flex items-center gap-2.5 p-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl";
+                    const displayUnitName = unit.toLowerCase() === 'extra' ? 'EXTRA UNIT' : `UNIT ${unit}`;
+                    const themeName = unitThemes[unit] || '';
+                    div.innerHTML = `
+                        <input type="checkbox" id="quiz-unit-chk-${unit}" value="${unit}" ${checkedAttr} class="w-4 h-4 rounded text-primary-600 focus:ring-primary-500 bg-slate-50 dark:bg-slate-950 border-slate-300 dark:border-slate-800 transition">
+                        <label for="quiz-unit-chk-${unit}" class="text-xs select-none cursor-pointer flex-1">
+                            <span class="font-bold text-slate-700 dark:text-slate-200 uppercase block text-[11px]">${displayUnitName}</span>
+                            <span class="text-[9px] text-slate-400 block truncate" title="${escapeHtml(themeName)}">${escapeHtml(themeName)}</span>
+                        </label>
+                    `;
+                    grid.appendChild(div);
+                });
+            });
+        }
+
+        function toggleQuizByLevel(lvl, shouldCheck) {
+            const lvlUnits = [...new Set(vocabularyData.filter(item => (unitLevels[item.unit] || "Level 7") === lvl).map(item => item.unit))];
+            lvlUnits.forEach(unit => {
+                const chk = document.getElementById(`quiz-unit-chk-${unit}`);
+                if (chk) chk.checked = shouldCheck;
             });
         }
 
@@ -1559,5 +1696,3 @@
     </script>
 </body>
 </html>
-
-
