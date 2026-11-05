@@ -1512,6 +1512,183 @@
             return safeText.replace(new RegExp(safeQuery, 'gi'), `<mark class="bg-yellow-200 dark:bg-yellow-950 text-slate-900 dark:text-slate-100 px-0.5 rounded">${originalMatch}</mark>`);
         }
 
+        // function renderDictionary() {
+        //     const container = document.getElementById('dictionary-content');
+        //     container.innerHTML = '';
+
+        //     let groupedData = {};
+        //     const units = [...new Set(vocabularyData.map(item => item.unit))].sort();
+        //     units.forEach(u => groupedData[u] = []);
+
+        //     let totalFound = 0;
+
+        //     vocabularyData.forEach(item => {
+        //         const itemLvl = unitLevels[item.unit] || "Level 7";
+        //         if (selectedLevel !== 'all' && itemLvl !== selectedLevel) return;
+        //         if (selectedUnit !== 'all' && item.unit !== selectedUnit) return;
+
+        //         const isFavorite = favorites.includes(item.word);
+        //         if (showFavoritesOnly && !isFavorite) return;
+
+        //         if (selectedType !== 'all' && item.type !== selectedType) return;
+
+        //         if (searchQuery) {
+        //             const matchesWord = item.word.toLowerCase().includes(searchQuery);
+        //             const matchesTranslation = item.translation.toLowerCase().includes(searchQuery);
+        //             const matchesExample = item.example.toLowerCase().includes(searchQuery);
+        //             const matchesType = item.type.toLowerCase().includes(searchQuery);
+        //             if (!matchesWord && !matchesTranslation && !matchesExample && !matchesType) return;
+        //         }
+
+        //         groupedData[item.unit].push(item);
+        //         totalFound++;
+        //     });
+
+        //     if (totalFound === 0) {
+        //         container.innerHTML = `
+        //             <div class="text-center py-16 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-3">
+        //                 <span class="p-4 bg-slate-50 dark:bg-slate-950 text-slate-400 rounded-2xl inline-block">
+        //                     <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        //                 </span>
+        //                 <h3 class="text-xl font-bold">No se encontraron palabras</h3>
+        //                 <p class="text-sm text-slate-400 max-w-sm mx-auto">Prueba a cambiar tus filtros de búsqueda o activa otros niveles/unidades.</p>
+        //             </div>
+        //         `;
+        //         return;
+        //     }
+
+        //     Object.keys(groupedData).forEach(unit => {
+        //         const wordsInUnit = groupedData[unit];
+        //         if (wordsInUnit.length === 0) return;
+
+        //         wordsInUnit.sort((a, b) => a.word.localeCompare(b.word));
+
+        //         const section = document.createElement('div');
+        //         section.className = "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm";
+
+        //         const levelTag = unitLevels[unit] || "Level 7";
+        //         const unitLabel = unit.toLowerCase() === 'extra' ? 'Extra Unit' : `Unit ${unit}`;
+        //         const topicName = unitThemes[unit] || "Vocabulario";
+
+        //         const levelBadgeColor = levelTag === 'Level 8' 
+        //             ? 'bg-purple-600 text-white' 
+        //             : 'bg-indigo-600 text-white';
+
+        //         section.innerHTML = `
+        //             <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-900/60 dark:to-slate-900 px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
+        //                 <div class="flex flex-wrap items-center gap-2.5">
+        //                     <span class="text-[10px] font-black tracking-widest uppercase px-2.5 py-0.5 rounded-full shadow-sm ${levelBadgeColor}">${levelTag}</span>
+        //                     <span class="text-xs font-bold tracking-wider uppercase bg-primary-600 text-white px-3 py-0.5 rounded-full shadow-sm">${unitLabel}</span>
+        //                     <h2 class="text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wide">${escapeHtml(topicName)}</h2>
+        //                 </div>
+        //                 <span class="text-xs font-semibold text-slate-400">${wordsInUnit.length} ${wordsInUnit.length === 1 ? 'palabra' : 'palabras'}</span>
+        //             </div>
+        //         `;
+
+        //         const tableContainer = document.createElement('div');
+        //         tableContainer.className = "overflow-x-auto";
+                
+        //         let tableHTML = `
+        //             <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-800 hidden md:table">
+        //                 <thead class="bg-slate-50/50 dark:bg-slate-900/20 text-left text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+        //                     <tr>
+        //                         <th scope="col" class="px-6 py-3.5 w-[25%]">Palabra (Inglés)</th>
+        //                         <th scope="col" class="px-6 py-3.5 w-[15%]">Categoría</th>
+        //                         <th scope="col" class="px-6 py-3.5 w-[25%]">Traducción (Español)</th>
+        //                         <th scope="col" class="px-6 py-3.5 w-[30%]">Oración de Ejemplo</th>
+        //                         <th scope="col" class="px-6 py-3.5 w-[5%] text-right">Acciones</th>
+        //                     </tr>
+        //                 </thead>
+        //                 <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 text-sm">
+        //         `;
+
+        //         let mobileCardsHTML = `<div class="md:hidden divide-y divide-slate-100 dark:divide-slate-800/60">`;
+
+        //         wordsInUnit.forEach(item => {
+        //             const isFavorite = favorites.includes(item.word);
+        //             const starIcon = isFavorite ? '★' : '☆';
+        //             const starBtnColor = isFavorite ? 'text-amber-500 hover:text-amber-600' : 'text-slate-300 dark:text-slate-600 hover:text-slate-400';
+
+        //             let typeColor = "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400";
+        //             if (item.type === 'verb' || item.type === 'phrasal verb' || item.type === 'verb phrase') {
+        //                 typeColor = "bg-blue-50 text-blue-600 dark:bg-blue-950/30 dark:text-blue-400";
+        //             } else if (item.type === 'noun' || item.type === 'noun phrase') {
+        //                 typeColor = "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400";
+        //             } else if (item.type === 'compound adjective' || item.type === 'adjective') {
+        //                 typeColor = "bg-purple-50 text-purple-600 dark:bg-purple-950/30 dark:text-purple-400";
+        //             } else if (item.type === 'adverb') {
+        //                 typeColor = "bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400";
+        //             }
+
+        //             const highlightedWord = highlightMatch(item.word, searchQuery);
+        //             const highlightedTranslation = highlightMatch(item.translation, searchQuery);
+        //             const highlightedExample = highlightMatch(item.example, searchQuery);
+        //             const highlightedType = highlightMatch(item.type, searchQuery);
+
+        //             const safeWordAttr = escapeHtml(item.word);
+
+        //             tableHTML += `
+        //                 <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-900/10 transition group">
+        //                     <td class="px-6 py-4.5 font-bold text-slate-900 dark:text-white flex items-center gap-2">
+        //                         <button data-word="${safeWordAttr}" onclick="speakWord(event, this.getAttribute('data-word'))" class="p-1.5 bg-slate-50 hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 rounded-lg transition" title="Escuchar pronunciación">
+        //                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+        //                         </button>
+        //                         <span>${highlightedWord}</span>
+        //                     </td>
+        //                     <td class="px-6 py-4.5">
+        //                         <span class="px-2.5 py-1 text-xs font-medium rounded-md uppercase ${typeColor}">${highlightedType}</span>
+        //                     </td>
+        //                     <td class="px-6 py-4.5 font-medium text-slate-600 dark:text-slate-300">
+        //                         ${highlightedTranslation}
+        //                     </td>
+        //                     <td class="px-6 py-4.5 italic text-slate-500 dark:text-slate-400">
+        //                         "${highlightedExample}"
+        //                     </td>
+        //                     <td class="px-6 py-4.5 text-right">
+        //                         <button data-word="${safeWordAttr}" onclick="toggleFavoriteWord(this.getAttribute('data-word'))" class="text-xl p-1 transition ${starBtnColor}" title="${isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}">
+        //                             ${starIcon}
+        //                         </button>
+        //                     </td>
+        //                 </tr>
+        //             `;
+
+        //             mobileCardsHTML += `
+        //                 <div class="p-5 space-y-3">
+        //                     <div class="flex justify-between items-start">
+        //                         <div class="space-y-1">
+        //                             <div class="flex items-center gap-1.5">
+        //                                 <button data-word="${safeWordAttr}" onclick="speakWord(event, this.getAttribute('data-word'))" class="p-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-700 rounded-lg transition">
+        //                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+        //                                 </button>
+        //                                 <h3 class="font-extrabold text-lg text-slate-900 dark:text-white">${highlightedWord}</h3>
+        //                             </div>
+        //                             <span class="inline-block px-2.5 py-0.5 text-[10px] font-bold rounded-md uppercase ${typeColor}">${highlightedType}</span>
+        //                         </div>
+        //                         <button data-word="${safeWordAttr}" onclick="toggleFavoriteWord(this.getAttribute('data-word'))" class="text-2xl p-1 transition ${starBtnColor}">
+        //                             ${starIcon}
+        //                         </button>
+        //                     </div>
+        //                     <div class="space-y-1">
+        //                         <p class="text-xs font-semibold text-slate-400 uppercase">Traducción</p>
+        //                         <p class="text-slate-800 dark:text-slate-200 font-medium">${highlightedTranslation}</p>
+        //                     </div>
+        //                     <div class="space-y-1">
+        //                         <p class="text-xs font-semibold text-slate-400 uppercase">Ejemplo</p>
+        //                         <p class="text-sm italic text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-950 p-2.5 rounded-lg border border-slate-100 dark:border-slate-800/40">"${highlightedExample}"</p>
+        //                     </div>
+        //                 </div>
+        //             `;
+        //         });
+
+        //         tableHTML += `</tbody></table>`;
+        //         mobileCardsHTML += `</div>`;
+
+        //         tableContainer.innerHTML = tableHTML + mobileCardsHTML;
+        //         section.appendChild(tableContainer);
+        //         container.appendChild(section);
+        //     });
+        // }
+
         function renderDictionary() {
             const container = document.getElementById('dictionary-content');
             container.innerHTML = '';
@@ -1534,10 +1711,11 @@
 
                 if (searchQuery) {
                     const matchesWord = item.word.toLowerCase().includes(searchQuery);
+                    const matchesPhonetic = item.phonetic ? item.phonetic.toLowerCase().includes(searchQuery) : false;
                     const matchesTranslation = item.translation.toLowerCase().includes(searchQuery);
                     const matchesExample = item.example.toLowerCase().includes(searchQuery);
                     const matchesType = item.type.toLowerCase().includes(searchQuery);
-                    if (!matchesWord && !matchesTranslation && !matchesExample && !matchesType) return;
+                    if (!matchesWord && !matchesPhonetic && !matchesTranslation && !matchesExample && !matchesType) return;
                 }
 
                 groupedData[item.unit].push(item);
@@ -1625,6 +1803,8 @@
                     const highlightedExample = highlightMatch(item.example, searchQuery);
                     const highlightedType = highlightMatch(item.type, searchQuery);
 
+                    const phoneticBadge = item.phonetic ? `<span class="text-xs font-normal text-slate-400 dark:text-slate-500 block font-mono">${escapeHtml(item.phonetic)}</span>` : '';
+
                     const safeWordAttr = escapeHtml(item.word);
 
                     tableHTML += `
@@ -1633,7 +1813,10 @@
                                 <button data-word="${safeWordAttr}" onclick="speakWord(event, this.getAttribute('data-word'))" class="p-1.5 bg-slate-50 hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 rounded-lg transition" title="Escuchar pronunciación">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
                                 </button>
-                                <span>${highlightedWord}</span>
+                                <div>
+                                    <span>${highlightedWord}</span>
+                                    ${phoneticBadge}
+                                </div>
                             </td>
                             <td class="px-6 py-4.5">
                                 <span class="px-2.5 py-1 text-xs font-medium rounded-md uppercase ${typeColor}">${highlightedType}</span>
@@ -1660,7 +1843,10 @@
                                         <button data-word="${safeWordAttr}" onclick="speakWord(event, this.getAttribute('data-word'))" class="p-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-700 rounded-lg transition">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
                                         </button>
-                                        <h3 class="font-extrabold text-lg text-slate-900 dark:text-white">${highlightedWord}</h3>
+                                        <div>
+                                            <h3 class="font-extrabold text-lg text-slate-900 dark:text-white leading-tight">${highlightedWord}</h3>
+                                            ${phoneticBadge}
+                                        </div>
                                     </div>
                                     <span class="inline-block px-2.5 py-0.5 text-[10px] font-bold rounded-md uppercase ${typeColor}">${highlightedType}</span>
                                 </div>
@@ -1689,6 +1875,11 @@
             });
         }
 
+
+
+
+
+        
         function setupFlashcardView() {
             let filtered = vocabularyData;
 
