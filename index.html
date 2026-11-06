@@ -1902,6 +1902,33 @@
             renderFlashcard();
         }
 
+        // function renderFlashcard() {
+        //     const counter = document.getElementById('flashcard-counter');
+        //     if (flashcardList.length === 0) {
+        //         counter.innerText = "0 / 0";
+        //         document.getElementById('fc-word').innerText = "Sin palabras";
+        //         document.getElementById('fc-unit').innerText = "Unit -";
+        //         document.getElementById('fc-type').innerText = "-";
+        //         document.getElementById('fc-translation').innerText = "Por favor selecciona otra unidad o nivel";
+        //         document.getElementById('fc-example').innerText = "No hay vocabulario que cumpla con los filtros.";
+        //         return;
+        //     }
+
+        //     counter.innerText = `${flashcardIndex + 1} / ${flashcardList.length}`;
+        //     const item = flashcardList[flashcardIndex];
+
+        //     const levelLabel = unitLevels[item.unit] || 'Level 7';
+        //     const unitLabel = item.unit.toLowerCase() === 'extra' ? 'Extra Unit' : `Unit ${item.unit}`;
+        //     const themeName = unitThemes[item.unit] ? ` • ${unitThemes[item.unit]}` : '';
+
+        //     document.getElementById('fc-word').innerText = item.word;
+        //     document.getElementById('fc-unit').innerText = `${levelLabel} • ${unitLabel}${themeName}`;
+        //     document.getElementById('fc-type').innerText = item.type;
+        //     document.getElementById('fc-translation').innerText = item.translation;
+        //     document.getElementById('fc-example').innerText = `"${item.example}"`;
+        // }
+
+
         function renderFlashcard() {
             const counter = document.getElementById('flashcard-counter');
             if (flashcardList.length === 0) {
@@ -1921,7 +1948,11 @@
             const unitLabel = item.unit.toLowerCase() === 'extra' ? 'Extra Unit' : `Unit ${item.unit}`;
             const themeName = unitThemes[item.unit] ? ` • ${unitThemes[item.unit]}` : '';
 
-            document.getElementById('fc-word').innerText = item.word;
+            const wordDisplay = item.phonetic 
+                ? `${item.word} <span class="block text-lg font-mono font-normal opacity-80 mt-1">${item.phonetic}</span>` 
+                : item.word;
+
+            document.getElementById('fc-word').innerHTML = wordDisplay;
             document.getElementById('fc-unit').innerText = `${levelLabel} • ${unitLabel}${themeName}`;
             document.getElementById('fc-type').innerText = item.type;
             document.getElementById('fc-translation').innerText = item.translation;
